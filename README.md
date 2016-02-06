@@ -1,7 +1,6 @@
 # README #
 
-Introduction
-=============
+### Introduction ###
 An auction site that allows users to bid on items and sell their items in auctions.
 
 Setup 
