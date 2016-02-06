@@ -2,6 +2,7 @@
 
 Introduction
 =============
+An auction site that allows users to bid on items and sell their items in auctions.
 
 Setup 
 =============
@@ -15,6 +16,4 @@ Setup
 8. Vagrant is configured to serve files to apache from within the 'src' folder. All website files and folders should be created within
 9. To view the website visit "localhost:4567" in your browser
 10. To shutdown the vm enter the command `vagrant halt`
-
-**Notes**:
-* enter the command `exit` while inside the VM to return to your machine's terminal.
+11. enter the command `exit` while inside the VM to return to your machine's terminal.
