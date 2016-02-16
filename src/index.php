@@ -1,3 +1,39 @@
+<?php
+session_start();
+
+
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$dbname = "AuctionSite";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$username = $_POST['userName'];
+$password = $_POST['password'];
+//echo $username."</br>";
+//echo $password;
+
+$sql = "SELECT userEmail, userPassword FROM User WHERE userEmail = '$username' And userPassword = '$password' ;";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    echo "COOL";
+    $_SESSION["userNameSess"] = $username;
+    $_SESSION["passwordSess"] = $password;
+
+} else {
+
+    header('Location: loginPage.php');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
