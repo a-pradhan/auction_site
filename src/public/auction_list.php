@@ -3,6 +3,7 @@
 
 
 <?php
+    // Retrieve all live auctions (auctionLive =1)
     $live_auctions = find_all_live_auctions();
 ?>
 
@@ -82,11 +83,15 @@
     </div>
     <!-- /.row -->
     <?php
-
+            // while loop to fetch each row of auction one by one
     while($auction=mysqli_fetch_assoc($live_auctions)) {
+
+        // Retrieving the itemID for each row of auction
         $live_itemID = $auction["itemID"];
-        $item_info = find_item_for_live_auction($live_itemID);
-        $live_item_info = mysqli_fetch_assoc($item_info);
+
+        // Retrieving the row for the auction item from Item table
+        $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
+        //$live_item_info = mysqli_fetch_assoc($item_info);
         echo "Live! <br>";
         echo "<div class=\"row\">";
         echo "<div class=\"col-md-3\">";
@@ -99,7 +104,7 @@
         echo    "<h4>" . htmlentities($live_item_info["itemCategory"]) ."</h4>";
         echo    "<h5>" . "Quantity: " .htmlentities($live_item_info["itemQuantity"]) . "". "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £". htmlentities($auction["auctionReservePrice"]) . "</span></h5>";
         echo    "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
-        echo   "<a style= \"float:right;\"  class=\"btn btn-primary\" href=\"#\">View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+        echo   "<a style= \"float:right;\"  class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
         echo "</div>";
         echo "</div>";
         echo "<hr>";
@@ -152,10 +157,10 @@
 <!-- /.container -->
 
 <!-- jQuery -->
-<script src="js/jquery.js"></script>
+<script src="../js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 
 </body>
 
