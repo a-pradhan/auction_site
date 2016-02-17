@@ -1,7 +1,7 @@
 <?php
 session_start();
 $username = $_SESSION['userNameSess'];
-
+echo $username;
 ?>
 
 
@@ -36,11 +36,11 @@ $username = $_SESSION['userNameSess'];
 
 <body>
 
-<form class="form-group" action="index.php" method="post">
+<form class="form" action="index.php" method="post">
     Username:<br>
-    <input type="text" name="userName" placeholder="Email"><br>
+    <input type="text" name="userNameForm" placeholder="Username"><br>
     Password:<br>
-    <input type="password" name="password" placeholder="Password"><br><br>
+    <input type="password" name="passwordForm" placeholder="Password"><br><br>
     <input type="submit" value="Submit">
 </form><!-- all forms include a submit button -->
 
