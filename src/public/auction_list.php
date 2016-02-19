@@ -1,12 +1,6 @@
 <?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/auction_functions.php") ?>
 
-
-<?php
-    // Retrieve all live auctions (auctionLive =1)
-    $live_auctions = find_all_live_auctions();
-?>
-
 <html lang="en">
 <head>
     <title>Auction Vault</title>
@@ -75,40 +69,125 @@
 
     <!-- Page Heading -->
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Live auctions
+        <div class="col-md-12">
+            <h2 class="page-header">Live auctions
                 <small>Money motivation</small>
-            </h1>
+            </h2>
         </div>
     </div>
-    <!-- /.row -->
+    <!-- Search and filtering -->
+        <div class="row">
+            <div class="col-md-6">
+
+                <form action="auction_list.php" method="POST">
+                        Category
+                    <select name="category">
+                        <option value=""></option>
+                        <option value="Car">Car</option>
+                        <option value="Mobile Phone">Mobile Phones</option>
+                        <option value="Laptop">Laptops</option>
+                        <option value="Jewellry">Jewellry</option>
+                        <option value="Miscellaneous">Miscellaneous</option>
+                    </select>
+                        Condition
+                    <select name ="condition">
+                            <option value=""></option>
+                            <option value="Used">Used</option>
+                            <option value="Used - Like New">Used - Like New</option>
+                            <option value="New">New</option>
+                    </select>
+                        Sort by
+                    <select name ="sortBy">
+                            <option value=""></option>
+                            <option value="Price">Price</option>
+                            <option value="Time">Time</option>
+                    </select>
+                        <input id="refine" name ="refine" type="submit" value="Refine">
+                 </form>
+
+
+            </div>
+                <form action="auction_list.php" method="POST">
+                    <input id="search" name="searchField" type="text" style="width: 500px;" placeholder="Search by name, description or category of item!">
+                    <input id="submit" type="submit" value="Search">
+                </form>
+            </div>
+
+
     <?php
+    // Retrieve all live auctions (auctionLive =1)
+    $live_auctions = find_all_live_auctions();
+
+
+    ?>
+
+    <!-- Check for search and filtering and then display auctions accordingly --->
+
+    <?php
+        if(isset($_POST['refine'])) {
+
+            // Checks if two filter factors have been chosen
+            if (($_POST["category"] != "") && ($_POST["condition"] != "")) {
+                $refined_category = $_POST["category"];
+
+                $refined_condition = $_POST["condition"];
+                $live_auctions = refined_live_auctions($refined_category,$refined_condition);
+            }
+
+            //Checks if only the category factor has been chosen
+            if ($_POST["category"] != "" && $_POST["condition"] == "") {
+                $refined_category = $_POST["category"];
+                $live_auctions = refined_live_auctions($refined_category,false);
+
+            }
+            //Checks if only the condition factor has been chosen
+            if ($_POST["condition"] != "" && $_POST["category"] == "") {
+                $refined_condition = $_POST["condition"];
+                $live_auctions = refined_live_auctions(false, $refined_condition);
+            }
+
+            //To be implemented, sort by the most recent or cheapest price
+            if ($_POST["sortBy"] != "") {
+
+            }
+
+            //Detect unsuccessful searches
+            if (mysqli_num_rows($live_auctions) == 0) {
+                echo "Sorry, no auctions found.";
+            }
+
+        }
+
+
+
             // while loop to fetch each row of auction one by one
-    while($auction=mysqli_fetch_assoc($live_auctions)) {
+            while ($auction = mysqli_fetch_assoc($live_auctions)) {
 
-        // Retrieving the itemID for each row of auction
-        $live_itemID = $auction["itemID"];
+                // Retrieving the itemID for each row of auction
+                $live_itemID = $auction["itemID"];
 
-        // Retrieving the row for the auction item from Item table
-        $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
-        //$live_item_info = mysqli_fetch_assoc($item_info);
-        echo "Live! <br>";
-        echo "<div class=\"row\">";
-        echo "<div class=\"col-md-3\">";
-        echo    "<a href=\"#\">";
-        echo        "<img class=\"img-responsive\" src=\"../images/" . $live_item_info["itemPhoto"] ."\" alt=\"\">";
-        echo    "</a>";
-        echo "</div>";
-        echo "<div class=\"col-md-6\">";
-        echo    "<h3>" .  htmlentities($live_item_info["itemName"]) ."</h3>";
-        echo    "<h4>" . htmlentities($live_item_info["itemCategory"]) ."</h4>";
-        echo    "<h5>" . "Quantity: " .htmlentities($live_item_info["itemQuantity"]) . "". "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £". htmlentities($auction["auctionReservePrice"]) . "</span></h5>";
-        echo    "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
-        echo   "<a style= \"float:right;\"  class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
-        echo "</div>";
-        echo "</div>";
-        echo "<hr>";
-    }
+                // Retrieving the row for the auction item from Item table
+                $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
+                //$live_item_info = mysqli_fetch_assoc($item_info);
+                echo "Live! <br>";
+                echo "<div class=\"row\">";
+                echo "<div class=\"col-md-3\">";
+                echo "<a href=\"#\">";
+                echo "<img class=\"img-responsive\" src=\"../images/" . $live_item_info["itemPhoto"] . "\" alt=\"\">";
+                echo "</a>";
+                echo "</div>";
+                echo "<div class=\"col-md-6\">";
+                echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
+                echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";
+                echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
+                echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
+                echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
+                echo "<a style= \"float:right;\"  class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+                echo "</div>";
+                echo "</div>";
+                echo "<hr>";
+            }
+
     ?>
 
     <!-- Pagination -->
