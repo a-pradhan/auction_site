@@ -1,15 +1,57 @@
+<?php require_once("../includes/session.php"); ?>
+<?php require_once("../includes/db_connection.php"); ?>
+<?php require_once("../includes/general_functions.php"); ?>
+<?php require_once("../includes/validation_functions.php"); ?>
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 12/02/16
- * Time: 16:35
- */
+// initialize variables we may want to redisplay if the user has previously made entry errors
+$userName = "";
+$fName = "";
+$lName = "";
+$userEmail = "";
 
-// establish database connection - move to includes function later on
+if (isset($_POST["submit"])) {
+
+    // process the form
+
+    // carry out form validations
+
+    // ensure no fields are empty
+
+    // ensure passwords match
+
+    if (empty($errors)) {
 
 
-?>
+        // set variables for SQL insert query
+        $userName = mysql_prep($_POST["username"]);
+        $fName = mysql_prep($_POST["first_name"]);
+        $lName = mysql_prep($_POST["last_name"]);
+        $password = password_encrypt($_POST["password"]);
+        $userEmail = mysql_prep($_POST["email"]);
+
+        $query = "INSERT INTO User (";
+        $query .= "userName, fName, lName, userPassword, userEmail";
+        $query .= ") VALUES (";
+        $query .= "'{$userName}', '{$fName}, '{$lName}', '{$password}', '{$userEmail}'";
+        $query .= ")";
+        $result = mysqli_query($connection, $query);
+
+        if ($result) {
+            // Success
+            $_SESSION["message"] = "Welcome .";
+            // TODO change to user's home page. Need to store user id as well
+            redirect_to("../index.php");
+        } else {
+            // Failure
+            $message = "Failed to create account. Please try again.";
+            // TODO redirect user to login screen
+            redirect_to("home_page.php");
+        }
+
+    }
+
+
+} ?>
 
 <!DOCTYPE html>
 <html>
@@ -17,18 +59,25 @@
     <title>Sign Up</title>
 </head>
 <body>
-
 <div class="formContainer">
-    <h2 class="formHeader">Please enter your details</h2>
-    <form class="signupForm" action="create_subject.php" method="post">
+    <h2 class="formHeader">Register An Account</h2>
+    <form class="SignupForm" action="sign_up.php" method="post">
+        <div>
+            <h3>First Name</h3>
+            <input type="text" name="first_name" value="<?php echo htmlentities($fName); ?>"/>
+        </div>
+        <div>
+            <h3>Last Name</h3>
+            <input type="text" name="last_name" value="<?php echo htmlentities($lName); ?>"/>
+        </div>
         <div>
             <h3>Email Address</h3>
-            <input type="text" name="email_address" value=""/>
+            <input type="text" name="email" value="<?php echo htmlentities($userEmail); ?>"/>
         </div>
-       <div>
-           <h3>Username</h3>
-           <input type="text" name="username" value=""/>
-       </div>
+        <div>
+            <h3>Username</h3>
+            <input type="text" name="username" value="<?php echo htmlentities($userName); ?>"/>
+        </div>
         <div>
             <h3>Password</h3>
             <input type="text" name="password" value=""/>
