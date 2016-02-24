@@ -1,29 +1,29 @@
 <?php
 session_start();
-
-
-$servername = "localhost";
-$username = "root";
-$password = "password";
-$dbname = "AuctionSite";
+//start a session to store variables in
+//
+$DBservername = "localhost";
+$DBusername = "root";
+$DBpassword = "password";
+$DBname = "AuctionSite";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($DBservername, $DBusername, $DBpassword, $DBname);
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$username = $_POST['userName'];
-$password = $_POST['password'];
+$username = $_POST['userNameForm'];
+$password = $_POST['passwordForm'];
 //echo $username."</br>";
 //echo $password;
 
-$sql = "SELECT userEmail, userPassword FROM User WHERE userEmail = '$username' And userPassword = '$password' ;";
+$sql = "SELECT userName, userPassword FROM User WHERE userName = '$username' And userPassword = '$password' ;";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     // output data of each row
-    echo "COOL";
+   // echo "COOL";
     $_SESSION["userNameSess"] = $username;
     $_SESSION["passwordSess"] = $password;
 
@@ -33,7 +33,6 @@ if ($result->num_rows > 0) {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,7 +44,7 @@ if ($result->num_rows > 0) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>1 Col Portfolio - Start Bootstrap Template</title>
+    <title>Auction Site Home</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -91,9 +90,11 @@ if ($result->num_rows > 0) {
                     </li>
                 </ul>
             </div>
+
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
+
     </nav>
 
     <!-- Page Content -->
