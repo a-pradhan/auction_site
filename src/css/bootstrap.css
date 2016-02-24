@@ -2512,6 +2512,14 @@ label {
   margin-bottom: 5px;
   font-weight: bold;
 }
+label2{
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 250px;
+  text-align: right;
+}
+
 input[type="search"] {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;

@@ -103,7 +103,8 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
                             <h4 class="pull-right" style="color:#880000">Reserve price at £ <?php echo htmlentities($chosen_auction_info["auctionReservePrice"]); ?></h4>
                             <h4><?php echo htmlentities($chosen_live_item_info["itemName"]); ?></h4>
                             <p><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
-                            <p><strong> Quantity:<?php echo " "  . htmlentities($chosen_live_item_info["itemQuantity"]); ?></strong></p>
+                            <p><strong> Quantity:</strong><?php echo " "  . htmlentities($chosen_live_item_info["itemQuantity"]); ?></p>
+                            <p><strong> Condition:</strong><?php echo " "  . htmlentities($chosen_live_item_info["itemCondition"]); ?></p>
                             <p><strong>Description:</strong><?php echo " ". htmlentities($chosen_live_item_info["itemDescription"]); ?></p>
                         </div>
                     </div>
