@@ -158,9 +158,25 @@
 
         }
 
+    if (isset($_POST['searchField'])) {
+        //Retrieve the text inserted into the search field
+        $search_string_identified = mysqli_real_escape_string($connection, $_POST["searchField"]);
+        //Break the string up into an array
+        $auction_search_array = explode (" ", $search_string_identified);
+        //Call the function to retrieve the set of results from the search
+        $search_auction_set = search_live_auctions($auction_search_array);
+
+        //Detect unsuccessful searches
+        if (mysqli_num_rows($search_auction_set) == 0) {
+            echo "Sorry, no auctions found. Try filtering!";
+        }
+
+        $live_auctions = $search_auction_set;
+    }
 
 
-            // while loop to fetch each row of auction one by one
+
+    // while loop to fetch each row of auction one by one
             while ($auction = mysqli_fetch_assoc($live_auctions)) {
 
                 // Retrieving the itemID for each row of auction

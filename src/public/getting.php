@@ -30,14 +30,7 @@
     echo "<br />";
     echo htmlentities($chosen_live_item_info["itemPhoto"]);
 
-    echo "<hr>";
-    echo "<div>";
-    echo      "<label>Name:</label><input type=\"text\">";
-    echo       "<label>Email Address:</label><input type = \"text\">";
-    echo      "<label>Description of the input value:</label><input type=\"text\">";
-    echo   "</div>";
-    echo "<br /><br /><br /><br />";
-    echo "<hr>";
+
 
 
     echo "<br /><br /><br /><br />";
@@ -65,5 +58,62 @@
     }
     echo            "</select>";
     echo    "</div>";
+    echo "<br /><br /><br /><br />";
+    echo "<hr>";
+    echo "Khello";
+
+    echo "<div>"; ?>
+        <form action="getting.php?auction=3000" method="POST">
+                            <input id="search" name="searchField" type="text" style="width: 500px;" placeholder="Search by name, description or category of item!">
+                            <input id="submit" type="submit" value="Search">
+        </form>
+ <?php
+            echo "<br />";
+
+            echo "<br />";
+        if (isset($_POST['searchField'])){
+            echo "<br />";
+
+            echo "<br />";
+            global $connection;
+            $search_string_identified = mysqli_real_escape_string($connection, $_POST["searchField"]);
+            echo htmlentities($search_string_identified);
+            echo "<br />";
+            echo htmlentities($search_string_identified);
+            $auction_search_array = explode (" ", $search_string_identified);
+            echo "Did it work?";
+            echo "<br />";
+            echo htmlentities($auction_search_array[0]);
+            echo "<br />";
+            //echo htmlentities(sizeof($auction_search_array));
+            echo "<br />";
+            $search_auction_set = search_live_auctions($auction_search_array);
+            echo "1";
+            echo "<br />";
+             while ($auction = mysqli_fetch_assoc($search_auction_set)) {
+                 echo "2";
+                 echo "<br />";
+                 $live_itemID = $auction["itemID"];
+                 // Retrieving the itemID for each row of auction
+                 echo htmlentities($live_itemID);
+                 echo "3";
+                 echo "<br />";
+                 // Retrieving the row for the auction item from Item table
+                 echo "4";
+                 echo "<br />";
+                 echo "5";
+                 echo "<br />";
+                 echo "<br />";
+             }
+            echo "6";
+            echo "<br />";
+
+        }
+    echo   "</div>";
+    ?>
+
+
+
+
 
 ?>
