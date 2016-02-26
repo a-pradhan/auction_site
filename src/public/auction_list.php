@@ -1,10 +1,41 @@
 <?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/auction_functions.php") ?>
 
-
 <?php
-    // Retrieve all live auctions (auctionLive =1)
-    $live_auctions = find_all_live_auctions();
+//include database login credentials and connection
+include("config.php");
+//start a session to store variables in
+session_start();
+//session_unset();
+
+echo "Session username " . $_SESSION["userNameSess"];
+//store the username and password input of the user from the loginPage.php
+$username = $_POST['userNameForm'];
+$password = $_POST['passwordForm'];
+
+if (isset($username) || isset($password)) {
+    //query the database and see if the username and pass match a pair in the users table
+    $loginQuery = sprintf("SELECT userName, userPassword FROM User WHERE BINARY userName = '%s' And userPassword = '%s' ;", $username, $password);
+    //store the result of the query in a variable
+    $result = $conn->query($loginQuery);
+
+
+    if ($result->num_rows == 1) {
+        //ensure that only one user is registered with that username and if so store the credentials in a session
+        $_SESSION["userNameSess"] = $username;
+        $_SESSION["passwordSess"] = $password;
+        $_SESSION['loginError'] = null;
+
+    } else if ($result->num_rows == 0) {
+        //otherwise reload the loginPage
+        $_SESSION['loginError'] = "Your login username or password is invalid";
+
+        //header('Location: public/loginPage.php');
+    }
+} else if (!(isset($_SESSION["userNameSess"]) && isset($_SESSION["passwordSess"]))) {
+    //header('Location: public/loginPage.php');
+}
+
 ?>
 
 <html lang="en">
@@ -43,7 +74,8 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -63,6 +95,8 @@
                 <li>
                     <a href="#">Contact</a>
                 </li>
+
+                <button type="button" class="pull-right" onclick="location.href = 'loginPage.php';">Log Out</button>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -75,92 +109,175 @@
 
     <!-- Page Heading -->
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Live auctions
-                <small>Money motivation</small>
-            </h1>
+        <div class="col-md-12">
+            <h2 class="page-header">Live auctionss<small>Money motivation</small></h2>
         </div>
     </div>
-    <!-- /.row -->
-    <?php
-            // while loop to fetch each row of auction one by one
-    while($auction=mysqli_fetch_assoc($live_auctions)) {
-
-        // Retrieving the itemID for each row of auction
-        $live_itemID = $auction["itemID"];
-
-        // Retrieving the row for the auction item from Item table
-        $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
-        //$live_item_info = mysqli_fetch_assoc($item_info);
-        echo "Live! <br>";
-        echo "<div class=\"row\">";
-        echo "<div class=\"col-md-3\">";
-        echo    "<a href=\"#\">";
-        echo        "<img class=\"img-responsive\" src=\"../images/" . $live_item_info["itemPhoto"] ."\" alt=\"\">";
-        echo    "</a>";
-        echo "</div>";
-        echo "<div class=\"col-md-6\">";
-        echo    "<h3>" .  htmlentities($live_item_info["itemName"]) ."</h3>";
-        echo    "<h4>" . htmlentities($live_item_info["itemCategory"]) ."</h4>";
-        echo    "<h5>" . "Quantity: " .htmlentities($live_item_info["itemQuantity"]) . "". "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £". htmlentities($auction["auctionReservePrice"]) . "</span></h5>";
-        echo    "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
-        echo   "<a style= \"float:right;\"  class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
-        echo "</div>";
-        echo "</div>";
-        echo "<hr>";
-    }
-    ?>
-
-    <!-- Pagination -->
-    <div class="row text-center">
-        <div class="col-lg-12">
-            <ul class="pagination">
-                <li>
-                    <a href="#">&laquo;</a>
-                </li>
-                <li class="active">
-                    <a href="#">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">&raquo;</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- /.row -->
-
-    <hr>
-
-    <!-- Footer -->
-    <footer>
+        <!-- Search and filtering -->
         <div class="row">
+            <div class="col-md-6">
+
+                <form action="auction_list.php" method="POST">
+                    Category
+                    <select name="category">
+                        <option value=""></option>
+                        <option value="Car">Car</option>
+                        <option value="Mobile Phone">Mobile Phones</option>
+                        <option value="Laptop">Laptops</option>
+                        <option value="Jewellry">Jewellry</option>
+                        <option value="Miscellaneous">Miscellaneous</option>
+                    </select>
+                    Condition
+                    <select name="condition">
+                        <option value=""></option>
+                        <option value="Used">Used</option>
+                        <option value="Used - Like New">Used - Like New</option>
+                        <option value="New">New</option>
+                    </select>
+                    Sort by
+                    <select name="sortBy">
+                        <option value=""></option>
+                        <option value="Price">Price</option>
+                        <option value="Time">Time</option>
+                    </select>
+                    <input id="refine" name="refine" type="submit" value="Refine">
+                </form>
+
+
+            </div>
+            <form action="auction_list.php" method="POST">
+                <input id="search" name="searchField" type="text" style="width: 500px;"
+                       placeholder="Search by name, description or category of item!">
+                <input id="submit" type="submit" value="Search">
+            </form>
+        </div>
+
+
+        <?php
+        // Retrieve all live auctions (auctionLive =1)
+        $live_auctions = find_all_live_auctions();
+
+
+        ?>
+
+        <!-- Check for search and filtering and then display auctions accordingly --->
+
+        <?php
+        if (isset($_POST['refine'])) {
+
+            // Checks if two filter factors have been chosen
+            if (($_POST["category"] != "") && ($_POST["condition"] != "")) {
+                $refined_category = $_POST["category"];
+
+                $refined_condition = $_POST["condition"];
+                $live_auctions = refined_live_auctions($refined_category, $refined_condition);
+            }
+
+            //Checks if only the category factor has been chosen
+            if ($_POST["category"] != "" && $_POST["condition"] == "") {
+                $refined_category = $_POST["category"];
+                $live_auctions = refined_live_auctions($refined_category, false);
+
+            }
+            //Checks if only the condition factor has been chosen
+            if ($_POST["condition"] != "" && $_POST["category"] == "") {
+                $refined_condition = $_POST["condition"];
+                $live_auctions = refined_live_auctions(false, $refined_condition);
+            }
+
+            //To be implemented, sort by the most recent or cheapest price
+            if ($_POST["sortBy"] != "") {
+
+            }
+
+            //Detect unsuccessful searches
+            if (mysqli_num_rows($live_auctions) == 0) {
+                echo "Sorry, no auctions found.";
+            }
+
+        }
+
+
+        // while loop to fetch each row of auction one by one
+        while ($auction = mysqli_fetch_assoc($live_auctions)) {
+
+            // Retrieving the itemID for each row of auction
+            $live_itemID = $auction["itemID"];
+
+            // Retrieving the row for the auction item from Item table
+            $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
+            //$live_item_info = mysqli_fetch_assoc($item_info);
+            echo "Live! <br>";
+            echo "<div class=\"row\">";
+            echo "<div class=\"col-md-3\">";
+            echo "<a href=\"#\">";
+            echo "<img class=\"img-responsive\" src=\"../images/" . $live_item_info["itemPhoto"] . "\" alt=\"\">";
+            echo "</a>";
+            echo "</div>";
+            echo "<div class=\"col-md-6\">";
+            echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
+            echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";
+            echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
+            echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
+            echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
+            echo "<a style= \"float:right;\"  class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+            echo "</div>";
+            echo "</div>";
+            echo "<hr>";
+        }
+
+        ?>
+
+        <!-- Pagination -->
+        <div class="row text-center">
             <div class="col-lg-12">
-                <p>Copyright &copy; Team 40 Money Motivation</p>
+                <ul class="pagination">
+                    <li>
+                        <a href="#">&laquo;</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">1</a>
+                    </li>
+                    <li>
+                        <a href="#">2</a>
+                    </li>
+                    <li>
+                        <a href="#">3</a>
+                    </li>
+                    <li>
+                        <a href="#">4</a>
+                    </li>
+                    <li>
+                        <a href="#">5</a>
+                    </li>
+                    <li>
+                        <a href="#">&raquo;</a>
+                    </li>
+                </ul>
             </div>
         </div>
         <!-- /.row -->
-    </footer>
 
-</div>
-<!-- /.container -->
+        <hr>
 
-<!-- jQuery -->
-<script src="../js/jquery.js"></script>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Team 40 Money Motivation</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="../js/bootstrap.min.js"></script>
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
 
 </body>
 
@@ -168,8 +285,8 @@
 </html>
 
 /**
- * Created by PhpStorm.
- * User: sadiq
- * Date: 10/02/16
- * Time: 20:11
- */
+* Created by PhpStorm.
+* User: sadiq
+* Date: 10/02/16
+* Time: 20:11
+*/

@@ -36,7 +36,8 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -75,108 +76,111 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
 <div class="container">
 
 
+    <div class="row">
+        <div class="col-md-5">
+            <div class="thumbnail">
 
+                <img class="img-responsive" src="../images/<?php echo $chosen_live_item_info["itemPhoto"] ?>" alt="">
+            </div>
+        </div>
 
+        <div class="col-md-7">
+            <div class="ratings">
+                <p style="font-size:160%;"> Seller's ratings
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                    <span><a class="btn btn-success" style=float:right;font-size:80%;>Bid now</a></span>
 
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="thumbnail">
-
-                        <img class="img-responsive" src="../images/<?php echo $chosen_live_item_info["itemPhoto"]?>" alt="">
-                    </div>
-                </div>
-
-                <div class="col-md-7">
-                    <div class="ratings">
-                        <p style="font-size:160%;"> Seller's ratings
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <span><a class="btn btn-success" style =float:right;font-size:80%;>Bid now</a></span>
-
-                        </p>
-                    </div>
-                    <div class="thumbnail">
-                        <div class="caption-full">
-                            <h4 class="pull-right" style="color:#880000">Reserve price at £ <?php echo htmlentities($chosen_auction_info["auctionReservePrice"]); ?></h4>
-                            <h4><?php echo htmlentities($chosen_live_item_info["itemName"]); ?></h4>
-                            <p><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
-                            <p><strong> Quantity:<?php echo " "  . htmlentities($chosen_live_item_info["itemQuantity"]); ?></strong></p>
-                            <p><strong>Description:</strong><?php echo " ". htmlentities($chosen_live_item_info["itemDescription"]); ?></p>
-                        </div>
-                    </div>
-                    <div class="thumbnail">
-                        <p class="lead">Latest bidders!</p>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item active">Category 1</a>
-                            <a href="#" class="list-group-item">Category 2</a>
-                            <a href="#" class="list-group-item">Category 3</a>
-                        </div>
-                    </div>
-
+                </p>
+            </div>
+            <div class="thumbnail">
+                <div class="caption-full">
+                    <h4 class="pull-right" style="color:#880000">Reserve price at
+                        £ <?php echo htmlentities($chosen_auction_info["auctionReservePrice"]); ?></h4>
+                    <h4><?php echo htmlentities($chosen_live_item_info["itemName"]); ?></h4>
+                    <p><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
+                    <p><strong>
+                            Quantity:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemQuantity"]); ?>
+                    </p>
+                    <p><strong>
+                            Condition:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemCondition"]); ?>
+                    </p>
+                    <p>
+                        <strong>Description:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemDescription"]); ?>
+                    </p>
                 </div>
             </div>
-
-
-
-
-            <div class="well">
-
-                <div class="text-right">
-                    <a class="btn btn-success">Leave a Review</a>
+            <div class="thumbnail">
+                <p class="lead">Latest bidders!</p>
+                <div class="list-group">
+                    <a href="#" class="list-group-item active">Category 1</a>
+                    <a href="#" class="list-group-item">Category 2</a>
+                    <a href="#" class="list-group-item">Category 3</a>
                 </div>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                        Anonymous
-                        <span class="pull-right">10 days ago</span>
-                        <p>This product was great in terms of quality. I would definitely buy another!</p>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                        Anonymous
-                        <span class="pull-right">12 days ago</span>
-                        <p>I've alredy ordered another one!</p>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                        Anonymous
-                        <span class="pull-right">15 days ago</span>
-                        <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
-                    </div>
-                </div>
-
             </div>
 
         </div>
     </div>
+
+
+    <div class="well">
+
+        <div class="text-right">
+            <a class="btn btn-success">Leave a Review</a>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star-empty"></span>
+                Anonymous
+                <span class="pull-right">10 days ago</span>
+                <p>This product was great in terms of quality. I would definitely buy another!</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star-empty"></span>
+                Anonymous
+                <span class="pull-right">12 days ago</span>
+                <p>I've alredy ordered another one!</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star-empty"></span>
+                Anonymous
+                <span class="pull-right">15 days ago</span>
+                <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</div>
 
 </div>
 <!-- /.container -->
