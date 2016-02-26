@@ -71,12 +71,13 @@ session_start();
     <!-- /.container -->
 </nav>
 <div class="container-fluid" align="center">
-<form class="form" action="../public/auction_list.php" method="post">
+<form class="form" action="auction_list.php" method="post">
     <h3 class="text-primary">Username:</h3>
     <input class="input-lg" type="text" name="userNameForm" placeholder="Username"><br>
     <h3 class="text-primary">Password:</h3>
     <input class="input-lg" type="password" name="passwordForm" placeholder="Password"><br><br>
     <input class="btn btn-warning btn-lg" type="submit" value="Log in">
+    <a href="loginPage.php" class="bg-warning btn -lg" type="submit">refresh</a>
 </form><!-- all forms include a submit button -->
 
 </div>

@@ -2,7 +2,7 @@
 <?php require_once("../includes/auction_functions.php") ?>
 <?php
 //include database login credentials and connection
-include ("config.php");
+include("../includes/config.php");
 //start a session to store variables in
 session_start();
 //session_unset();
@@ -24,16 +24,16 @@ if(isset($username) || isset($password))
         //ensure that only one user is registered with that username and if so store the credentials in a session
         $_SESSION["userNameSess"] = $username;
         $_SESSION["passwordSess"] = $password;
-        $_SESSION['loginError'] = null;
-       
+
+
     } else if( $result->num_rows == 0) {
         //otherwise reload the loginPage
         $_SESSION['loginError'] = "Your login username or password is invalid" ;
 
-        header('Location: public/loginPage.php');
+        header('Location: loginPage.php');
     }
 }else if(!(isset($_SESSION["userNameSess"]) &&  isset($_SESSION["passwordSess"]))){
-    header('Location: public/loginPage.php');
+    header('Location: loginPage.php');
 }
 
 ?>
