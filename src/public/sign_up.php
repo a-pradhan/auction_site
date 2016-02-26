@@ -29,11 +29,20 @@ if (isset($_POST["submit"])) {
         $password = password_encrypt($_POST["password"]);
         $userEmail = mysql_prep($_POST["email"]);
 
+
         $query = "INSERT INTO User (";
         $query .= "userName, fName, lName, userPassword, userEmail";
         $query .= ") VALUES (";
-        $query .= "'{$userName}', '{$fName}, '{$lName}', '{$password}', '{$userEmail}'";
+        $query .= "'{$userName}', '{$fName}', '{$lName}', '{$password}', '{$userEmail}'";
         $query .= ")";
+
+        $user_id = mysqli_insert_id($connection);
+
+        $query .= "INSERT INTO Role (";
+        $query .= "userID, typeID";
+        $query .= ") VALUES (";
+        $query .= ""
+
         $result = mysqli_query($connection, $query);
 
         if ($result) {
@@ -45,7 +54,7 @@ if (isset($_POST["submit"])) {
             // Failure
             $message = "Failed to create account. Please try again.";
             // TODO redirect user to login screen
-            redirect_to("home_page.php");
+
         }
 
     }
@@ -59,6 +68,9 @@ if (isset($_POST["submit"])) {
     <title>Sign Up</title>
 </head>
 <body>
+<?php echo $query; ?>
+<br/>
+<?php print_r(mysqli_error($connection)); ?>
 <div class="formContainer">
     <h2 class="formHeader">Register An Account</h2>
     <form class="SignupForm" action="sign_up.php" method="post">
