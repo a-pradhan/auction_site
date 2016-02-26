@@ -1,13 +1,17 @@
 <?php
+session_destroy();
 session_start();
-$username = $_SESSION['userNameSess'];
+//$username = $_SESSION['userNameSess'];
 //echo $username;
+//if(isset($_SESSION['userNameSess'])&& isset($_SESSION['passwordSess'])){
+//    header('Location: index.php');
+//}
 ?>
 
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
 
@@ -20,10 +24,10 @@ $username = $_SESSION['userNameSess'];
     <title>Login Page</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/1-col-portfolio.css" rel="stylesheet">
+    <link href="../css/1-col-portfolio.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,6 +39,7 @@ $username = $_SESSION['userNameSess'];
 </head>
 
 <body>
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -65,15 +70,21 @@ $username = $_SESSION['userNameSess'];
     </div>
     <!-- /.container -->
 </nav>
-<div align="center">
-<form class="form" action="index.php" method="post">
+<div class="container-fluid" align="center">
+<form class="form" action="../public/auction_list.php" method="post">
     <h3 class="text-primary">Username:</h3>
     <input class="input-lg" type="text" name="userNameForm" placeholder="Username"><br>
     <h3 class="text-primary">Password:</h3>
     <input class="input-lg" type="password" name="passwordForm" placeholder="Password"><br><br>
     <input class="btn btn-warning btn-lg" type="submit" value="Log in">
 </form><!-- all forms include a submit button -->
+
 </div>
+</br>
+<div class="text-danger" align="center"> <?php
+   echo $_SESSION['loginError'];
+    $_SESSION['loginError'] = '';
+    ?> </div>
 </body>
 
 </html>
