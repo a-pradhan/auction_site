@@ -108,12 +108,47 @@
             echo "6";
             echo "<br />";
 
+
+
         }
     echo   "</div>";
-    ?>
+
+    echo "Hello";
+    echo htmlentities("Khello");
+    echo htmlspecialchars("Shalom");
+
+    echo    "<div class=\"thumbnail\">";
+    echo    "<p class=\"lead\">Latest bidders!</p>";
+    echo        "<div class=\"list-group\">";
+    $bid_set = find_bids_for_live_auction($chosen_auction);
+    while ($bids = mysqli_fetch_assoc($bid_set)){
+        $bidderName = mysqli_fetch_assoc(find_userName_for_bidder($bids['roleID']));
+        echo htmlentities($bidderName['userName']);
+        echo            "<ol class=\"list-group-item\">" . htmlentities($bids['roleID']) . " ". htmlentities("£") . htmlentities($bids['bidAmount']) ."</ol><br />";
+
+    }
+
+    echo        "</div>";
+    echo    "</div>";
 
 
 
 
+?>
 
+<?php
+    echo "<div class=\"thumbnail\">";
+    echo    "<p class=\"lead\">Latest bidders!</p>";
+        echo    "<div class=\"list-group\">";
+
+
+            $bid_set = find_bids_for_live_auction($chosen_auction);
+            while ($bids = mysqli_fetch_assoc($bid_set)){
+                $bidderName = mysqli_fetch_assoc(find_userName_for_bidder($bids['roleID']));
+                echo            "<ol class=\"list-group-item\">" . htmlentities($bids['roleID']) . " ". htmlentities("£") . htmlentities($bids['bidAmount']) ."</ol>";
+
+            }
+
+        echo    "</div>";
+    echo  "</div>";
 ?>

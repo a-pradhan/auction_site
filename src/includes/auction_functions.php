@@ -28,7 +28,7 @@
 
     }
 
-function search_live_auctions($auction_search_string) {
+    function search_live_auctions($auction_search_string) {
         global $connection;
         if ($auction_search_string) {
 
@@ -100,10 +100,34 @@ function search_live_auctions($auction_search_string) {
     return $item_set;
 }
 
+    function find_bids_for_live_auction($auctionID) {
+    global $connection;
+    $query = "SELECT * ";
+    $query .= "FROM Bid ";
+    $query .= "WHERE auctionID = {$auctionID} ";
+    $query .= "ORDER BY bidAmount DESC ";
+    $bid_set = mysqli_query($connection,$query);
+    confirm_query($bid_set);
+    return $bid_set;
+}
+
+    function find_userName_for_bidder($roleID){
+        global $connection;
+        $query = "SELECT userName ";
+        $query .= "FROM User as u ";
+        $query .= "LEFT JOIN Role as r ";
+        $query .= "ON u.userID=r.userID ";
+        $query .= "WHERE roleID= {$roleID}";
+
+        $userName = mysqli_query($connection,$query);
+        confirm_query($userName);
+        return $userName;
+    }
+
     function confirm_query($result_set) {
-  if (!$result_set) {
-   die("Database query failed.");
-   }
+      if (!$result_set) {
+       die("Database query failed.");
+       }
   }
 
 

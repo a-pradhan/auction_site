@@ -108,18 +108,35 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
                             <p><strong>Description:</strong><?php echo " ". htmlentities($chosen_live_item_info["itemDescription"]); ?></p>
                         </div>
                     </div>
-                    <div class="thumbnail">
-                        <p class="lead">Latest bidders!</p>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item active">Category 1</a>
-                            <a href="#" class="list-group-item">Category 2</a>
-                            <a href="#" class="list-group-item">Category 3</a>
-                        </div>
-                    </div>
+                    <?php
+                    echo "<div class=\"thumbnail\">";
+                    echo    "<p class=\"lead\">Latest bidders!</p>";
+                    echo    "<div class=\"list-group\">";
+                    $chosen_auction_ID = $chosen_auction_info['auctionID'];
+                    $bid_set = find_bids_for_live_auction($chosen_auction_ID);
+                    if (mysqli_num_rows($bid_set) == 0) {
+                        echo "Currently no bids!";
+                    } else {
+                        $count = 0;
+                        while ($bids = mysqli_fetch_assoc($bid_set)) {
+                            $bidderName = mysqli_fetch_assoc(find_userName_for_bidder($bids['roleID']));
+
+                            if($count ==0) {
+                                echo "<ol class=\"list-group-item active\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']) . "</ol>";
+                                $count++;
+                            } else {
+
+                                echo "<ol class=\"list-group-item\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']) . "</ol>";
+                                $count++;
+                            }
+                        }
+                    }
+                    echo    "</div>";
+                    echo  "</div>";
+                    ?>
 
                 </div>
             </div>
-
 
 
 
