@@ -100,6 +100,16 @@
     return $item_set;
 }
 
+    function bid_an_amount($chosen_auction_ID,$bidAmount)
+    {
+        global $connection;
+        $query="INSERT INTO `Bid` (auctionID, bidTimestamp, bidAmount,finalBid,roleID) VALUES ( {$chosen_auction_ID} ,1999, '{$bidAmount}', 0, 2000)";
+
+        $bid_sent =mysqli_query($connection, $query);
+        confirm_query($bid_sent);
+
+    }
+
     function find_bids_for_live_auction($auctionID) {
     global $connection;
     $query = "SELECT * ";
@@ -146,10 +156,3 @@
     }
 
 ?>
-
-/**
- * Created by PhpStorm.
- * User: sadiq
- * Date: 10/02/16
- * Time: 20:13
- */
