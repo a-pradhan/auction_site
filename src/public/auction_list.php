@@ -1,43 +1,7 @@
 <?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/auction_functions.php") ?>
+<?php require_once("../includes/user.php"); ?>
 
-<?php
-//include database login credentials and connection
-include("../includes/config.php");
-//start a session to store variables in
-session_start();
-//session_unset();
-
-echo "Session username " . $_SESSION["userNameSess"];
-//store the username and password input of the user from the loginPage.php
-$username = $_POST['userNameForm'];
-$password = $_POST['passwordForm'];
-
-if (isset($username) || isset($password)) {
-    //query the database and see if the username and pass match a pair in the users table
-    $loginQuery = sprintf("SELECT userName, userPassword FROM User WHERE BINARY userName = '%s' And userPassword = '%s' ;", $username, $password);
-    //store the result of the query in a variable
-    $result = $conn->query($loginQuery);
-
-
-    if ($result->num_rows == 1) {
-        //ensure that only one user is registered with that username and if so store the credentials in a session
-        $_SESSION["userNameSess"] = $username;
-        $_SESSION["passwordSess"] = $password;
-
-
-    } else if ($result->num_rows == 0) {
-        //otherwise reload the loginPage
-        $_SESSION['loginError'] = "Your login username or password is invalid";
-
-
-        header('Location: loginPage.php');
-    }
-} else if (!(isset($_SESSION["userNameSess"]) && isset($_SESSION["passwordSess"]))) {
-    header('Location: loginPage.php');
-}
-
-?>
 
 <html lang="en">
 <head>

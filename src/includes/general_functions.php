@@ -7,6 +7,13 @@ function redirect_to($new_location)
     exit;
 }
 
+function confirm_query($result_set)
+{
+    if (!$result_set) {
+        die("Database query failed.");
+    }
+}
+
 // escapes characters that may interfere with SQL queries
 function mysql_prep($string)
 {

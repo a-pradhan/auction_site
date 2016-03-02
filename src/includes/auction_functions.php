@@ -53,7 +53,6 @@ function find_auction_for_chosen_item($itemID)
     confirm_query($item_set);
     return $item_set;
 }
-
 function confirm_query($result_set)
 {
     if (!$result_set) {

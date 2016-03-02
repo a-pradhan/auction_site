@@ -1,14 +1,59 @@
 <?php
-session_destroy();
-session_start();
-//$username = $_SESSION['userNameSess'];
-//echo $username;
-//if(isset($_SESSION['userNameSess'])&& isset($_SESSION['passwordSess'])){
-//    header('Location: index.php');
-//}
+require_once("../includes/session.php");
+require_once("../includes/db_connection.php");
+require_once("../includes/general_functions.php");
+require_once("../includes/validation_functions.php");
+require_once("../includes/user.php");
 ?>
 
+<?php
+if (isset($_POST['submit'])) {
+    // process the form
 
+    // VALIDATION
+
+    // check if login fields are empty
+    $required_fields = array("username", "password");
+    validate_presences($required_fields);
+
+    // check if username and password entries exceed character limit
+    $fields_with_max_lengths = array("username" => 50, "password" => 60);
+    validate_max_lengths($fields_with_max_lengths);
+
+
+    if (!empty($errors)) {
+        $_SESSION["errors"] = $errors;
+        redirect_to("loginPage.php");
+    }
+
+    // set variables to validate user
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+
+    // Attempt login
+    if ($valid_user = attempt_login($username, $password)) {
+        // Success
+        // Mark user as logged in
+        $user = find_user_by_username($username);
+        $_SESSION["admin_id"] = $user["userID"];
+        $_SESSION["username"] = $user["userName"];
+        $_SESSION["password"] = $password;
+        // clear error messages
+        $_SESSION["errors"] = "";
+
+        redirect_to("auction_list.php");
+    } else {
+        // Failure
+        $_SESSION["errors"][] = "Username and password is incorrect.";
+        redirect_to("loginPage.php");
+
+
+    }
+
+
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -44,7 +89,8 @@ session_start();
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -71,21 +117,18 @@ session_start();
     <!-- /.container -->
 </nav>
 <div class="container-fluid" align="center">
-<form class="form" action="auction_list.php" method="post">
-    <h3 class="text-primary">Username:</h3>
-    <input class="input-lg" type="text" name="userNameForm" placeholder="Username"><br>
-    <h3 class="text-primary">Password:</h3>
-    <input class="input-lg" type="password" name="passwordForm" placeholder="Password"><br><br>
-    <input class="btn btn-warning btn-lg" type="submit" value="Log in">
-    <a href="loginPage.php" class="bg-warning btn -lg" type="submit">refresh</a>
-</form><!-- all forms include a submit button -->
+    <form class="form" action="loginPage.php" method="post">
+        <h3 class="text-primary">Username</h3>
+        <input class="input-lg" type="text" name="username" placeholder="Username"><br>
+        <h3 class="text-primary">Password:</h3>
+        <input class="input-lg" type="password" name="password" placeholder="Password"><br><br>
+        <input class="btn btn-warning btn-lg" type="submit" name="submit" value="Log in">
+    </form><!-- all forms include a submit button -->
 
 </div>
 </br>
-<div class="text-danger" align="center"> <?php
-   echo $_SESSION['loginError'];
-    $_SESSION['loginError'] = '';
-    ?> </div>
+<div class="text-danger" align="center">
+    <?php echo form_errors(errors()); ?></div>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 <?php
-
 session_start();
 
+// returns message string stored in $_SESSION['message']
 function message() {
     if (isset($_SESSION["message"])) {
         $output = "<div class=\"message\">";
@@ -15,6 +15,7 @@ function message() {
     }
 }
 
+// returns array of error messages stored in $_SESSION['errors']
 function errors() {
     if (isset($_SESSION["errors"])) {
         $errors = $_SESSION["errors"];
