@@ -72,4 +72,14 @@ function form_errors($errors = array())
     return $output;
 }
 
+// check passwords entered when signup match
+function check_password_match($password, $confirmation_password)
+{
+    return $password === $confirmation_password ? true : $errors['password'] = "Passwords do not match";
+}
+
+function validate_email($email) {
+    // check if email contains an @ and is a valid domain
+}
+
 ?>

@@ -11,100 +11,157 @@ $fName = "";
 $lName = "";
 $userEmail = "";
 
+
 if (isset($_POST["submit"])) {
+// VALIDATION
 
-    if (empty($errors)) {
+    // check if login fields are empty
+    $required_fields = ["first_name", "last_name", "username", "email", "password", "password_confirmation"];
+    validate_presences($required_fields);
+
+    // check if fields exceed character limit
+    $fields_with_max_lengths = ["first_name" => 255, "last_name" => 255, "username" => 255, "password" => 255];
+    validate_max_lengths($fields_with_max_lengths);
+
+    // check email format is valid
+
+    // check that both passwords entered match
+    check_password_match($_POST['username'], $_POST['password_confirmation']);
+
+    if (!empty($errors)) {
+        $_SESSION["errors"] = $errors;
+        redirect_to("sign_up.php");
+    }
 
 
-        // set variables for SQL insert query
-        $userName = mysql_prep($_POST["username"]);
-        $fName = mysql_prep($_POST["first_name"]);
-        $lName = mysql_prep($_POST["last_name"]);
-        $password = password_encrypt($_POST["password"]);
-        $userEmail = mysql_prep($_POST["email"]);
+    // set variables for SQL insert query
+    $userName = mysql_prep($_POST["username"]);
+    $fName = mysql_prep($_POST["first_name"]);
+    $lName = mysql_prep($_POST["last_name"]);
+    $password = password_encrypt($_POST["password"]);
+    $userEmail = mysql_prep($_POST["email"]);
 
-        // create user account
-        $query = "INSERT INTO User (";
-        $query .= "userName, fName, lName, userPassword, userEmail";
-        $query .= ") VALUES (";
-        $query .= "'{$userName}', '{$fName}', '{$lName}', '{$password}', '{$userEmail}'";
-        $query .= ")";
-        $result = mysqli_query($connection, $query);
+    // create user account
+    $query = "INSERT INTO User (";
+    $query .= "userName, fName, lName, userPassword, userEmail";
+    $query .= ") VALUES (";
+    $query .= "'{$userName}', '{$fName}', '{$lName}', '{$password}', '{$userEmail}'";
+    $query .= ")";
+    $result = mysqli_query($connection, $query);
 
-        $user_id = mysqli_insert_id($connection);
+    $user_id = (int) mysqli_insert_id($connection);
 
-        // create user's Buyer account
-        $query .= "INSERT INTO Role (";
-        $query .= "userID, typeID";
-        $query .= ") VALUES (";
-        $query .= "{$user_id}, 'Buyer' ";
-        $buyer_creation = mysqli_query($connection, $query);
+    // create user's Buyer account
+    $query .= "INSERT INTO Role (";
+    $query .= "userID, typeID";
+    $query .= ") VALUES (";
+    $query .= $user_id . ", 'Buyer')";
+    $buyer_creation = mysqli_query($connection, $query);
 
-        // create user's Seller account
-        $query .= "INSERT INTO Role (";
-        $query .= "userID, typeID";
-        $query .= ") VALUES (";
-        $query .= "{$user_id}, 'Seller' ";
-        $seller_creation = mysqli_query($connection, $query);
+    // create user's Seller account
+    $query .= "INSERT INTO Role (";
+    $query .= "userID, typeID";
+    $query .= ") VALUES (";
+    $query .= $user_id . ",'Seller')";
+    $seller_creation = mysqli_query($connection, $query);
 
-        if ($result) {
-            // Success
-            $_SESSION["message"] = "Welcome {$fName}";
-            attempt_login($username, $password);
-            // TODO change to user's home page. Need to store user id as well
-            redirect_to("auction_list.php");
-        } else {
-            // Failure
-            $message = "Failed to create account. Please try again.";
-            // TODO redirect user to login screen
-        }
-
+    if ($result) {
+        // Success
+        $_SESSION["message"] = "Welcome {$fName}";
+        attempt_login($username, $password);
+        // TODO change to user's home page. Need to store user id as well
+        redirect_to("auction_list.php");
+    } else {
+        // Failure
+        $message = "Failed to create account. Please try again.";
+        // TODO redirect user to login screen
     }
 
 
 } ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
 <head>
-    <title>Sign Up</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login Page</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/1-col-portfolio.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 
 <body>
-<div class="formContainer">
-    <h2 class="formHeader">Register An Account</h2>
-    <form class="SignupForm" action="sign_up.php" method="post">
-        <div>
-            <h3>First Name</h3>
-            <input type="text" name="first_name" value="<?php echo htmlentities($fName); ?> "/>
-        </div>
-        <div>
-            <h3>Last Name</h3>
-            <input type="text" name="last_name" value="<?php echo htmlentities($lName); ?> "/>
-        </div>
-        <div>
-            <h3>Email Address</h3>
-            <input type="text" name="email" value="<?php echo htmlentities($userEmail); ?> "/>
-        </div>
-        <div>
-            <h3>Username</h3>
-            <input type="text" name="username" value="<?php echo htmlentities($userName); ?> "/>
-        </div>
-        <div>
-            <h3>Password</h3>
-            <input type="password" name="password" value=""/>
-        </div>
-        <div>
-            <h3>Confirm Password</h3>
-            <input type="password" name="password_confirmation" value=""/>
-        </div>
-        <div>
-            <input type="submit" name="submit" value="Sign Up"/>
-        </div>
 
-    </form>
-
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Start Bootstrap</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="#">Services</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<div class="container-fluid" align="center">
+    <form class="form" action="sign_up.php" method="post">
+        <h3 class="text-primary">First Name</h3>
+        <input class="input-lg" type="text" name="first_name" value="<?php echo htmlentities($fName); ?> "/>
+        <h3 class="text-primary">Last Name</h3>
+        <input class="input-lg" type="text" name="last_name" value="<?php echo htmlentities($lName); ?> "/>
+        <h3 class="text-primary">Email</h3>
+        <input class="input-lg" type="text" name="email" value="<?php echo htmlentities($userEmail); ?> "/>
+        <h3 class="text-primary">Username</h3>
+        <input class="input-lg" type="text" name="username" value="<?php echo htmlentities($userName); ?> "/>
+        <h3 class="text-primary">Password</h3>
+        <input class="input-lg" type="password" name="password" value=""/>
+        <h3 class="text-primary">Confirm Password</h3>
+        <input class="input-lg" type="password" name="password_confirmation" value=""/><br /><br />
+        <input class="btn btn-warning btn-lg" type="submit" name="submit" value="Sign Up">
+    </form><!-- all forms include a submit button -->
 
 </div>
+</br>
+<div class="text-danger" align="center">
+    <?php echo form_errors(errors()); ?></div>
 </body>
+
 </html>

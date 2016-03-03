@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
     validate_presences($required_fields);
 
     // check if username and password entries exceed character limit
-    $fields_with_max_lengths = array("username" => 50, "password" => 60);
+    $fields_with_max_lengths = array("username" => 255, "password" => 255);
     validate_max_lengths($fields_with_max_lengths);
 
 
