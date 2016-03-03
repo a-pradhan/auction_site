@@ -9,6 +9,13 @@
   return $auction_set;
   }
 
+    function validate_live_auction($auctionID){
+        global $connection;
+        $query = "UPDATE `Auction` SET `auctionLive`= 0 WHERE auctionID={$auctionID}";
+        $query_sent= mysqli_query($connection,$query);
+        confirm_query($query_sent);
+    }
+
     function refined_live_auctions($item_category,$item_condition){
         global $connection;
         $query = "SELECT * ";
