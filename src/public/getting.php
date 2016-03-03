@@ -151,4 +151,18 @@
 
         echo    "</div>";
     echo  "</div>";
+
+    $chosen_auction_ID=4000;
+    $bid_amount=480;
+
+    $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $bid_amount));
+    echo htmlentities($bidID_for_recent_bid['bidID']);
+    echo "<br />";
+
+    $bidID=132;
+    $bidAmount= mysqli_fetch_assoc(find_bidAmount_for_bidID($bidID));
+    echo htmlentities($bidAmount['bidAmount']);
+    echo "<br />";
+
+    echo "KhelloOnceAgain";
 ?>

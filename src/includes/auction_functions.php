@@ -117,16 +117,43 @@
 
     }
 
+    function update_bid_on_auction($auctionID,$bidID){
+        global $connection;
+        $query ="UPDATE `Auction` SET `bidID` = {$bidID} WHERE auctionID={$auctionID}";
+        $query_sent= mysqli_query($connection,$query);
+        confirm_query($query_sent);
+
+    }
+
+    function retrieve_bidID_for_recent_bid($chosen_auction_ID, $bid_amount) {
+        global $connection;
+        $query = "SELECT * ";
+        $query .="FROM `Bid` ";
+        $query .= "WHERE auctionID ={$chosen_auction_ID} ";
+        $query .= "AND bidAmount ={$bid_amount}";
+        $theBid= mysqli_query($connection,$query);
+        confirm_query($theBid);
+        return $theBid;
+    }
+
+    function find_bidAmount_for_bidID($bidID){
+        global $connection;
+        $query = "SELECT * FROM `Bid` WHERE bidID = {$bidID}";
+        $bidAmount_set= mysqli_query($connection,$query);
+        confirm_query($bidAmount_set);
+        return $bidAmount_set;
+    }
+
     function find_bids_for_live_auction($auctionID) {
-    global $connection;
-    $query = "SELECT * ";
-    $query .= "FROM Bid ";
-    $query .= "WHERE auctionID = {$auctionID} ";
-    $query .= "ORDER BY bidAmount DESC ";
-    $bid_set = mysqli_query($connection,$query);
-    confirm_query($bid_set);
-    return $bid_set;
-}
+        global $connection;
+        $query = "SELECT * ";
+        $query .= "FROM Bid ";
+        $query .= "WHERE auctionID = {$auctionID} ";
+        $query .= "ORDER BY bidAmount DESC ";
+        $bid_set = mysqli_query($connection,$query);
+        confirm_query($bid_set);
+        return $bid_set;
+    }
 
     function find_userName_for_bidder($roleID){
         global $connection;
@@ -145,7 +172,7 @@
       if (!$result_set) {
        die("Database query failed.");
        }
-  }
+    }
 
 
     function filter_categories($columnName){

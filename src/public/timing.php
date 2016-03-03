@@ -6,28 +6,35 @@
 //validating live auctions
     $live_auctions = find_all_live_auctions();
     while ($auction = mysqli_fetch_assoc($live_auctions)) {
+
         //Format to be used in the actual auctionStart and auctionEnd
         $auctionID=$auction["auctionID"];
         $date = new DateTime();
-        echo $date->format('Y-m-d g:i:s');
-        echo "<br />";
+        //echo $date->format('Y-m-d g:i:s');
+        //echo "<br />";
         $date2String = $auction["auctionEnd"];
         $date2 = new DateTime("" . $date2String);
-        echo $date2->format('Y-m-d g:i:s');
-        echo "<br />";
+        //echo $date2->format('Y-m-d g:i:s');
+        //echo "<br />";
 
         if ($date > $date2) {
-            echo "<br />";
-            echo "Auction expired";
+            //echo "<br />";
+            //echo "Auction expired";
             validate_live_auction($auctionID);
-            echo "<br />";
+            //echo "<br />";
         }
     }
 
 ?>
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery.countdown.js"></script>
+<script src="../js/jquery.countdown.min.js"></script>
+
 
 
 <?php
+
+
 // Retrieve all live auctions (auctionLive =1)
 $live_auctions = find_all_live_auctions();
 
@@ -49,6 +56,43 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
     echo "<div class=\"col-md-6\">";
     echo "<h3>auctionStart " . htmlentities($auction["auctionStart"]) . "</h3>";
     echo "<h3>auctionEnd " . htmlentities($auction["auctionEnd"]) . "</h3>";
+    $auction_end_time = $auction["auctionEnd"];
+    ?>
+    <p id="demo"></p>
+    <h6>Time remaining:<div id="clock"></div></h6>
+    <script>
+
+        Date.createFromMysql = function(mysql_string)
+        {
+            var t, result = null;
+
+            if( typeof mysql_string === 'string' )
+            {
+                t = mysql_string.split(/[- :]/);
+
+                //when t[3], t[4] and t[5] are missing they defaults to zero
+                result = new Date(t[0], t[1] - 1, t[2], t[3] || 0, t[4] || 0, t[5] || 0);
+            }
+
+            return result;
+        }
+
+        var t = <?php echo json_encode($auction_end_time) ; ?>;
+
+        var d = Date.createFromMysql(t);
+        document.getElementById("demo").innerHTML = d;
+
+        $('#clock').countdown(d, function(event) {
+              var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+            $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+        });
+
+
+    </script>
+
+
+
+    <?php
 
     echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
     echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";

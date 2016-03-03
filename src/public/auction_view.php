@@ -14,11 +14,19 @@
 
     <title>Shop Item - Start Bootstrap Template</title>
 
+
+
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="../css/shop-item.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery.countdown.js"></script>
+    <script src="../js/jquery.countdown.min.js"></script>
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -93,15 +101,45 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
                         <script>
                             function myFunction() {
                                 confirm("Please confirm - bid amount: £" + $("#bidField").val());
+
+
                             }
                          </script>
 
                         <?php
                         if(isset($_POST['bid'])){
                             global $connection;
-                            $bid_amount = mysqli_real_escape_string($connection, $_POST['bidField']);
+                            $new_bid_amount = mysqli_real_escape_string($connection, $_POST['bidField']);
+                            if ($new_bid_amount == null) {
+                                echo "You must enter an amount!";
+                            } else {
+                                    if ($chosen_auction_info['bidID'] == null) {
+                                        //The first ever bid for an auction
+                                        bid_an_amount($chosen_auction_ID, $new_bid_amount);
+                                        $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
+                                        $bidID = $bidID_for_recent_bid['bidID'];
+                                        update_bid_on_auction($chosen_auction_ID, $bidID);
 
-                            bid_an_amount($chosen_auction_ID,$bid_amount);
+                                    } else {
+                                        $previous_bidID = $chosen_auction_info['bidID'];
+                                        $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($previous_bidID));
+                                        $previous_bid_amount = $bid_amount_set['bidAmount'];
+
+                                        if ($new_bid_amount > $previous_bid_amount) {
+                                            bid_an_amount($chosen_auction_ID, $new_bid_amount);
+                                            $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
+                                            $bidID = $bidID_for_recent_bid['bidID'];
+                                            update_bid_on_auction($chosen_auction_ID, $bidID);
+                                            echo "Bid successful!";
+                                        } else {
+                                            //new bid amount is too low, must be higher than previous amount!
+                                            echo "Your bid must be higher than the latest bidder!";
+                                        }
+                                    }
+    //                           $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $bid_amount));
+    //                           $bidID = $bidID_for_recent_bid['bidID'];
+    //                           $bidAmount= mysqli_fetch_assoc(find_bidAmount_for_bidID($bidID));
+                            }
                         }
                         ?>
 
@@ -115,15 +153,48 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
                     </div>
 
             </div>
-
+                <?php
+                //code for the timerCount down
+                $auction_end_time = $chosen_auction_info["auctionEnd"];
+                ?>
 
                 <div class="col-md-7">
 
                         <div class="thumbnail">
                             <div class="caption-full">
                                 <h4 class="pull-right" style="color:#880000">Reserve price at £ <?php echo htmlentities($chosen_auction_info["auctionReservePrice"]); ?></h4>
+
                                 <h4><?php echo htmlentities($chosen_live_item_info["itemName"]); ?></h4>
+                                <h6 class="pull-right" style="color:#880000">Time left ~ <div class="pull-right" id="clock"></div> </h6>
+
+                                <script>
+                                    Date.createFromMysql = function(mysql_string)
+                                    {
+                                        var t, result = null;
+
+                                        if( typeof mysql_string === 'string' )
+                                        {
+                                            t = mysql_string.split(/[- :]/);
+
+                                            //when t[3], t[4] and t[5] are missing they defaults to zero
+                                            result = new Date(t[0], t[1] - 1, t[2], t[3] || 0, t[4] || 0, t[5] || 0);
+                                        }
+
+                                        return result;
+                                    }
+
+                                    var t = <?php echo json_encode($auction_end_time) ; ?>;
+
+                                    var d = Date.createFromMysql(t);
+
+                                    $('#clock').countdown(d, function(event) {
+                                        var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+                                        $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+                                    });
+                                </script>
+
                                 <p><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
+
                                 <p><strong> Quantity:</strong><?php echo " "  . htmlentities($chosen_live_item_info["itemQuantity"]); ?></p>
                                 <p><strong> Condition:</strong><?php echo " "  . htmlentities($chosen_live_item_info["itemCondition"]); ?></p>
                                 <p><strong>Description:</strong><?php echo " ". htmlentities($chosen_live_item_info["itemDescription"]); ?></p>
@@ -238,11 +309,13 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
 </div>
 <!-- /.container -->
 
-<!-- jQuery -->
-<script src="../js/jquery.js"></script>
+
 
 <!-- Bootstrap Core JavaScript -->
 <script src="../js/bootstrap.min.js"></script>
+
+
+
 
 </body>
 
