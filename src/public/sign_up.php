@@ -52,20 +52,21 @@ if (isset($_POST["submit"])) {
     $user_id = (int) mysqli_insert_id($connection);
 
     // create user's Buyer account
-    $query .= "INSERT INTO Role (";
-    $query .= "userID, typeID";
-    $query .= ") VALUES (";
-    $query .= $user_id . ", 'Buyer')";
-    $buyer_creation = mysqli_query($connection, $query);
+    $query1 = "INSERT INTO Role (";
+    $query1 .= "userID, typeID";
+    $query1 .= ") VALUES (";
+    $query1 .= $user_id . ", 'Buyer')";
+    $buyer_creation = mysqli_query($connection, $query1);
 
     // create user's Seller account
-    $query .= "INSERT INTO Role (";
-    $query .= "userID, typeID";
-    $query .= ") VALUES (";
-    $query .= $user_id . ",'Seller')";
-    $seller_creation = mysqli_query($connection, $query);
+    $query2 = "INSERT INTO Role (";
+    $query2 .= "userID, typeID";
+    $query2 .= ") VALUES (";
+    $query2 .= $user_id . ",'Seller')";
+    $seller_creation = mysqli_query($connection, $query2);
 
-    if ($result) {
+    // all queries must be successful otherwise an error is thrown
+    if ($result && $buyer_creation && $seller_creation) {
         // Success
         $_SESSION["message"] = "Welcome {$fName}";
         attempt_login($username, $password);
@@ -74,7 +75,7 @@ if (isset($_POST["submit"])) {
     } else {
         // Failure
         $message = "Failed to create account. Please try again.";
-        // TODO redirect user to login screen
+        //TODO redirect to sign up page and display message
     }
 
 
