@@ -2512,6 +2512,7 @@ label {
   margin-bottom: 5px;
   font-weight: bold;
 }
+
 label2{
   display: inline-block;
   float: left;
@@ -6766,3 +6767,4 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+

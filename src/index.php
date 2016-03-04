@@ -1,3 +1,39 @@
+<?php
+//include database login credentials and connection
+include("config.php");
+//start a session to store variables in
+session_start();
+//session_unset();
+
+echo "Session username " . $_SESSION["userNameSess"];
+//store the username and password input of the user from the loginPage.php
+$username = $_POST['userNameForm'];
+$password = $_POST['passwordForm'];
+
+if(isset($username) || isset($password))
+{
+    //query the database and see if the username and pass match a pair in the users table
+    $loginQuery = sprintf("SELECT userName, userPassword FROM User WHERE BINARY userName = '%s' And userPassword = '%s' ;", $username, $password);
+    //store the result of the query in a variable
+    $result = $conn->query($loginQuery);
+
+
+    if ($result->num_rows == 1) {
+        //ensure that only one user is registered with that username and if so store the credentials in a session
+        $_SESSION["userNameSess"] = $username;
+        $_SESSION["passwordSess"] = $password;
+        $_SESSION['loginError'] = null;
+    } else if( $result->num_rows == 0) {
+    //otherwise reload the loginPage
+        $_SESSION['loginError'] = "Your login username or password is invalid" ;
+
+        header('Location: loginPage.php');
+    }
+}else if(!(isset($_SESSION["userNameSess"]) &&  isset($_SESSION["passwordSess"]))){
+    header('Location: loginPage.php');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,10 +45,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>1 Col Portfolio - Start Bootstrap Template</title>
+    <title>Auction Site Home</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/1-col-portfolio.css" rel="stylesheet">
@@ -54,10 +90,13 @@
                         <a href="#">Contact</a>
                     </li>
                 </ul>
+                <button type="button" class="pull-right" onclick="location.href = 'public/loginPage.php';">Log Out</button>
             </div>
+
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
+
     </nav>
 
     <!-- Page Content -->

@@ -1,5 +1,7 @@
 <?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/auction_functions.php") ?>
+<?php require_once("../includes/user.php"); ?>
+
 
 <?php
 //validating live auctions
@@ -51,13 +53,13 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
 </head>
 
 <body>
-
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -77,6 +79,8 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
                 <li>
                     <a href="#">Contact</a>
                 </li>
+
+                <button type="button" class="pull-right" onclick="location.href = 'loginPage.php';">Log Out</button>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -90,48 +94,49 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
     <!-- Page Heading -->
     <div class="row">
         <div class="col-md-12">
-            <h2 class="page-header">Live auctions
+            <h2 class="page-header">Live auctionss
                 <small>Money motivation</small>
             </h2>
         </div>
     </div>
     <!-- Search and filtering -->
-        <div class="row">
-            <div class="col-md-6">
+    <div class="row">
+        <div class="col-md-6">
 
-                <form action="auction_list.php" method="POST">
-                        Category
-                    <select name="category">
-                        <option value=""></option>
-                        <option value="Car">Car</option>
-                        <option value="Mobile Phone">Mobile Phones</option>
-                        <option value="Laptop">Laptops</option>
-                        <option value="Jewellry">Jewellry</option>
-                        <option value="Miscellaneous">Miscellaneous</option>
-                    </select>
-                        Condition
-                    <select name ="condition">
-                            <option value=""></option>
-                            <option value="Used">Used</option>
-                            <option value="Used - Like New">Used - Like New</option>
-                            <option value="New">New</option>
-                    </select>
-                        Sort by
-                    <select name ="sortBy">
-                            <option value=""></option>
-                            <option value="Price">Price</option>
-                            <option value="Time">Time</option>
-                    </select>
-                        <input id="refine" name ="refine" type="submit" value="Refine">
-                 </form>
+            <form action="auction_list.php" method="POST">
+                Category
+                <select name="category">
+                    <option value=""></option>
+                    <option value="Car">Car</option>
+                    <option value="Mobile Phone">Mobile Phones</option>
+                    <option value="Laptop">Laptops</option>
+                    <option value="Jewellry">Jewellry</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
+                </select>
+                Condition
+                <select name="condition">
+                    <option value=""></option>
+                    <option value="Used">Used</option>
+                    <option value="Used - Like New">Used - Like New</option>
+                    <option value="New">New</option>
+                </select>
+                Sort by
+                <select name="sortBy">
+                    <option value=""></option>
+                    <option value="Price">Price</option>
+                    <option value="Time">Time</option>
+                </select>
+                <input id="refine" name="refine" type="submit" value="Refine">
+            </form>
 
 
-            </div>
-                <form action="auction_list.php" method="POST">
-                    <input id="search" name="searchField" type="text" style="width: 500px;" placeholder="Search by name, description or category of item!">
-                    <input id="submit" type="submit" value="Search">
-                </form>
-            </div>
+        </div>
+        <form action="auction_list.php" method="POST">
+            <input id="search" name="searchField" type="text" style="width: 500px;"
+                   placeholder="Search by name, description or category of item!">
+            <input id="submit" type="submit" value="Search">
+        </form>
+    </div>
 
 
     <?php
@@ -144,39 +149,33 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
     <!-- Check for search and filtering and then display auctions accordingly --->
 
     <?php
-        if(isset($_POST['refine'])) {
+    if (isset($_POST['refine'])) {
 
-            // Checks if two filter factors have been chosen
-            if (($_POST["category"] != "") && ($_POST["condition"] != "")) {
-                $refined_category = $_POST["category"];
+        // Checks if two filter factors have been chosen
+        if (($_POST["category"] != "") && ($_POST["condition"] != "")) {
+            $refined_category = $_POST["category"];
 
-                $refined_condition = $_POST["condition"];
-                $live_auctions = refined_live_auctions($refined_category,$refined_condition);
-            }
+            $refined_condition = $_POST["condition"];
+            $live_auctions = refined_live_auctions($refined_category, $refined_condition);
+        }
 
-            //Checks if only the category factor has been chosen
-            if ($_POST["category"] != "" && $_POST["condition"] == "") {
-                $refined_category = $_POST["category"];
-                $live_auctions = refined_live_auctions($refined_category,false);
-
-            }
-            //Checks if only the condition factor has been chosen
-            if ($_POST["condition"] != "" && $_POST["category"] == "") {
-                $refined_condition = $_POST["condition"];
-                $live_auctions = refined_live_auctions(false, $refined_condition);
-            }
-
-            //To be implemented, sort by the most recent or cheapest price
-            if ($_POST["sortBy"] != "") {
-
-            }
-
-            //Detect unsuccessful searches
-            if (mysqli_num_rows($live_auctions) == 0) {
-                echo "Sorry, no auctions found.";
-            }
+        //Checks if only the category factor has been chosen
+        if ($_POST["category"] != "" && $_POST["condition"] == "") {
+            $refined_category = $_POST["category"];
+            $live_auctions = refined_live_auctions($refined_category, false);
 
         }
+        //Checks if only the condition factor has been chosen
+        if ($_POST["condition"] != "" && $_POST["category"] == "") {
+            $refined_condition = $_POST["condition"];
+            $live_auctions = refined_live_auctions(false, $refined_condition);
+        }
+
+        //To be implemented, sort by the most recent or cheapest price
+        if ($_POST["sortBy"] != "") {
+
+        }
+    }
 
     if (isset($_POST['searchField'])) {
         //Retrieve the text inserted into the search field
@@ -223,6 +222,7 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
                 echo "</div>";
                 echo "<hr>";
             }
+
 
     ?>
 
@@ -280,11 +280,3 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
 </body>
 
 </html>
-</html>
-
-/**
- * Created by PhpStorm.
- * User: sadiq
- * Date: 10/02/16
- * Time: 20:11
- */

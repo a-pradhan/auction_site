@@ -1,13 +1,15 @@
+<?php require_once("db_connection.php") ?>
 <?php
-    function find_all_live_auctions() {
-  global $connection;
-  $query = "SELECT * ";
-  $query .= "FROM Auction ";
-  $query .= "WHERE auctionLive = 1 ";
-  $auction_set = mysqli_query($connection,$query);
-  confirm_query($auction_set);
-  return $auction_set;
-  }
+function find_all_live_auctions()
+{
+    global $connection;
+    $query = "SELECT * ";
+    $query .= "FROM Auction ";
+    $query .= "WHERE auctionLive = 1 ";
+    $auction_set = mysqli_query($connection, $query);
+    //confirm_query($auction_set);
+    return $auction_set;
+}
 
     function validate_live_auction($auctionID){
         global $connection;
@@ -29,11 +31,12 @@
         }
         $query .= "AND Auction.itemID = Item.itemID";
 
-        $refined_auction_set = mysqli_query($connection,$query);
-        confirm_query($refined_auction_set);
-        return $refined_auction_set;
 
-    }
+    $refined_auction_set = mysqli_query($connection, $query);
+    confirm_query($refined_auction_set);
+    return $refined_auction_set;
+
+}
 
     function search_live_auctions($auction_search_string) {
         global $connection;
@@ -96,16 +99,19 @@
   return $item_set;
  }
 
-    function find_auction_for_chosen_item($itemID) {
+
+function find_auction_for_chosen_item($itemID)
+{
     global $connection;
     $query = "SELECT * ";
     $query .= "FROM Auction ";
     $query .= "WHERE itemID = {$itemID} ";
     $query .= "LIMIT 1";
-    $item_set = mysqli_query($connection,$query);
+    $item_set = mysqli_query($connection, $query);
     confirm_query($item_set);
     return $item_set;
 }
+
 
     function bid_an_amount($chosen_auction_ID,$bidAmount)
     {
@@ -175,18 +181,21 @@
     }
 
 
-    function filter_categories($columnName){
-        global $connection;
-        $query = "SELECT COLUMN_TYPE ";
-        $query .= "FROM information_schema.COLUMNS ";
-        $query .= "WHERE TABLE_SCHEMA = 'AuctionSite' ";
-        $query .= "AND TABLE_NAME = 'Item' ";
-        $query .= "AND COLUMN_NAME = '{$columnName}' ";
 
-        $category_set = mysqli_query($connection,$query);
-        confirm_query($category_set);
+function filter_categories($columnName)
+{
+    global $connection;
+    $query = "SELECT COLUMN_TYPE ";
+    $query .= "FROM information_schema.COLUMNS ";
+    $query .= "WHERE TABLE_SCHEMA = 'AuctionSite' ";
+    $query .= "AND TABLE_NAME = 'Item' ";
+    $query .= "AND COLUMN_NAME = '{$columnName}' ";
 
-        return $category_set;
-    }
+    $category_set = mysqli_query($connection, $query);
+    confirm_query($category_set);
+
+    return $category_set;
+}
 
 ?>
+
