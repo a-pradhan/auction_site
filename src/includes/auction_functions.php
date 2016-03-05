@@ -11,9 +11,54 @@ function find_all_live_auctions()
     return $auction_set;
 }
 
+function find_all_non_live_auctions()
+{
+    global $connection;
+    $query = "SELECT * ";
+    $query .= "FROM Auction ";
+    $query .= "WHERE auctionLive = 0 ";
+    $auction_set = mysqli_query($connection, $query);
+    //confirm_query($auction_set);
+    return $auction_set;
+}
+
+
+
     function validate_live_auction($auctionID){
         global $connection;
         $query = "UPDATE `Auction` SET `auctionLive`= 0 WHERE auctionID={$auctionID}";
+        $query_sent= mysqli_query($connection,$query);
+        confirm_query($query_sent);
+    }
+
+
+
+    function render_auction_unsuccessful($auctionID){
+        global $connection;
+        $query = "UPDATE `Auction` SET `auctionUnsuccessful`= 1 WHERE auctionID ={$auctionID}";
+        $query_sent= mysqli_query($connection,$query);
+        confirm_query($query_sent);
+    }
+
+    function render_auction_successful($auctionID){
+        global $connection;
+        $query = "UPDATE `Auction` SET `auctionSuccessful`= 1 WHERE auctionID = {$auctionID}";
+        $query_sent= mysqli_query($connection,$query);
+        confirm_query($query_sent);
+    }
+
+    function render_finalBid_True_for_successful_auctions($winning_bidID){
+        global $connection;
+        $query = "UPDATE `Bid` SET `finalBid` = 1 WHERE bidID = {$winning_bidID}";
+        $query_sent= mysqli_query($connection,$query);
+        confirm_query($query_sent);
+
+
+    }
+
+    function render_item_sold_True_for_successful_auctions ($sold_itemID){
+        global $connection;
+        $query = "UPDATE `Item` SET `sold`= 1 WHERE itemID= {$sold_itemID}";
         $query_sent= mysqli_query($connection,$query);
         confirm_query($query_sent);
     }
@@ -112,11 +157,22 @@ function find_auction_for_chosen_item($itemID)
     return $item_set;
 }
 
-
-    function bid_an_amount($chosen_auction_ID,$bidAmount)
-    {
+    function retrieve_buyerID_from_loggedIn_userID($loggedIn_userID){
         global $connection;
-        $query="INSERT INTO `Bid` (auctionID, bidTimestamp, bidAmount,finalBid,roleID) VALUES ( {$chosen_auction_ID} ,1999, '{$bidAmount}', 0, 2000)";
+        $query = "SELECT `roleID` FROM `Role` WHERE userID = {$loggedIn_userID} AND typeID = 'Buyer' ";
+        $buyerID_typeID_set = mysqli_query($connection,$query);
+        confirm_query($buyerID_typeID_set);
+        $buyerID_typeID_set_row = mysqli_fetch_assoc($buyerID_typeID_set);
+        $buyerID_identified = $buyerID_typeID_set_row["roleID"];
+        return $buyerID_identified;
+    }
+
+    function bid_an_amount($chosen_auction_ID,$bidAmount,$loggedIn_userID)
+    {
+        $buyer_roleID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
+
+        global $connection;
+        $query="INSERT INTO `Bid` (auctionID, bidTimestamp, bidAmount,finalBid,roleID) VALUES ( {$chosen_auction_ID} ,1999, '{$bidAmount}', 0, {$buyer_roleID})";
 
         $bid_sent =mysqli_query($connection, $query);
         confirm_query($bid_sent);

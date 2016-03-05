@@ -1,5 +1,17 @@
 <?php require_once("../includes/db_connection.php") ?>
+<?php require_once("../includes/session.php"); ?>
+<?php require_once("../includes/user.php"); ?>
 <?php require_once("../includes/auction_functions.php") ?>
+
+
+<?php
+    $username = $_SESSION["username"];
+    $password = $_SESSION["password"];
+    $loggedIn_userID = $_SESSION["admin_id"];
+    echo htmlentities($username);
+    echo "<br />";
+    echo htmlentities($loggedIn_userID);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,14 +83,14 @@
 </nav>
 <!-- Page Content -->
 <?php
-// Retrieve the itemID for the auction selected
-$chosen_auction_item = $_GET["auction"];
-// Retrieve the auction row for the auction selected using the itemID
-$chosen_auction_info = mysqli_fetch_assoc(find_auction_for_chosen_item($chosen_auction_item));
-$chosen_auction_ID = $chosen_auction_info['auctionID'];
-// Fetch the item info from Item table using the itemID
-$chosen_item_info = find_item_for_live_auction($chosen_auction_item);
-$chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
+    // Retrieve the itemID for the auction selected
+    $chosen_auction_item = $_GET["auction"];
+    // Retrieve the auction row for the auction selected using the itemID
+    $chosen_auction_info = mysqli_fetch_assoc(find_auction_for_chosen_item($chosen_auction_item));
+    $chosen_auction_ID = $chosen_auction_info['auctionID'];
+    // Fetch the item info from Item table using the itemID
+    $chosen_item_info = find_item_for_live_auction($chosen_auction_item);
+    $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
 ?>
 
 
@@ -87,18 +99,21 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
     <div class="row">
         <div class="col-md-5">
             <div class="thumbnail">
-
+                <?php //retrieves the name of the photo to be shown ?>
                 <img class="img-responsive" src="../images/<?php echo $chosen_live_item_info["itemPhoto"] ?>" alt="">
             </div>
         </div>
 
         <div class="col-md-7">
             <div class="ratings">
+                <?php // A POST to store the itemID in the url ?>
                 <form id="bidAmount" action="auction_view.php?auction=<?php echo $chosen_auction_item ?>" method="POST"
                       style=float:right;>
                     <input type="number" id="bidField" name="bidField" placeholder="Enter bid here!">
                     <input type="submit" name="bid" value="Bid" onclick="myFunction()">
                 </form>
+
+               <?php // JS code for retrieving the bidAmount from the bidField ?>
                 <script>
                     function myFunction() {
                         confirm("Please confirm - bid amount: £" + $("#bidField").val());
@@ -107,7 +122,10 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
                     }
                 </script>
 
+
+
                 <?php
+                //Code for verifying the bidAmount and essential validations
                 if (isset($_POST['bid'])) {
                     global $connection;
                     $new_bid_amount = mysqli_real_escape_string($connection, $_POST['bidField']);
@@ -116,7 +134,7 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
                     } else {
                         if ($chosen_auction_info['bidID'] == null) {
                             //The first ever bid for an auction
-                            bid_an_amount($chosen_auction_ID, $new_bid_amount);
+                            bid_an_amount($chosen_auction_ID, $new_bid_amount,$loggedIn_userID);
                             $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
                             $bidID = $bidID_for_recent_bid['bidID'];
                             update_bid_on_auction($chosen_auction_ID, $bidID);
@@ -127,7 +145,7 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
                             $previous_bid_amount = $bid_amount_set['bidAmount'];
 
                             if ($new_bid_amount > $previous_bid_amount) {
-                                bid_an_amount($chosen_auction_ID, $new_bid_amount);
+                                bid_an_amount($chosen_auction_ID, $new_bid_amount,$loggedIn_userID);
                                 $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
                                 $bidID = $bidID_for_recent_bid['bidID'];
                                 update_bid_on_auction($chosen_auction_ID, $bidID);
@@ -174,6 +192,7 @@ $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
                     </h6>
 
                     <script>
+                        //hilios.github.io/jQuery.countdown/ - reference for the timer
                         Date.createFromMysql = function (mysql_string) {
                             var t, result = null;
 

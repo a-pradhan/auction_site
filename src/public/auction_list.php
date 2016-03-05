@@ -1,9 +1,28 @@
 <?php require_once("../includes/db_connection.php") ?>
-<?php require_once("../includes/auction_functions.php") ?>
+<?php require_once("../includes/session.php"); ?>
 <?php require_once("../includes/user.php"); ?>
+<?php require_once("../includes/auction_functions.php") ?>
+<?php require_once("../includes/awardSuccessful_auctions.php") ?>
 
 
 <?php
+    $username = $_SESSION["username"];
+
+
+    $password = $_SESSION["password"];
+
+    $loggedIn_userID = $_SESSION["admin_id"];
+
+    echo htmlentities($username);
+    echo "<br />";
+    echo htmlentities($loggedIn_userID);
+
+//    if (!attempt_login($username,$password)) {
+//        redirect_to("loginPage.php");
+//    }
+
+
+
 //validating live auctions
 $live_auctions = find_all_live_auctions();
 while ($auction = mysqli_fetch_assoc($live_auctions)) {
@@ -94,7 +113,7 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
     <!-- Page Heading -->
     <div class="row">
         <div class="col-md-12">
-            <h2 class="page-header">Live auctionss
+            <h2 class="page-header">Live auctions
                 <small>Money motivation</small>
             </h2>
         </div>
