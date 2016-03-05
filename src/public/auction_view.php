@@ -1,7 +1,7 @@
 <?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/session.php"); ?>
 <?php require_once("../includes/user.php"); ?>
-<?php require_once("../includes/auction_functions.php") ?>
+<?php require_once("../includes/auction_functions.php"); ?>
 <?php require_once("../includes/validate_live_auctions.php"); ?>
 <?php require_once("../includes/awardSuccessful_auctions.php"); ?>
 

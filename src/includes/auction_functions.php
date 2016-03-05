@@ -269,5 +269,11 @@ function filter_categories($columnName)
     return $category_set;
 }
 
+function redirect_to($new_location)
+{
+    header("Location: " . $new_location);
+    exit;
+}
+
 ?>
 
