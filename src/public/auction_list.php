@@ -11,6 +11,7 @@
 
 //Commen
     $username = $_SESSION["username"];
+    $usern21ame = $_SESSION["username"];
 
 
     $password = $_SESSION["password"];

@@ -1,7 +1,7 @@
 <?php require_once("db_connection.php") ?>
 <?php
 
-//Comment
+//Comment functions
 function find_all_live_auctions()
 {
     global $connection;
