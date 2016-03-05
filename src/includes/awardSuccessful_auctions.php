@@ -38,14 +38,14 @@
 
                 //render the winning bid as 'True' for finalBid attribute in the bid table
 
-
-                render_finalBid_True_for_successful_auctions($expired_auction_bidID);
+                // removed finalBid from the Bid table, hence the below function call has been commented out
+                //render_finalBid_True_for_successful_auctions($expired_auction_bidID);
 
                 //render the item as 'True' for sold attribute in the Item table
 
                 $sold_itemID = $expired_single_auction["itemID"];
-
-                render_item_sold_True_for_successful_auctions($sold_itemID);
+                //the below function call is no longer needed as the sold attribute has been removed from the Item table
+                //render_item_sold_True_for_successful_auctions($sold_itemID);
 
 
             } else {

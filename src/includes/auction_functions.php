@@ -49,21 +49,23 @@ function find_all_non_live_auctions()
         confirm_query($query_sent);
     }
 
-    function render_finalBid_True_for_successful_auctions($winning_bidID){
-        global $connection;
-        $query = "UPDATE `Bid` SET `finalBid` = 1 WHERE bidID = {$winning_bidID}";
-        $query_sent= mysqli_query($connection,$query);
-        confirm_query($query_sent);
+//The below two functions have been commented out as they are not longer needed because their respective attributes in Bid and Item table have been removed.
 
-
-    }
-
-    function render_item_sold_True_for_successful_auctions ($sold_itemID){
-        global $connection;
-        $query = "UPDATE `Item` SET `sold`= 1 WHERE itemID= {$sold_itemID}";
-        $query_sent= mysqli_query($connection,$query);
-        confirm_query($query_sent);
-    }
+//    function render_finalBid_True_for_successful_auctions($winning_bidID){
+//        global $connection;
+//        $query = "UPDATE `Bid` SET `finalBid` = 1 WHERE bidID = {$winning_bidID}";
+//        $query_sent= mysqli_query($connection,$query);
+//        confirm_query($query_sent);
+//
+//
+//    }
+//
+//    function render_item_sold_True_for_successful_auctions ($sold_itemID){
+//        global $connection;
+//        $query = "UPDATE `Item` SET `sold`= 1 WHERE itemID= {$sold_itemID}";
+//        $query_sent= mysqli_query($connection,$query);
+//        confirm_query($query_sent);
+//    }
 
     function refined_live_auctions($item_category,$item_condition){
         global $connection;
@@ -174,10 +176,22 @@ function find_auction_for_chosen_item($itemID)
         $buyer_roleID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
 
         global $connection;
-        $query="INSERT INTO `Bid` (auctionID, bidTimestamp, bidAmount,finalBid,roleID) VALUES ( {$chosen_auction_ID} ,1999, '{$bidAmount}', 0, {$buyer_roleID})";
+        $query="INSERT INTO `Bid` (auctionID, bidTimestamp, bidAmount,roleID) VALUES ( {$chosen_auction_ID} ,1999, '{$bidAmount}', {$buyer_roleID})";
 
         $bid_sent =mysqli_query($connection, $query);
         confirm_query($bid_sent);
+
+    }
+
+    function confirm_auction_is_live ($auctionID) {
+        global $connection;
+        $query = "SELECT auctionLive FROM `Auction` WHERE auctionID ={$auctionID}";
+        $auctionLive_set = mysqli_query($connection,$query);
+        confirm_query($auctionLive_set);
+        $auctionLive_set_row = mysqli_fetch_assoc($auctionLive_set);
+        $auctionLive_identified = $auctionLive_set_row["auctionLive"];
+        return $auctionLive_identified;
+
 
     }
 
