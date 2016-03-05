@@ -8,7 +8,7 @@
 //if the bid is higher than the reserver price the auction becomes successful and the item table will contain the roleID of 'Buyer' and also the sold attribute will become 1 (for true, in terms of TINYINT)
 //otherwise the auction is rendered unsuccessful
 
-//commento
+
     $expired_auctions = find_all_non_live_auctions();
 
     while ($expired_single_auction = mysqli_fetch_assoc($expired_auctions)) {
