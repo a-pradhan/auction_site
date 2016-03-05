@@ -2,6 +2,7 @@
 <?php require_once("../includes/auction_functions.php") ?>
 
 <?php
+//Comments
 //checks all auctions where auctionLive=0
 //it then checks if the bid assigned to the auctions is higher than the reserver price
 //if the bid is higher than the reserver price the auction becomes successful and the item table will contain the roleID of 'Buyer' and also the sold attribute will become 1 (for true, in terms of TINYINT)
