@@ -7,15 +7,9 @@
 
 
 <?php
-
-//Commen
     $username = $_SESSION["username"];
-
-
     $password = $_SESSION["password"];
-
     $loggedIn_userID = $_SESSION["admin_id"];
-
 ?>
 
 
@@ -66,18 +60,34 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
+                <div class="floatleft"></div>
+                    <li>
+                        <a href="#">My Auctions</a>
+                    </li>
+                    <li>
+                        <a href="#">My Bids</a>
+                    </li>
+                    <li>
+                        <a href="watch_list.php">Watch-list</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact us</a>
+                    </li>
+                    <li>
+                        <a href="#">About us</a>
+                    </li>
+                    <?php   //This long repetitive line is to align the Logout button far right lol XD ?>
+                     </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li>
 
-                <button type="button" class="pull-right" onclick="location.href = 'loginPage.php';">Log Out</button>
-            </ul>
+
+                    <li>
+                        <a href="loginPage.php">Log out</a>
+                    </li>
+                </ul>
+                </div>
         </div>
         <!-- /.navbar-collapse -->
     </div>
