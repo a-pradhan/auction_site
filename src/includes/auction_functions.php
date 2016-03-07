@@ -138,28 +138,73 @@ function find_all_non_live_auctions()
 
 
     function find_item_for_live_auction($itemID) {
-  global $connection;
-  $query = "SELECT * ";
-  $query .= "FROM Item ";
-  $query .= "WHERE itemID = {$itemID} ";
-  $query .= "LIMIT 1";
-  $item_set = mysqli_query($connection,$query);
-  confirm_query($item_set);
-  return $item_set;
- }
+      global $connection;
+      $query = "SELECT * ";
+      $query .= "FROM Item ";
+      $query .= "WHERE itemID = {$itemID} ";
+      $query .= "LIMIT 1";
+      $item_set = mysqli_query($connection,$query);
+      confirm_query($item_set);
+      return $item_set;
+     }
 
+    function retrieve_my_auctions ($sellerID) {
+        global $connection;
+        $query = "SELECT * ";
+        $query .= "FROM Auction AS a ";
+        $query .= "LEFT JOIN Item AS i ";
+        $query .= "ON a.itemID = i.itemID ";
+        $query .= "WHERE roleID = {$sellerID}";
+        $my_auctions_set = mysqli_query($connection,$query);
+        confirm_query($my_auctions_set);
+        return $my_auctions_set;
 
-function find_auction_for_chosen_item($itemID)
-{
-    global $connection;
-    $query = "SELECT * ";
-    $query .= "FROM Auction ";
-    $query .= "WHERE itemID = {$itemID} ";
-    $query .= "LIMIT 1";
-    $item_set = mysqli_query($connection, $query);
-    confirm_query($item_set);
-    return $item_set;
-}
+    }
+
+    function retrieve_my_auctions_for_a_given_auctionID ($auctionID) {
+        global $connection;
+        $query = "SELECT * ";
+        $query .= "FROM Auction AS a ";
+        $query .= "LEFT JOIN Item AS i ";
+        $query .= "ON a.itemID = i.itemID ";
+        $query .= "WHERE auctionID = {$auctionID}";
+        $my_auctions_set = mysqli_query($connection,$query);
+        confirm_query($my_auctions_set);
+        return $my_auctions_set;
+
+    }
+
+    function retrieve_number_of_bids_for_a_given_auction($auctionID){
+        global $connection;
+        $query = "SELECT COUNT(bidID) FROM `Bid` WHERE auctionID = {$auctionID}";
+        $no_of_bids_for_given_auction = mysqli_query($connection,$query);
+        confirm_query($no_of_bids_for_given_auction);
+        return $no_of_bids_for_given_auction;
+    }
+
+    function retrieve_my_bids ($buyerID) {
+        global $connection;
+        $query = "SELECT auctionID, bidID, MAX( bidAmount ) ";
+        $query .= "FROM Bid ";
+        $query .= "WHERE roleID = {$buyerID} ";
+        $query .= "GROUP BY auctionID";
+        $my_bid_set = mysqli_query($connection,$query);
+        confirm_query($my_bid_set);
+        return $my_bid_set;
+
+    }
+
+    function find_auction_for_chosen_item($itemID)
+    {
+        global $connection;
+        $query = "SELECT * ";
+        $query .= "FROM Auction ";
+        $query .= "WHERE itemID = {$itemID} ";
+        $query .= "LIMIT 1";
+        $item_set = mysqli_query($connection, $query);
+        confirm_query($item_set);
+        return $item_set;
+    }
 
     function retrieve_buyerID_from_loggedIn_userID($loggedIn_userID){
         global $connection;
@@ -169,6 +214,16 @@ function find_auction_for_chosen_item($itemID)
         $buyerID_typeID_set_row = mysqli_fetch_assoc($buyerID_typeID_set);
         $buyerID_identified = $buyerID_typeID_set_row["roleID"];
         return $buyerID_identified;
+    }
+
+    function retrieve_sellerID_from_loggedIn_userID($loggedIn_userID){
+        global $connection;
+        $query = "SELECT `roleID` FROM `Role` WHERE userID = {$loggedIn_userID} AND typeID = 'Seller' ";
+        $sellerID_typeID_set = mysqli_query($connection,$query);
+        confirm_query($sellerID_typeID_set);
+        $sellerID_typeID_set_row = mysqli_fetch_assoc($sellerID_typeID_set);
+        $sellerID_identified = $sellerID_typeID_set_row["roleID"];
+        return $sellerID_identified;
     }
 
     function bid_an_amount($chosen_auction_ID,$bidAmount,$loggedIn_userID)

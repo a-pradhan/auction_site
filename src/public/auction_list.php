@@ -55,17 +55,17 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Auction Vault</a>
+            <a class="navbar-brand" href="auction_list.php">Auction Vault</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <div class="floatleft"></div>
                     <li>
-                        <a href="#">My Auctions</a>
+                        <a href="my_auctions.php">My Auctions</a>
                     </li>
                     <li>
-                        <a href="#">My Bids</a>
+                        <a href="my_bids.php">My Bids</a>
                     </li>
                     <li>
                         <a href="watch_list.php">Watch-list</a>
