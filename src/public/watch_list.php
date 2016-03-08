@@ -1,9 +1,53 @@
-<?php require_once("../includes/db_connection.php"); ?>
+<?php require_once("../includes/session.php"); ?>
+<?php require_once("../includes/general_functions.php"); ?>
+<?php require_once("../includes/user.php"); ?>
 <?php require_once("../includes/watch_list_functions.php"); ?>
+<?php require_once("../includes/pagination_class.php"); ?>
+
+<?php
+// redirect to login page if a valid user is not signed in
+if(!attempt_login($_SESSION["username"], $_SESSION["password"])) {
+   redirect_to("loginPage.php");
+}
+
+?>
+
+<?php
+// current page number - set to 1 by default
+$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// number of auctions to be shown per page
+$per_page = 5;
+
+// find ALL auctions watched by user to obtain total count
+$watched_auctions = find_users_watched_items($_SESSION["userID"]);
+
+// obtain total number of auctions watched by user
+$total_count = mysqli_num_rows($watched_auctions);
+
+$pagination = new Pagination($page, $per_page, $total_count);
+
+// find records for this page
+global $connection;
+$userID = $_SESSION["userID"];
+
+
+$query = "SELECT * FROM WatchList w ";
+$query .= "JOIN Auction a ";
+$query .= "ON w.auctionID = a.auctionID ";
+$query .= "JOIN Item i ";
+$query .= "ON a.itemID = i.itemID ";
+$query .= "WHERE w.userID = {$userID} ";
+$query .= "ORDER BY auctionEnd ASC ";
+$query .= "LIMIT {$per_page} ";
+$query .= "OFFSET {$pagination->offset()}";
+
+$watched_auction_set = mysqli_query($connection, $query);
+?>
+
 
 <!-- header -->
 <?php include("../includes/layouts/header.php") ?>
-
 <!--navbar-->
 <?php include("../includes/layouts/navbar.php") ?>
 
@@ -14,11 +58,17 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="page-header">Watchlist</h2>
+            <?php echo mysqli_error($connection); ?>
 
 
         </div>
     </div>
-    <?php $watched_auction_set = find_users_watched_items(1004);
+
+
+
+
+    <?php
+
 
     foreach ($watched_auction_set as $watched_auction) { ?>
 
@@ -48,6 +98,35 @@
     } // end of loop through watched_auction result set
 
     ?>
+
+    <div id="pagination">
+        <?php if($pagination->total_pages() > 1) {
+            if($pagination->has_previous_page()) {
+                echo " <a href=\"watch_list.php?page=";
+                echo $pagination->previous_page();
+                echo "\">&laquo; Previous</a> ";
+            }
+
+            for($i = 1; $i <= $pagination->total_pages(); $i++) {
+                if($i == $page) {
+                    echo " <span class=\"selected\">{$i}</span> ";
+                } else {
+                    echo " <a href=\"watch_list.php?page={$i}\">{$i}</a>";
+                }
+
+            }
+
+            if($pagination->has_next_page()) {
+                echo " <a href=\"watch_list.php?page=";
+                echo $pagination->next_page();
+                echo "\">Next &raquo;</a> ";
+            }
+
+        } ?>
+
+
+
+    </div>
 
 
     <!-- Footer -->

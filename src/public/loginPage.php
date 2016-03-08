@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
         // Success
         // Mark user as logged in
         $user = find_user_by_username($username);
-        $_SESSION["admin_id"] = $user["userID"];
+        $_SESSION["userID"] = $user["userID"];
         $_SESSION["username"] = $user["userName"];
         $_SESSION["password"] = $password;
         // clear error messages

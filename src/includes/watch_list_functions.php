@@ -19,14 +19,15 @@ function find_users_watched_items($userID)
     $query .= "ON w.auctionID = a.auctionID ";
     $query .= "JOIN Item i ";
     $query .= "ON a.itemID = i.itemID ";
-    $query .= "WHERE w.userID = {$safe_userID}";
+    $query .= "WHERE w.userID = {$safe_userID} ";
+    $query .= "ORDER BY a.auctionEnd ASC";
 
     $result = mysqli_query($connection, $query);
     // confirm_query($result);
 
     return $result;
-
 }
+
 
 
 
