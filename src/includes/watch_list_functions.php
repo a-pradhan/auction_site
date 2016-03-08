@@ -39,7 +39,7 @@ function delete_auction_from_watchlist($watchID)
     $safe_watchID = mysql_prep($watchID);
 
     $query = "DELETE FROM WatchList ";
-    $query = "WHERE watchID = {$watchID}";
+    $query .= "WHERE watchID = {$safe_watchID}";
 
     $result = mysqli_query($connection, $query);
     return $result;

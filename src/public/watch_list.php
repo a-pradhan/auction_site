@@ -13,7 +13,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-md-12">
-            <h2 class="page-header">Watch-list</h2>
+            <h2 class="page-header">Watchlist</h2>
 
 
         </div>
@@ -37,7 +37,9 @@
                 <p><?php echo htmlentities($watched_auction["itemDescription"]) ?></p>
             </div>
             <div class="col-md-3">
-                <a style="float: right;" class="btn btn-primary">View More</a>
+                <a  class="btn btn-primary"
+                   href=auction_view.php?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">View More</a>
+                <a style="float: right;" class="btn btn-primary" href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Delete From Watchlist</a>
             </div>
         </div>
         <br />
