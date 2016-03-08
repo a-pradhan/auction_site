@@ -39,10 +39,10 @@
             <div class="col-md-3">
                 <a  class="btn btn-primary"
                    href=auction_view.php?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">View More</a>
-                <a style="float: right;" class="btn btn-primary" href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Delete From Watchlist</a>
+                <a  class="btn btn-primary" href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Remove</a>
             </div>
         </div>
-        <br />
+        <br /><br />
 
         <?php
     } // end of loop through watched_auction result set
