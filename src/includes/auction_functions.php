@@ -134,8 +134,23 @@ function find_all_non_live_auctions()
         }
 
 
+    function retrieve_viewing_for_chosen_auction ($auctionID){
+        global $connection;
 
+        $query = "SELECT auctionViewings FROM `Auction` WHERE auctionID={$auctionID}";
+        $old_viewing_set = mysqli_query($connection,$query);
+        confirm_query($old_viewing_set);
+        return $old_viewing_set;
 
+    }
+
+    function update_viewing_for_chosen_auction ($auctionID,$new_viewing){
+        global $connection;
+        $new_query ="UPDATE `Auction` SET `auctionViewings` ={$new_viewing} WHERE auctionID ={$auctionID}";
+
+        $new_query_sent = mysqli_query($connection,$new_query);
+        confirm_query($new_query_sent);
+    }
 
     function find_item_for_live_auction($itemID) {
       global $connection;

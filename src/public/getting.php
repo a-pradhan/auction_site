@@ -163,3 +163,21 @@ echo "<br />";
 
 echo "KhelloOnceAgain";
 ?>
+
+<br />
+<br /><br /><br /><br /><br />
+
+
+<?php
+
+
+$auctionID=4001;
+
+
+
+$viewing_set = mysqli_fetch_assoc(retrieve_viewing_for_chosen_auction($auctionID));
+$updated_viewing = intval($viewing_set["auctionViewings"]);
+$updated_viewing++;
+update_viewing_for_chosen_auction ($auctionID,$updated_viewing);
+
+?>

@@ -156,15 +156,33 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 $bid_set_for_given_auction = retrieve_number_of_bids_for_a_given_auction($my_auction["auctionID"]);
                 $number_of_bids = mysqli_fetch_assoc($bid_set_for_given_auction);
 
+                if (true) {
+                    $sold_icon_success= null;
+                } else {
+                    $sold_icon_unsuccessful=null;
+                }
+                $boolcheck = false;
+                $auction_successful = $my_auction["auctionSuccessful"];
                 echo "<tr>";
                     echo "<td>" . $my_auction['itemName'] . "</td>";
                     echo "<td><div id=\"" . "{$counter}"  ."\"></div></td>";
                     echo "<td>£ " . $my_auction['auctionReservePrice'] . "</td>";
                     echo "<td>" . $my_auction_latest_bidAmount  . "</td>";
                     echo "<td>" . $number_of_bids["COUNT(bidID)"]. "</td>";
-                    echo "<td>" . "N/A". "</td>";
-                    echo "<td>" . "N/A". "</td>";
-                    echo "<td>" . "N/A". "</td>";
+                    echo "<td>" . $my_auction['auctionViewings']. "</td>";
+
+                //this if statement is for the 'Sold' column and 'Rate' column respectively
+                if ($auction_successful == 1) {
+
+                        echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
+                        echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\"> <button type=\"button\" class=\"btn btn-default\">Rate buyer</button></div></td>";
+
+                    } else {
+                        echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+                        echo "<td>" ."Not applicable"  . "</td>";
+
+                }
+
                 echo "<tr>";
 
                 $counter++;

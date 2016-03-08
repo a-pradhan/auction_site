@@ -60,19 +60,35 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Auction Vault</a>
+            <a class="navbar-brand" href="auction_list.php">Auction Vault</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#">About</a>
+                    <a href="my_auctions.php">My Auctions</a>
+                </li>
+                <li>
+                    <a href="my_bids.php">My Bids</a>
+                </li>
+                <li>
+                    <a href="watch_list.php">Watch-list</a>
                 </li>
                 <li>
                     <a href="#">Services</a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    <a href="#">Contact us</a>
+                </li>
+                <li>
+                    <a href="#">About us</a>
+                </li>
+                <?php   //This long repetitive line is to align the Logout button far right lol XD ?>
+                <li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li>
+
+
+                <li>
+                    <a href="loginPage.php">Log out</a>
                 </li>
             </ul>
         </div>
@@ -87,9 +103,28 @@
     // Retrieve the auction row for the auction selected using the itemID
     $chosen_auction_info = mysqli_fetch_assoc(find_auction_for_chosen_item($chosen_auction_item));
     $chosen_auction_ID = $chosen_auction_info['auctionID'];
+
+    //This will increment the viewing
+    $viewing_set = mysqli_fetch_assoc(retrieve_viewing_for_chosen_auction($chosen_auction_ID));
+    $updated_viewing = intval($viewing_set["auctionViewings"]);
+    $updated_viewing++;
+    update_viewing_for_chosen_auction ($chosen_auction_ID,$updated_viewing);
+
     // Fetch the item info from Item table using the itemID
     $chosen_item_info = find_item_for_live_auction($chosen_auction_item);
     $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
+
+
+    //The following is to prevent an owner of an auction to bid on their own auction
+    $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
+    $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
+    $can_I_bid =1;
+    while ($my_auctions_for_checking = mysqli_fetch_assoc($all_my_auctions)) {
+        if ($my_auctions_for_checking["auctionID"] == $chosen_auction_ID ) {
+            $can_I_bid = 0;
+        }
+    }
+
 ?>
 
 
@@ -114,12 +149,36 @@
 
                <?php // JS code for retrieving the bidAmount from the bidField ?>
                 <script>
+
+                    $(document).ready(function() {
+                        $('input[type="submit"]').prop('disabled', true);
+                        $('input[type="number"]').keyup(function() {
+                            if($(this).val() != '') {
+                                $('input[type="submit"]').prop('disabled', false);
+                            }
+                        });
+                    })
+
+                    var canIBid = <?php echo json_encode($can_I_bid); ?>;
+
                     function myFunction() {
-                        confirm("Please confirm - bid amount: £" + $("#bidField").val());
+                        if (canIBid == "0") {
+                            alert("You may not bid on your own auction.");
+                        } else {
 
+                            var bidAmount = $("#bidField").val();
+                            if (bidAmount != '') {
+                                confirm("Please confirm - bid amount: £" + bidAmount);
+                            } else {
+                                alert("Field must not be empty, please enter a bid.");
 
+                            }
+                        }
                     }
+
+
                 </script>
+
 
 
 
@@ -132,6 +191,12 @@
                         redirect_to("auction_list.php");
                     }
                     else {
+                        if ($can_I_bid == 0) {
+                        //the bid would not be posted
+
+                        } else {
+
+
                         global $connection;
                         $new_bid_amount = mysqli_real_escape_string($connection, $_POST['bidField']);
                         if ($new_bid_amount == null) {
@@ -165,6 +230,7 @@
                             //                           $bidID = $bidID_for_recent_bid['bidID'];
                             //                           $bidAmount= mysqli_fetch_assoc(find_bidAmount_for_bidID($bidID));
                         }
+                    }
                     }
                 }
                 ?>

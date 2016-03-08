@@ -223,7 +223,8 @@
                 echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
                 echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
                 echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
-                echo "<a style= \"float:right;\"  class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+                echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+
                 echo "</div>";
                 echo "</div>";
                 echo "<hr>";
@@ -231,6 +232,7 @@
 
 
     ?>
+
 
     <!-- Pagination -->
     <div class="row text-center">

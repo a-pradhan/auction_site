@@ -176,6 +176,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 } else {
                     //I do not hold the winning bid
                 }
+                $auction_successful = $auction_bidded_on["auctionSuccessful"];
 
                 echo "<tr>";
                 echo "<td>" . $auction_bidded_on["itemName"] . "</td>";
@@ -183,8 +184,16 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 echo "<td>£ " . $auction_bidded_on["auctionReservePrice"] . "</td>";
                 echo "<td>" . $my_auction_latest_bidAmount  . "</td>";
                 echo "<td>" . $my_latest_bidAmount. "</td>";
-                echo "<td>" . "N/A". "</td>";
-                echo "<td>" . "N/A". "</td>";
+                if ($auction_successful == 1 && ($my_latest_bidAmount > $my_auction_latest_bidAmount)) {
+
+                    echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
+                    echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\"> <button type=\"button\" class=\"btn btn-default\">Rate buyer</button></div></td>";
+
+                } else {
+                    echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+                    echo "<td>" ."Not applicable"  . "</td>";
+
+                }
 
                 echo "<tr>";
                 $counter++;
