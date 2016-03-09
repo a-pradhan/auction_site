@@ -144,7 +144,7 @@
                 <form id="bidAmount" action="auction_view.php?auction=<?php echo $chosen_auction_item ?>" method="POST"
                       style=float:right;>
                     <input type="number" id="bidField" name="bidField" placeholder="Enter bid here!">
-                    <input type="submit" name="bid" value="Bid" onclick="myFunction()">
+                    <input type="submit" id ="oneBid" name="bid" value="Bid" onclick="myFunction()">
                 </form>
 
                <?php // JS code for retrieving the bidAmount from the bidField ?>
@@ -235,12 +235,34 @@
                 }
                 ?>
 
+
+
+                <?php
+
+                $roleID_set = mysqli_fetch_assoc(retrieve_seller_roleID_from_specified_auctionID($chosen_auction_ID));
+
+                $roleID=$roleID_set['roleID'];
+                $rating_set=retrieve_rating_for_specified_role($roleID);
+                $rating_for_role = mysqli_fetch_assoc($rating_set);
+                $rating_score = intval($rating_for_role['AVG(ratingValue)']);
+                $whole_number_rating_score = round($rating_score);
+                $empty_stars= 5 - $whole_number_rating_score;
+
+                ?>
+
                 <p style="font-size:160%;"> Seller's ratings
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-star-empty"></span>
+
+                    <?php
+
+                    for($x=0;$x<$whole_number_rating_score;$x++){
+                        echo "<span class=\"glyphicon glyphicon-star\"></span>";
+                    }
+                    for($z=0;$z<$empty_stars;$z++){
+                        echo "<span class=\"glyphicon glyphicon-star-empty\"></span>";
+                    }
+
+                    ?>
+
 
             </div>
 
@@ -317,12 +339,54 @@
                 while ($bids = mysqli_fetch_assoc($bid_set)) {
                     $bidderName = mysqli_fetch_assoc(find_userName_for_bidder($bids['roleID']));
 
+                    $bidder_roleID= $bids['roleID'];
+                    $rating_set=retrieve_rating_for_specified_role($bidder_roleID);
+                    $rating_for_role = mysqli_fetch_assoc($rating_set);
+                    $rating_score = intval($rating_for_role['AVG(ratingValue)']);
+                    $whole_number_rating_score = round($rating_score);
+                    $empty_stars= 5 - $whole_number_rating_score;
+
+
                     if ($count == 0) {
-                        echo "<ol class=\"list-group-item active\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']) . "</ol>";
+                        echo "<ol class=\"list-group-item active\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']);
+                    for($x=0;$x<$whole_number_rating_score;$x++){
+                        if ($x ==0) {
+                            echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star\";></span>";
+                        } else {
+                        echo "<span class=\"glyphicon glyphicon-star\"></span>";
+                        }
+                    }
+                    for($z=0;$z<$empty_stars;$z++){
+                        if ($empty_stars == 5 && $z == 0) {
+                            echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star-empty\";></span>";
+
+                        } else {
+                            echo "<span class=\"glyphicon glyphicon-star-empty\"></span>";
+
+                        }
+                    }
+                        echo "</ol>";
                         $count++;
                     } else {
 
-                        echo "<ol class=\"list-group-item\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']) . "</ol>";
+                        echo "<ol class=\"list-group-item\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']);
+                        for($x=0;$x<$whole_number_rating_score;$x++){
+                            if ($x ==0) {
+                                echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star\";></span>";
+                            } else {
+                                echo "<span class=\"glyphicon glyphicon-star\"></span>";
+                            }
+                        }
+                        for($z=0;$z<$empty_stars;$z++){
+                            if ($empty_stars == 5 && $z == 0) {
+                                echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star-empty\";></span>";
+
+                            } else {
+                                echo "<span class=\"glyphicon glyphicon-star-empty\"></span>";
+
+                            }
+                        }
+                        echo "</ol>";
                         $count++;
                     }
                 }

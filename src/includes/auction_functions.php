@@ -241,6 +241,14 @@ function find_all_non_live_auctions()
         return $sellerID_identified;
     }
 
+    function retrieve_seller_roleID_from_specified_auctionID($auctionID){
+        global $connection;
+        $query="SELECT roleID FROM Auction AS a LEFT JOIN Item AS i ON a.itemID = i.itemID WHERE auctionID ={$auctionID}";
+        $query_sent=mysqli_query($connection,$query);
+        confirm_query($query_sent);
+        return $query_sent;
+    }
+
     function bid_an_amount($chosen_auction_ID,$bidAmount,$loggedIn_userID)
     {
         $buyer_roleID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
@@ -251,6 +259,36 @@ function find_all_non_live_auctions()
         $bid_sent =mysqli_query($connection, $query);
         confirm_query($bid_sent);
 
+    }
+
+    function send_a_rating($auctionID,$roleID,$ratingValue){
+        global $connection;
+        $query = "INSERT INTO `Rating`(`roleID`, `auctionID`, `ratingValue`) VALUES ($roleID,$auctionID,$ratingValue)";
+        $query_sent=mysqli_query($connection,$query);
+        confirm_query($query_sent);
+    }
+
+    function retrieve_rating_for_specified_role($roleID){
+        global $connection;
+        $query ="SELECT AVG(ratingValue) FROM `Rating` WHERE roleID =$roleID";
+        $query_sent = mysqli_query($connection,$query);
+        return $query_sent;
+    }
+
+    function has_buyer_rated_this_auction($auctionID){
+        global $connection;
+        $query ="SELECT * FROM `Auction` WHERE auctionID ={$auctionID}";
+        $query_sent = mysqli_query($connection,$query);
+        confirm_query($query_sent);
+        return $query_sent;
+    }
+
+    function has_seller_rated_this_auction($auctionID){
+        global $connection;
+        $query ="SELECT * FROM `Auction` WHERE auctionID ={$auctionID}";
+        $query_sent = mysqli_query($connection,$query);
+        confirm_query($query_sent);
+        return $query_sent;
     }
 
     function buyerRated_set_to_true_for_auction($auctionID) {

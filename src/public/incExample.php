@@ -1,3 +1,9 @@
+<?php require_once("../includes/db_connection.php") ?>
+
+<?php require_once("../includes/auction_functions.php"); ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +19,33 @@
 
 <!-- refrerence http://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
 <div class="container">
+
+    <?php
+
+
+    $auctionID = 4000;
+    $queryresult = mysqli_fetch_assoc(has_buyer_rated_this_auction($auctionID));
+    echo htmlentities($queryresult['buyerRated']);
+
+    if ($queryresult['buyerRated'] == 1){
+        echo "Khello";
+    }
+
+
+    $roleID_set = mysqli_fetch_assoc(retrieve_seller_roleID_from_specified_auctionID($auctionID));
+
+    $roleID=$roleID_set['roleID'];
+    $rating_set=retrieve_rating_for_specified_role($roleID);
+    $rating_for_role = mysqli_fetch_assoc($rating_set);
+    echo htmlentities($rating_for_role['AVG(ratingValue)']);
+    $rating_score = intval($rating_for_role['AVG(ratingValue)']);
+    $whole_number_rating_score = round($rating_score);
+    echo "<br />{$whole_number_rating_score}";
+    $empty_stars= 5 - $whole_number_rating_score;
+    echo "<br />{$empty_stars}";
+
+
+    ?>
     <h2>Modal Example</h2>
     <!-- Trigger the modal with a button -->
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Rate</button>
@@ -49,6 +82,8 @@
     </div>
 
 </div>
+
+
 
 </body>
 </html>
