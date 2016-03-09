@@ -1,34 +1,54 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Increment count when button is clicked</title>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
-
 <body>
 
 
+<!-- refrerence http://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
+<div class="container">
+    <h2>Modal Example</h2>
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Rate</button>
 
-<input id="myText" type="text" onkeyup="stoppedTyping()">
-<input type="button" value="Click to begin!" id="start_button" onclick="verify()" disabled/>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
 
-<script type="text/javascript">
-    function stoppedTyping(){
-        if(this.value.length > 0) {
-            document.getElementById('start_button').disabled = false;
-        } else {
-            document.getElementById('start_button').disabled = true;
-        }
-    }
-    function verify(){
-        if myText is empty{
-            alert "Put some text in there!"
-            return
-        }
-    else{
-            do button functionality
-        }
-    }
-</script>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <form action="" method="POST">
+                    <h4 class="modal-title">Please select a rating
+
+                        <select name="ratingList">
+                        <option value="0"></option>
+                        <option value="1">1 - Do not recommend</option>
+                        <option value="2">2 - Poor</option>
+                        <option value="3">3 - Average</option>
+                        <option value="4">4 -  Good</option>
+                        <option value="5">5 -  Recommended</option>
+                    </select></h4>
+                </div>
+
+                <div class="modal-footer">
+                        <input id="submit" name="submit" type="submit" value="Submit">
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>

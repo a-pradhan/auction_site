@@ -132,21 +132,15 @@ $loggedIn_userID = $_SESSION["admin_id"];
             }
         </script>
         <?php
-        $my_bids_buyerID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
 
+        $my_bids_buyerID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
         $all_my_bids = retrieve_my_bids ($my_bids_buyerID);
+
         $counter=0;
         while ($my_bids = mysqli_fetch_assoc($all_my_bids)){
-//            echo htmlentities($my_bids['auctionID']);
-//            echo "<br />";
-//            echo "<br />";
-//            echo htmlentities($my_bids['bidID']);
-//            echo "<br />";
-            $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($my_bids['bidID']));
-            $my_latest_bidAmount = "£ " . $bid_amount_set['bidAmount'];
-//            echo "<br />";
-//            echo htmlentities($my_latest_bidAmount);
-//            echo "<br />";
+
+
+            $my_latest_bidAmount = "£ " . $my_bids['MAX( bidAmount )'];
 
 
 
@@ -154,28 +148,18 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
 
             while ($auction_bidded_on = mysqli_fetch_assoc($auction_bidded_on_set)){
-//                echo htmlentities($auction_bidded_on["itemName"]);
-//                echo "<br />";
-//                echo htmlentities($auction_bidded_on["auctionReservePrice"]);
-//                echo "<br />";
 
                 $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($auction_bidded_on['bidID']));
+
                 $auction_highest_bid = "£ " . $bid_amount_set['bidAmount'];
-//                echo htmlentities($auction_highest_bid);
-//                echo "<br />";
-//                echo htmlentities($auction_bidded_on["auctionEnd"]);
-//                echo "<br />";
 
 
                 $my_auction_latest_bidID = $auction_bidded_on['bidID'];
+
                 $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($my_auction_latest_bidID));
                 $my_auction_latest_bidAmount = "£ " . $bid_amount_set['bidAmount'];
 
-                if ($auction_highest_bid == $my_auction_latest_bidAmount) {
-                    //I have the winning bid
-                } else {
-                    //I do not hold the winning bid
-                }
+
                 $auction_successful = $auction_bidded_on["auctionSuccessful"];
 
                 echo "<tr>";
@@ -184,10 +168,55 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 echo "<td>£ " . $auction_bidded_on["auctionReservePrice"] . "</td>";
                 echo "<td>" . $my_auction_latest_bidAmount  . "</td>";
                 echo "<td>" . $my_latest_bidAmount. "</td>";
-                if ($auction_successful == 1 && ($my_latest_bidAmount > $my_auction_latest_bidAmount)) {
+                if ($auction_successful == 1 && ($my_latest_bidAmount >= $my_auction_latest_bidAmount)) {
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
-                    echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\"> <button type=\"button\" class=\"btn btn-default\">Rate buyer</button></div></td>";
+                    echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\"><button type=\"button\" id=\"rate\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\">Rate seller</button></div></td>";
+                    //onClick="this.disabled=true;"
+
+        ?>
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <form action="" method="POST">
+                                        <h4 class="modal-title">Please select a rating
+
+                                            <select name="ratingList">
+                                                <option value="0"></option>
+                                                <option value="1">1 - Do not recommend</option>
+                                                <option value="2">2 - Poor</option>
+                                                <option value="3">3 - Average</option>
+                                                <option value="4">4 -  Recommend</option>
+                                                <option value="5">5 -  Good</option>
+                                            </select></h4>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <input id="submit" name="submit" type="submit" value="Submit">
+                                </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+        <?php
+
+                    if(isset($_POST['submit'])){
+                        if ($_POST["ratingList"] == 0) {
+
+                        } else {
+                            echo $_POST["ratingList"];
+                            //set the button to disabled
+
+                        }
+                    }
+
+
 
                 } else {
                     echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
@@ -204,20 +233,14 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
         ?>
 
+
+
         <?php
         $my_bids_buyerID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
-
         $all_my_bids = retrieve_my_bids ($my_bids_buyerID);
         $counter=0;
         while ($my_bids = mysqli_fetch_assoc($all_my_bids)){
 
-            $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($my_bids['bidID']));
-            $my_latest_bidAmount = "£ " . $bid_amount_set['bidAmount'];
-
-
-
-
-            $auction_bidded_on_set = retrieve_my_auctions_for_a_given_auctionID ($my_bids['auctionID']);
 
                 while ($auction_bidded_on = mysqli_fetch_assoc($auction_bidded_on_set)) {
 

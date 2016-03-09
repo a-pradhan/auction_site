@@ -133,11 +133,11 @@ $loggedIn_userID = $_SESSION["admin_id"];
             </script>
             <?php
             $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
+
             $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
             $counter=0;
 
             while ($my_auction = mysqli_fetch_assoc($all_my_auctions)){
-
 
 
                 $my_auction_latest_bidID = $my_auction['bidID'];
