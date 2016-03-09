@@ -8,8 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="924cbbbe-141e-46cd-affe-9c4ed4053937" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/auction_functions.php" afterPath="$PROJECT_DIR$/includes/auction_functions.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/my_auctions.php" afterPath="$PROJECT_DIR$/public/my_auctions.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/my_bids.php" afterPath="$PROJECT_DIR$/public/my_bids.php" />
     </list>
     <ignored path="src.iws" />
@@ -50,18 +48,18 @@
       <file leaf-file-name="my_bids.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/my_bids.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.10210877">
-              <caret line="174" column="156" selection-start-line="174" selection-start-column="156" selection-end-line="174" selection-end-column="156" />
+            <state vertical-scroll-proportion="0.56159824">
+              <caret line="176" column="20" selection-start-line="176" selection-start-column="20" selection-end-line="176" selection-end-column="20" />
               <folding>
-                <marker date="1457553338545" expanded="true" signature="5760:9074" placeholder="..." />
-                <marker date="1457553338545" expanded="true" signature="6277:6288" placeholder="..." />
-                <marker date="1457553338545" expanded="true" signature="6389:6668" placeholder="..." />
-                <marker date="1457553338545" expanded="true" signature="6448:6476" placeholder="..." />
-                <marker date="1457553338545" expanded="true" signature="6448:6663" placeholder="..." />
-                <marker date="1457553338545" expanded="true" signature="6608:6636" placeholder="..." />
-                <marker date="1457553338545" expanded="true" signature="6608:6657" placeholder="..." />
-                <marker date="1457553338545" expanded="true" signature="8477:8487" placeholder="..." />
-                <marker date="1457553338545" expanded="true" signature="8886:8895" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="5760:9125" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="6277:6288" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="6389:6719" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="6448:6476" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="6448:6714" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="6659:6687" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="6659:6708" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="8528:8538" placeholder="..." />
+                <marker date="1457553815831" expanded="true" signature="8937:8946" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -997,18 +995,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/my_bids.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10210877">
-          <caret line="174" column="156" selection-start-line="174" selection-start-column="156" selection-end-line="174" selection-end-column="156" />
+        <state vertical-scroll-proportion="0.56159824">
+          <caret line="176" column="20" selection-start-line="176" selection-start-column="20" selection-end-line="176" selection-end-column="20" />
           <folding>
-            <marker date="1457553338545" expanded="true" signature="5760:9074" placeholder="..." />
-            <marker date="1457553338545" expanded="true" signature="6277:6288" placeholder="..." />
-            <marker date="1457553338545" expanded="true" signature="6389:6668" placeholder="..." />
-            <marker date="1457553338545" expanded="true" signature="6448:6476" placeholder="..." />
-            <marker date="1457553338545" expanded="true" signature="6448:6663" placeholder="..." />
-            <marker date="1457553338545" expanded="true" signature="6608:6636" placeholder="..." />
-            <marker date="1457553338545" expanded="true" signature="6608:6657" placeholder="..." />
-            <marker date="1457553338545" expanded="true" signature="8477:8487" placeholder="..." />
-            <marker date="1457553338545" expanded="true" signature="8886:8895" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="5760:9125" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="6277:6288" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="6389:6719" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="6448:6476" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="6448:6714" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="6659:6687" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="6659:6708" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="8528:8538" placeholder="..." />
+            <marker date="1457553815831" expanded="true" signature="8937:8946" placeholder="..." />
           </folding>
         </state>
       </provider>

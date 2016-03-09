@@ -172,7 +172,11 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
                     echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
-                    echo "<button type=\"button\" id=\"rate\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\" disabled=\"disabled\">";
+                    echo "<button type=\"button\" id=\"rate\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
+
+                    
+
+                    echo "disabled=\"disabled\">";
                     echo "Rate seller</button></div></td>";
                     //onClick="this.disabled=true;"
 
