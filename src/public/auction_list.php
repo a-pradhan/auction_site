@@ -1,25 +1,15 @@
 <?php require_once("../includes/db_connection.php") ?>
-<?php require_once("../includes/auction_functions.php") ?>
+<?php require_once("../includes/session.php"); ?>
 <?php require_once("../includes/user.php"); ?>
+<?php require_once("../includes/auction_functions.php"); ?>
+<?php require_once("../includes/validate_live_auctions.php"); ?>
+<?php require_once("../includes/awardSuccessful_auctions.php"); ?>
 
 
 <?php
-//validating live auctions
-$live_auctions = find_all_live_auctions();
-while ($auction = mysqli_fetch_assoc($live_auctions)) {
-    //Format to be used in the actual auctionStart and auctionEnd
-    $auctionID=$auction["auctionID"];
-    $date = new DateTime();
-    //echo $date->format('Y-m-d g:i:s');
-    $date2String = $auction["auctionEnd"];
-    $date2 = new DateTime("" . $date2String);
-    //echo $date2->format('Y-m-d g:i:s');
-
-    if ($date > $date2) {
-        validate_live_auction($auctionID);
-    }
-}
-
+    $username = $_SESSION["username"];
+    $password = $_SESSION["password"];
+    $loggedIn_userID = $_SESSION["admin_id"];
 ?>
 
 
@@ -65,23 +55,39 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Auction Vault</a>
+            <a class="navbar-brand" href="auction_list.php">Auction Vault</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
+                <div class="floatleft"></div>
+                    <li>
+                        <a href="my_auctions.php">My Auctions</a>
+                    </li>
+                    <li>
+                        <a href="my_bids.php">My Bids</a>
+                    </li>
+                    <li>
+                        <a href="watch_list.php">Watch-list</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact us</a>
+                    </li>
+                    <li>
+                        <a href="#">About us</a>
+                    </li>
+                    <?php   //This long repetitive line is to align the Logout button far right lol XD ?>
+                     </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li>
 
-                <button type="button" class="pull-right" onclick="location.href = 'loginPage.php';">Log Out</button>
-            </ul>
+
+                    <li>
+                        <a href="loginPage.php">Log out</a>
+                    </li>
+                </ul>
+                </div>
         </div>
         <!-- /.navbar-collapse -->
     </div>
@@ -94,7 +100,7 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
     <!-- Page Heading -->
     <div class="row">
         <div class="col-md-12">
-            <h2 class="page-header">Live auctionss
+            <h2 class="page-header">Live auctions
                 <small>Money motivation</small>
             </h2>
         </div>
@@ -217,7 +223,8 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
                 echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
                 echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
                 echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
-                echo "<a style= \"float:right;\"  class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+                echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+
                 echo "</div>";
                 echo "</div>";
                 echo "<hr>";
@@ -225,6 +232,7 @@ while ($auction = mysqli_fetch_assoc($live_auctions)) {
 
 
     ?>
+
 
     <!-- Pagination -->
     <div class="row text-center">

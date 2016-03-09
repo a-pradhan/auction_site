@@ -11,3 +11,10 @@ body {
 footer {
     margin: 50px 0;
 }
+
+.floatleft {
+    float:left;
+}
+.floatright {
+    float:right;
+}
