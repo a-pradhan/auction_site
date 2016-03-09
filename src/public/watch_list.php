@@ -1,114 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php require_once("../includes/session.php"); ?>
+<?php require_once("../includes/general_functions.php"); ?>
+<?php require_once("../includes/user.php"); ?>
+<?php require_once("../includes/watch_list_functions.php"); ?>
+<?php require_once("../includes/pagination_class.php"); ?>
 
-<head>
+<?php
+// redirect to login page if a valid user is not signed in
+if(!attempt_login($_SESSION["username"], $_SESSION["password"])) {
+   redirect_to("loginPage.php");
+}
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+?>
 
-    <title>Auction Vault</title>
+<?php
+// current page number - set to 1 by default
+$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
 
-    <!-- Bootstrap Core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+// number of auctions to be shown per page
+$per_page = 5;
 
-    <!-- Custom CSS -->
-    <link href="../css/1-col-portfolio.css" rel="stylesheet">
+// find ALL auctions watched by user to obtain total count
+$watched_auctions = find_users_watched_items($_SESSION["userID"]);
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+// obtain total number of auctions watched by user
+$total_count = mysqli_num_rows($watched_auctions);
 
-</head>
+$pagination = new Pagination($page, $per_page, $total_count);
 
-<body>
-
-<!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Auction vault</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <div class="floatleft"></div>
-                <li>
-                    <a href="#">My Auctions</a>
-                </li>
-                <li>
-                    <a href="#">My Bids</a>
-                </li>
-                <li>
-                    <a href="watch_list.php">Watch-list</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact us</a>
-                </li>
-                <li>
-                    <a href="#">About us</a>
-                </li>
-                <?php   //This long repetitive line is to align the Logout button far right lol XD ?>
-                </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li>
+// find records for this page
+global $connection;
+$userID = $_SESSION["userID"];
 
 
-                <li>
-                    <a href="loginPage.php">Log out</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
-<body>
-<!-- Page Content -->
+$query = "SELECT * FROM WatchList w ";
+$query .= "JOIN Auction a ";
+$query .= "ON w.auctionID = a.auctionID ";
+$query .= "JOIN Item i ";
+$query .= "ON a.itemID = i.itemID ";
+$query .= "WHERE w.userID = {$userID} ";
+$query .= "ORDER BY auctionEnd ASC ";
+$query .= "LIMIT {$per_page} ";
+$query .= "OFFSET {$pagination->offset()}";
+
+$watched_auction_set = mysqli_query($connection, $query);
+?>
+
+
+<!-- header -->
+<?php include("../includes/layouts/header.php") ?>
+<!--navbar-->
+<?php include("../includes/layouts/navbar.php") ?>
+
+<!-- Display list of watched auctions  -->
 <div class="container">
 
     <!-- Page Heading -->
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Watch-list
-            </h1>
+        <div class="col-md-12">
+            <h2 class="page-header">Watchlist</h2>
+            <?php echo mysqli_error($connection); ?>
+
+
         </div>
     </div>
 
 
-    <!-- Footer -->
-    <footer>
+
+
+    <?php
+
+
+    foreach ($watched_auction_set as $watched_auction) { ?>
+
         <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; Your Website 2014</p>
+            <div class="col-md-3">
+                <a href="auction_view?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">
+                <img class="img-responsive" src="../images/<?php echo $watched_auction["itemPhoto"]; ?>"/>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <h3><?php echo htmlentities($watched_auction["itemName"]); ?> </h3>
+                <h4><?php echo htmlentities($watched_auction["itemCategory"]); ?></h4>
+                <h6><span style="font-weight: bold;">Quantity:&nbsp;</span><?php echo htmlentities($watched_auction["itemQuantity"]); ?></h6>
+                <h6><span style="font-weight: bold;">Condition:&nbsp;</span><?php echo htmlentities($watched_auction["itemCondition"]); ?></h6>
+                <h6><span style="font-weight: bold;">End Date:&nbsp;</span><?php echo htmlentities($watched_auction["auctionEnd"]); ?></h6>
+                <p><?php echo htmlentities($watched_auction["itemDescription"]) ?></p>
+            </div>
+            <div class="col-md-3">
+                <a  class="btn btn-primary"
+                   href=auction_view.php?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">View More</a>
+                <a  class="btn btn-primary" href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Remove</a>
             </div>
         </div>
-        <!-- /.row -->
-    </footer>
+        <br /><br />
 
-</div>
-<!-- /.container -->
+        <?php
+    } // end of loop through watched_auction result set
 
-<!-- jQuery -->
-<script src="../js/jquery.js"></script>
+    ?>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="../js/bootstrap.min.js"></script>
+    <div id="pagination">
+        <?php if($pagination->total_pages() > 1) {
+            if($pagination->has_previous_page()) {
+                echo " <a href=\"watch_list.php?page=";
+                echo $pagination->previous_page();
+                echo "\">&laquo; Previous</a> ";
+            }
 
-</body>
+            for($i = 1; $i <= $pagination->total_pages(); $i++) {
+                if($i == $page) {
+                    echo " <span class=\"selected\">{$i}</span> ";
+                } else {
+                    echo " <a href=\"watch_list.php?page={$i}\">{$i}</a>";
+                }
 
-</html>
+            }
+
+            if($pagination->has_next_page()) {
+                echo " <a href=\"watch_list.php?page=";
+                echo $pagination->next_page();
+                echo "\">Next &raquo;</a> ";
+            }
+
+        } ?>
+
+
+
+    </div>
+
+
+    <!-- Footer -->
+    <?php include("../includes/layouts/footer.php") ?>
