@@ -171,7 +171,9 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 if ($auction_successful == 1 && ($my_latest_bidAmount >= $my_auction_latest_bidAmount)) {
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
-                    echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\"><button type=\"button\" id=\"rate\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\">Rate seller</button></div></td>";
+                    echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
+                    echo "<button type=\"button\" id=\"rate\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\" disabled=\"disabled\">";
+                    echo "Rate seller</button></div></td>";
                     //onClick="this.disabled=true;"
 
         ?>
@@ -208,10 +210,12 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                     if(isset($_POST['submit'])){
                         if ($_POST["ratingList"] == 0) {
-
+                            echo "<p style =\"color:red;\">You must select a rating.</p>";
                         } else {
                             echo $_POST["ratingList"];
                             //set the button to disabled
+                            buyerRated_set_to_true_for_auction($auction_bidded_on['auctionID']);
+
 
                         }
                     }

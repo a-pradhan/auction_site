@@ -253,6 +253,20 @@ function find_all_non_live_auctions()
 
     }
 
+    function buyerRated_set_to_true_for_auction($auctionID) {
+        global $connection;
+        $query = "UPDATE `Auction` SET `buyerRated`= 1 WHERE auctionID = {$auctionID}";
+        $query_sent=mysqli_query($connection,$query);
+        confirm_query($query_sent);
+    }
+
+    function sellerRated_set_to_true_for_auction($auctionID){
+        global $connection;
+        $query = "UPDATE `Auction` SET `sellerRated`= 1 WHERE auctionID = {$auctionID}";
+        $query_sent=mysqli_query($connection,$query);
+        confirm_query($query_sent);
+    }
+
     function confirm_auction_is_live ($auctionID) {
         global $connection;
         $query = "SELECT auctionLive FROM `Auction` WHERE auctionID ={$auctionID}";

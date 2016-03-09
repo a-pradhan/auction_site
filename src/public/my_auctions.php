@@ -172,14 +172,61 @@ $loggedIn_userID = $_SESSION["admin_id"];
                     echo "<td>" . $my_auction['auctionViewings']. "</td>";
 
                 //this if statement is for the 'Sold' column and 'Rate' column respectively
-                if ($auction_successful == 1) {
+                if ($auction_successful == 1 ) {
 
-                        echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
-                        echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\"> <button type=\"button\" class=\"btn btn-default\">Rate buyer</button></div></td>";
+                    echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
+                    echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\"><button type=\"button\" id=\"rate\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\" disabled=\"disabled\">Rate buyer</button></div></td>";
+                    //onClick="this.disabled=true;"
 
-                    } else {
-                        echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
-                        echo "<td>" ."Not applicable"  . "</td>";
+                    ?>
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <form action="" method="POST">
+                                        <h4 class="modal-title">Please select a rating
+
+                                            <select name="ratingList">
+                                                <option value="0"></option>
+                                                <option value="1">1 - Do not recommend</option>
+                                                <option value="2">2 - Poor</option>
+                                                <option value="3">3 - Average</option>
+                                                <option value="4">4 -  Recommend</option>
+                                                <option value="5">5 -  Good</option>
+                                            </select></h4>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <input id="submit" name="submit" type="submit" value="Submit">
+                                </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <?php
+
+                    if(isset($_POST['submit'])){
+                        if ($_POST["ratingList"] == 0) {
+                            echo "<p style =\"color:red;\">You must select a rating.</p>";
+                        } else {
+                            echo $_POST["ratingList"];
+                            //set the button to disabled
+                            sellerRated_set_to_true_for_auction($my_auction['auctionID']);
+
+
+                        }
+                    }
+
+
+
+                } else {
+                    echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+                    echo "<td>" ."Not applicable"  . "</td>";
 
                 }
 
