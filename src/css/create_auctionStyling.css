@@ -1,0 +1,9 @@
+.itemDescription{
+    width: 300px;
+    height: 200px;
+}
+.panel-shadow{
+    padding: 20px;
+    box-shadow: 10px 10px 5px #43CB00;
+    border-radius: 0px;
+}
