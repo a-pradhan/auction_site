@@ -1,4 +1,5 @@
-<?php require_once("db_connection.php") ?>
+<?php require_once("db_connection.php");
+require_once("general_functions.php");?>
 <?php
 
 
@@ -368,11 +369,7 @@ function find_all_non_live_auctions()
         return $userName;
     }
 
-    function confirm_query($result_set) {
-      if (!$result_set) {
-       die("Database query failed.");
-       }
-    }
+
 
 
 
@@ -391,11 +388,6 @@ function filter_categories($columnName)
     return $category_set;
 }
 
-function redirect_to($new_location)
-{
-    header("Location: " . $new_location);
-    exit;
-}
 
 ?>
 
