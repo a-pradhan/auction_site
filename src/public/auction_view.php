@@ -120,7 +120,7 @@
 
     //The following is to prevent an owner of an auction to bid on their own auction
     $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
-    echo "Hello";
+
     $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
     $can_I_bid =1;
     while ($my_auctions_for_checking = mysqli_fetch_assoc($all_my_auctions)) {
