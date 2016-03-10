@@ -9,7 +9,7 @@
 <?php
     $username = $_SESSION["username"];
     $password = $_SESSION["password"];
-    $loggedIn_userID = $_SESSION["admin_id"];
+    $loggedIn_userID = $_SESSION["userID"];
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +47,7 @@
 
 </head>
 <body>
+
 
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -101,6 +102,7 @@
     // Retrieve the itemID for the auction selected
     $chosen_auction_item = $_GET["auction"];
     // Retrieve the auction row for the auction selected using the itemID
+
     $chosen_auction_info = mysqli_fetch_assoc(find_auction_for_chosen_item($chosen_auction_item));
     $chosen_auction_ID = $chosen_auction_info['auctionID'];
 
@@ -124,6 +126,8 @@
             $can_I_bid = 0;
         }
     }
+  // debugging
+
 
 ?>
 
@@ -456,6 +460,8 @@
 
 
 </div>
+
+<?php global $connection; echo mysqli_error($connection); ?>
 <!-- /.container -->
 
 <div class="container">
