@@ -175,10 +175,27 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 if ($auction_successful == 1 ) {
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
-                    echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\"><button type=\"button\" id=\"rate\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\" disabled=\"disabled\">Rate buyer</button></div></td>";
-                    //onClick="this.disabled=true;"
+                    echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
+                    echo "<button type=\"button\" id=\"rate\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
+
+                    $seller_has_rated_this_auction_set = mysqli_fetch_assoc(has_seller_rated_this_auction($my_auction['auctionID']));
+                    if ($seller_has_rated_this_auction_set['sellerRated'] == 1) {
+                        echo "disabled=\"disabled\"";
+                    }
+
+
+                    echo ">Rate buyer</button></div></td>";
 
                     ?>
+                    <script>
+
+                        function clicked() {
+
+                            document.getElementById("rate").disabled=true;
+                        }
+                    </script>
+
+
                     <div class="modal fade" id="myModal" role="dialog">
                         <div class="modal-dialog">
 
@@ -214,9 +231,17 @@ $loggedIn_userID = $_SESSION["admin_id"];
                         if ($_POST["ratingList"] == 0) {
                             echo "<p style =\"color:red;\">You must select a rating.</p>";
                         } else {
-                            echo $_POST["ratingList"];
                             //set the button to disabled
                             sellerRated_set_to_true_for_auction($my_auction['auctionID']);
+                            echo "<script>clicked();</script>";
+
+
+
+                            $auctionID=$my_auction['auctionID'];
+                            $roleID=retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
+                            $ratingValue=$_POST["ratingList"];
+                            send_a_rating($auctionID,$roleID,$ratingValue);
+
 
 
                         }

@@ -161,6 +161,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
 
                 $auction_successful = $auction_bidded_on["auctionSuccessful"];
+                $auctionID =$auction_bidded_on['auctionID'];
 
                 echo "<tr>";
                 echo "<td>" . $auction_bidded_on["itemName"] . "</td>";
@@ -172,15 +173,26 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
                     echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
-                    echo "<button type=\"button\" id=\"rate\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
+                    echo "<button type=\"button\" id=\"rate\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
 
-                    
+                    $buyer_has_rated_this_auction_set = mysqli_fetch_assoc(has_buyer_rated_this_auction($auctionID));
+                    if ($buyer_has_rated_this_auction_set['buyerRated'] == 1) {
+                        echo "disabled=\"disabled\"";
+                    }
 
-                    echo "disabled=\"disabled\">";
-                    echo "Rate seller</button></div></td>";
-                    //onClick="this.disabled=true;"
+
+                    echo ">Rate seller</button></div></td>";
 
         ?>
+                    <script>
+
+                        function clicked() {
+
+                            document.getElementById("rate").disabled=true;
+                        }
+                    </script>
+
+
                     <div class="modal fade" id="myModal" role="dialog">
                         <div class="modal-dialog">
 
@@ -212,14 +224,19 @@ $loggedIn_userID = $_SESSION["admin_id"];
                     </div>
         <?php
 
+
                     if(isset($_POST['submit'])){
                         if ($_POST["ratingList"] == 0) {
                             echo "<p style =\"color:red;\">You must select a rating.</p>";
                         } else {
-                            echo $_POST["ratingList"];
                             //set the button to disabled
                             buyerRated_set_to_true_for_auction($auction_bidded_on['auctionID']);
+                            echo "<script>clicked();</script>";
 
+                            $auctionID=$auction_bidded_on['auctionID'];
+                            $roleID=retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
+                            $ratingValue=$_POST["ratingList"];
+                            send_a_rating($auctionID,$roleID,$ratingValue);
 
                         }
                     }
@@ -272,7 +289,10 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 }
 
             }
+
+
         ?>
+
 
 
         </tbody>
