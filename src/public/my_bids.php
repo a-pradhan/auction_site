@@ -9,7 +9,7 @@
 <?php
 $username = $_SESSION["username"];
 $password = $_SESSION["password"];
-$loggedIn_userID = $_SESSION["admin_id"];
+$loggedIn_userID = $_SESSION["userID"];
 ?>
 
 
