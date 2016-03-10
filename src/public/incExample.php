@@ -46,9 +46,36 @@
 
 
     ?>
+
+
+
+    <script>
+        var counterOnTrack = <?php echo json_encode($counter); ?>;
+
+        function myclicked(counterOnTrack) {
+
+            document.getElementById(counterOnTrack).disabled=true;
+        }
+
+        function buttonID(theID) {
+            var btnID = theID;
+            alert("Button clicked " + btnID);
+
+        }
+
+
+
+    </script>
+
+    <!--PHP file my_ajax_receiver.php-->
+    <?php
+
+
+    ?>
+
     <h2>Modal Example</h2>
     <!-- Trigger the modal with a button -->
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Rate</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" id="tvaa" data-target="#myModal" onclick="buttonID(this.id)">Rate</button>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">

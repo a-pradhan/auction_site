@@ -176,7 +176,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
                     echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
-                    echo "<button type=\"button\" id=\"rate\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
+                    echo "<button type=\"button\" id=\"{$counter}\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"buttonID(this.id)\"";
 
                     $seller_has_rated_this_auction_set = mysqli_fetch_assoc(has_seller_rated_this_auction($my_auction['auctionID']));
                     if ($seller_has_rated_this_auction_set['sellerRated'] == 1) {
@@ -187,12 +187,22 @@ $loggedIn_userID = $_SESSION["admin_id"];
                     echo ">Rate buyer</button></div></td>";
 
                     ?>
+
+
                     <script>
+                        var btnID = 0;
+                        function buttonID(theID){
+                            btnID=theID;
+                            alert("Button clicked " + btnID);
 
-                        function clicked() {
-
-                            document.getElementById("rate").disabled=true;
                         }
+
+                        function myclicked() {
+                            var theID = btnID;
+                            document.getElementById(theID).disabled=true;
+                        }
+
+
                     </script>
 
 
@@ -233,7 +243,8 @@ $loggedIn_userID = $_SESSION["admin_id"];
                         } else {
                             //set the button to disabled
                             sellerRated_set_to_true_for_auction($my_auction['auctionID']);
-                            echo "<script>clicked();</script>";
+                            echo "<script>myclicked();</script>";
+
 
 
 

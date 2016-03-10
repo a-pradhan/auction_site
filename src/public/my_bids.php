@@ -183,13 +183,21 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                     echo ">Rate seller</button></div></td>";
 
-        ?>
+                 ?>
                     <script>
+
+                        function buttonID(theID) {
+                            var btnID = theID;
+                            alert("Button clicked " + btnID);
+                            return btnID;
+                        }
 
                         function clicked() {
 
-                            document.getElementById("rate").disabled=true;
+                            document.getElementById(btnID).disabled=true;
                         }
+
+
                     </script>
 
 
