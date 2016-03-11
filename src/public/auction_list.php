@@ -44,55 +44,8 @@
 
 <body>
 <!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="auction_list.php">Auction Vault</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <div class="floatleft"></div>
-                    <li>
-                        <a href="my_auctions.php">My Auctions</a>
-                    </li>
-                    <li>
-                        <a href="my_bids.php">My Bids</a>
-                    </li>
-                    <li>
-                        <a href="watch_list.php">Watch-list</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact us</a>
-                    </li>
-                    <li>
-                        <a href="#">About us</a>
-                    </li>
-                    <?php   //This long repetitive line is to align the Logout button far right lol XD ?>
-                     </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li>
+<?php require_once("../includes/navbar.php"); ?>
 
-
-                    <li>
-                        <a href="loginPage.php">Log out</a>
-                    </li>
-                </ul>
-                </div>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
 
 <!-- Page Content -->
 <div class="container">
@@ -106,43 +59,8 @@
         </div>
     </div>
     <!-- Search and filtering -->
-    <div class="row">
-        <div class="col-md-6">
+    <?php require_once("../includes/search_and_filtering.php"); ?>
 
-            <form action="auction_list.php" method="POST">
-                Category
-                <select name="category">
-                    <option value=""></option>
-                    <option value="Car">Car</option>
-                    <option value="Mobile Phone">Mobile Phones</option>
-                    <option value="Laptop">Laptops</option>
-                    <option value="Jewellry">Jewellry</option>
-                    <option value="Miscellaneous">Miscellaneous</option>
-                </select>
-                Condition
-                <select name="condition">
-                    <option value=""></option>
-                    <option value="Used">Used</option>
-                    <option value="Used - Like New">Used - Like New</option>
-                    <option value="New">New</option>
-                </select>
-                Sort by
-                <select name="sortBy">
-                    <option value=""></option>
-                    <option value="Price">Price</option>
-                    <option value="Time">Time</option>
-                </select>
-                <input id="refine" name="refine" type="submit" value="Refine">
-            </form>
-
-
-        </div>
-        <form action="auction_list.php" method="POST">
-            <input id="search" name="searchField" type="text" style="width: 500px;"
-                   placeholder="Search by name, description or category of item!">
-            <input id="submit" type="submit" value="Search">
-        </form>
-    </div>
 
 
     <?php
