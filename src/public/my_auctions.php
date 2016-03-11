@@ -202,13 +202,9 @@ $loggedIn_userID = $_SESSION["admin_id"];
                             }
 
                             function carryAuctionID() {
-                            <?php //$roleID=retrieve_buyer_roleID_from_specified_auctionID(); ?>
-
-                                var onTrackRoleID= <?php echo json_encode($roleID); ?>;
                                 $.post(
                                     "send_a_rating_for_a_buyer.php",
                                     { auctionID_ajax:  onTrackAuctionID,
-//                                      roleID_ajax: onTrackRoleID,
                                       rating_ajax: onTrackRatingSelected},
                                     function(data) {
 
@@ -237,7 +233,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
                                         <h4 class="modal-title">Please select a rating
 
                                             <select id ="ratingList" name="ratingList" onchange="ratingSelected(value);">
-                                                <option value="0">Something</option>
+                                                <option value="0"></option>
                                                 <option value="1">1 - Do not recommend</option>
                                                 <option value="2">2 - Poor</option>
                                                 <option value="3">3 - Average</option>

@@ -173,7 +173,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
                     echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
-                    echo "<button type=\"button\" id=\"rate\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
+                    echo "<button type=\"button\" id=\"{$auction_bidded_on['auctionID']}\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"buttonID(this.id)\"";
 
                     $buyer_has_rated_this_auction_set = mysqli_fetch_assoc(has_buyer_rated_this_auction($auctionID));
                     if ($buyer_has_rated_this_auction_set['buyerRated'] == 1) {
@@ -186,16 +186,32 @@ $loggedIn_userID = $_SESSION["admin_id"];
                  ?>
                     <script>
 
-                        function buttonID(theID) {
-                            var btnID = theID;
-                            alert("Button clicked " + btnID);
-                            return btnID;
+                        function buttonID(theID){
+                            onTrackAuctionID  = theID;
                         }
 
-                        function clicked() {
-
-                            document.getElementById(btnID).disabled=true;
+                        function ratingSelected(selected) {
+                            onTrackRatingSelected = selected;
                         }
+
+                        function carryAuctionID() {
+
+                            alert("Khello " + onTrackAuctionID + " " + onTrackRatingSelected);
+                            $.post(
+                                "send_rating_for_a_seller.php",
+                                { auctionID_ajax:  onTrackAuctionID,
+                                    rating_ajax: onTrackRatingSelected},
+                                function(data) {
+
+                                }
+                            );
+
+                        }
+
+                        function myFunction() {
+                            window.location = document.URL;
+                        }
+
 
 
                     </script>
@@ -211,7 +227,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
                                     <form action="" method="POST">
                                         <h4 class="modal-title">Please select a rating
 
-                                            <select name="ratingList">
+                                            <select id ="ratingList" name="ratingList" onchange="ratingSelected(value);">
                                                 <option value="0"></option>
                                                 <option value="1">1 - Do not recommend</option>
                                                 <option value="2">2 - Poor</option>
@@ -222,7 +238,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
                                 </div>
 
                                 <div class="modal-footer">
-                                    <input id="submit" name="submit" type="submit" value="Submit">
+                                    <?php echo    "<input id=\"submit\" name=\"submit\" type=\"submit\" value=\"Submit\" onclick=\"carryAuctionID();\">"; ?>
                                 </div>
                                 </form>
 
@@ -231,26 +247,6 @@ $loggedIn_userID = $_SESSION["admin_id"];
                         </div>
                     </div>
         <?php
-
-
-                    if(isset($_POST['submit'])){
-                        if ($_POST["ratingList"] == 0) {
-                            echo "<p style =\"color:red;\">You must select a rating.</p>";
-                        } else {
-                            //set the button to disabled
-                            buyerRated_set_to_true_for_auction($auction_bidded_on['auctionID']);
-                            echo "<script>clicked();</script>";
-
-                            $auctionID=$auction_bidded_on['auctionID'];
-                            $roleID=retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
-                            $ratingValue=$_POST["ratingList"];
-                            send_a_rating($auctionID,$roleID,$ratingValue);
-
-                        }
-                    }
-
-
-
                 } else {
                     echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
                     echo "<td>" ."Not applicable"  . "</td>";
@@ -261,8 +257,24 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 $counter++;
 
             }
-        }
 
+
+        }
+        if(isset($_POST['submit'])){
+            if ($_POST["ratingList"] == 0) {
+                echo "<p style =\"color:red;\">You must select a rating.</p>";
+                echo "<script>carryAuctionID();</script>";
+
+            } else {
+
+                echo "<script>myFunction()</script>";
+
+
+
+
+
+            }
+        }
 
         ?>
 
