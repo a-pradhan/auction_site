@@ -136,7 +136,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                     echo ">Rate seller</button></div></td>";
 
-                 ?>
+                    ?>
                     <script>
 
                         function buttonID(theID){
@@ -149,6 +149,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                         function carryAuctionID() {
 
+                            alert("Khello " + onTrackAuctionID + " " + onTrackRatingSelected);
                             $.post(
                                 "send_rating_for_a_seller.php",
                                 { auctionID_ajax:  onTrackAuctionID,
@@ -198,7 +199,7 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
                         </div>
                     </div>
-        <?php
+                    <?php
                 } else {
                     echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
                     echo "<td>" ."Not applicable"  . "</td>";
@@ -212,6 +213,48 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
 
         }
+
+
+        ?>
+
+
+
+        <?php
+
+        $my_bids_buyerID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
+        $all_my_bids = retrieve_my_bids ($my_bids_buyerID);
+        $counter=0;
+        while ($my_bids = mysqli_fetch_assoc($all_my_bids)){
+
+
+            while ($auction_bidded_on = mysqli_fetch_assoc($auction_bidded_on_set)) {
+
+                ?>
+                <script>
+                    var <?php echo "t{$counter}"; ?> = <?php echo json_encode($auction_bidded_on["auctionEnd"]); ?>;
+
+                    var <?php echo "d{$counter}"; ?> =
+                    Date.createFromMysql(<?php echo "t{$counter}"; ?>);
+
+                    <?php $div_counter = "clock{$counter}"; ?>
+
+                    $(<?php echo "'#" . "{$counter}" . "'"; ?>).countdown(<?php echo "d{$counter}"; ?>, function (event) {
+                        var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+                        $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+                    });
+                </script>
+
+                <?php
+                $counter++;
+            }
+
+        }
+
+
+        ?>
+
+        <?php
+
         if(isset($_POST['submit'])){
             if ($_POST["ratingList"] == 0) {
                 echo "<p style =\"color:red;\">You must select a rating.</p>";
@@ -228,40 +271,6 @@ $loggedIn_userID = $_SESSION["admin_id"];
             }
         }
 
-        ?>
-
-
-
-        <?php
-        $my_bids_buyerID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
-        $all_my_bids = retrieve_my_bids ($my_bids_buyerID);
-        $counter=0;
-        while ($my_bids = mysqli_fetch_assoc($all_my_bids)){
-
-
-                while ($auction_bidded_on = mysqli_fetch_assoc($auction_bidded_on_set)) {
-
-                    ?>
-                    <script>
-                        var <?php echo "t{$counter}"; ?> = <?php echo json_encode($auction_bidded_on["auctionEnd"]); ?>;
-
-                        var <?php echo "d{$counter}"; ?> =
-                        Date.createFromMysql(<?php echo "t{$counter}"; ?>);
-
-                        <?php $div_counter = "clock{$counter}"; ?>
-
-                        $(<?php echo "'#" . "{$counter}" . "'"; ?>).countdown(<?php echo "d{$counter}"; ?>, function (event) {
-                            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
-                            $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
-                        });
-                    </script>
-
-                    <?php
-                    $counter++;
-                }
-
-            }
-
 
         ?>
 
@@ -272,15 +281,15 @@ $loggedIn_userID = $_SESSION["admin_id"];
 </div>
 
 
-    <!-- Footer -->
-    <footer>
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; Your Website 2014</p>
-            </div>
+<!-- Footer -->
+<footer>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>Copyright &copy; Your Website 2014</p>
         </div>
-        <!-- /.row -->
-    </footer>
+    </div>
+    <!-- /.row -->
+</footer>
 
 </div>
 <!-- /.container -->

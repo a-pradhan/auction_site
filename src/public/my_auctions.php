@@ -247,7 +247,6 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
             <?php
             $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
-            //            echo htmlentities($my_auctions_sellerID);
             $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
             $counter=0;
             //A second loop to assign left to each pre-defined <div> in precvious while-loop

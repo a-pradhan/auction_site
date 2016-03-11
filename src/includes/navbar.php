@@ -1,11 +1,8 @@
->
 
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom CSS -->
 <link href="../css/1-col-portfolio.css" rel="stylesheet">
-
-
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
@@ -17,17 +14,17 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="auction_list.php">Auction Vault</a>
+            <a class="navbar-brand" href="auction_list.php" onclick="MyFunction();">Auction Vault</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <div class="floatleft"></div>
                 <li>
-                    <a href="my_auctions.php"><div id="sellNotification"  style="position: absolute; top: 30; right;font-size:60%; color:navajowhite;">New update!</div>My Auctions</a>
+                    <a href="my_auctions.php"  onclick="myAuctions()"><div id="myAuctions" class="glyphicon glyphicon-flag" aria-hidden="true" style="color: orangered; display: none;"></div>My Auctions</a>
                 </li>
                 <li>
-                    <a href="my_bids.php"><div id="bidNotification"  style="position: absolute; top: 30; right;font-size:60%; color:navajowhite;">New update!</div>My Bids</a>
+                    <a href="my_bids.php" onclick="myBids()"><div id="myBids" class="glyphicon glyphicon-flag" aria-hidden="true" style="color: orangered; display:none;"></div>My Bids</a>
                 </li>
                 <li>
                     <a href="watch_list.php">Watch-list</a>
@@ -45,5 +42,18 @@
     </div>
     <!-- /.navbar-collapse -->
     </div>
+
+    <script>
+        function myAuctions() {
+            document.getElementById("myAuctions").style.display = "block";
+        }
+        function myBids() {
+            document.getElementById("myBids").style.display = "block";
+        }
+
+    </script>
+
+
+
     <!-- /.container -->
 </nav>
