@@ -24,10 +24,10 @@
             <ul class="nav navbar-nav">
                 <div class="floatleft"></div>
                 <li>
-                    <a href="my_auctions.php"><div id="sellNotification"  style="position: absolute; top: 30; right;font-size:60%; color:navajowhite;">New update!</div>My Auctions</a>
+                    <a href="my_auctions.php"> Auctions</a>
                 </li>
                 <li>
-                    <a href="my_bids.php"><div id="bidNotification"  style="position: absolute; top: 30; right;font-size:60%; color:navajowhite;">New update!</div>My Bids</a>
+                    <a href="my_bids.php">My Bids</a>
                 </li>
                 <li>
                     <a href="watch_list.php">Watch-list</a>
