@@ -1,5 +1,7 @@
 <?php
+require_once("../includes/general_functions.php");
 // completely destroy the session
+
 
 // set session to empty array
 $_SESSION = array();
