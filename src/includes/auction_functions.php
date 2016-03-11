@@ -249,6 +249,14 @@ function find_all_non_live_auctions()
         return $query_sent;
     }
 
+    function retrieve_buyer_roleID_from_specified_auctionID($auctionID){
+        global $connection;
+        $query = "SELECT roleID FROM Auction AS a LEFT JOIN Bid AS b ON a.bidID = b.bidID WHERE a.auctionID ={$auctionID}";
+        $query_sent =mysqli_query($connection,$query);
+        confirm_query($query_sent);
+        return $query_sent;
+    }
+
     function bid_an_amount($chosen_auction_ID,$bidAmount,$loggedIn_userID)
     {
         $buyer_roleID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);

@@ -13,8 +13,8 @@ echo htmlentities($_POST['rating_ajax']) . "<br />";
 
 $auctionID =$_POST['auctionID_ajax'] ;
 $auctionID_asNumber = intval($auctionID);
-$roleID =$_POST['roleID_ajax'];
-$roleID_asNumber = intval($roleID);
+//$roleID =$_POST['roleID_ajax'];
+$roleID_asNumber = retrieve_buyer_roleID_from_specified_auctionID($auctionID_asNumber);
 $rating_value = $_POST['rating_ajax'];
 $rating_value_asNumber = intval($rating_value);
 

@@ -202,13 +202,13 @@ $loggedIn_userID = $_SESSION["admin_id"];
                             }
 
                             function carryAuctionID() {
-                                <?php $roleID=retrieve_sellerID_from_loggedIn_userID($loggedIn_userID); ?>
+                            <?php //$roleID=retrieve_buyer_roleID_from_specified_auctionID(); ?>
 
                                 var onTrackRoleID= <?php echo json_encode($roleID); ?>;
                                 $.post(
-                                    "send_a_rating.php",
+                                    "send_a_rating_for_a_buyer.php",
                                     { auctionID_ajax:  onTrackAuctionID,
-                                      roleID_ajax: onTrackRoleID,
+//                                      roleID_ajax: onTrackRoleID,
                                       rating_ajax: onTrackRatingSelected},
                                     function(data) {
 
