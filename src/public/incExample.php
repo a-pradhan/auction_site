@@ -67,6 +67,9 @@
 
     </script>
 
+
+
+
     <!--PHP file my_ajax_receiver.php-->
     <?php
 
