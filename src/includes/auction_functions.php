@@ -260,12 +260,10 @@ function find_all_non_live_auctions()
     function bid_an_amount($chosen_auction_ID,$bidAmount,$loggedIn_userID)
     {
         $buyer_roleID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
-
         global $connection;
-        $query="INSERT INTO `Bid` (auctionID, bidTimestamp, bidAmount,roleID) VALUES ( {$chosen_auction_ID} ,1999, '{$bidAmount}', {$buyer_roleID})";
-
+        $query="INSERT INTO `Bid` (auctionID, bidAmount,roleID) VALUES ({$chosen_auction_ID} , {$bidAmount}, {$buyer_roleID})";
         $bid_sent =mysqli_query($connection, $query);
-        confirm_query($bid_sent);
+        //confirm_query($bid_sent);
 
     }
 

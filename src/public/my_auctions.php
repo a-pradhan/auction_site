@@ -155,14 +155,19 @@ $loggedIn_userID = $_SESSION["admin_id"];
                             }
 
                             function carryAuctionID() {
-                                $.post(
-                                    "send_a_rating_for_a_buyer.php",
-                                    { auctionID_ajax:  onTrackAuctionID,
-                                      rating_ajax: onTrackRatingSelected},
-                                    function(data) {
+                                if (onTrackRatingSelected == "0"){
+                                    alert("You cannot submit an empty rating.");
+                                } else {
+                                    $.post(
+                                        "send_a_rating_for_a_buyer.php",
+                                        { auctionID_ajax:  onTrackAuctionID,
+                                            rating_ajax: onTrackRatingSelected},
+                                        function(data) {
 
-                                    }
-                                );
+                                        }
+                                    );
+
+                                }
 
                             }
 

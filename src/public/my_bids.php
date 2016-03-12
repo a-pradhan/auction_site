@@ -148,16 +148,18 @@ $loggedIn_userID = $_SESSION["admin_id"];
                         }
 
                         function carryAuctionID() {
+                            if (onTrackRatingSelected == "0"){
+                                alert("You cannot submit an empty rating.");
+                            } else {
+                                $.post(
+                                    "send_rating_for_a_seller.php",
+                                    { auctionID_ajax:  onTrackAuctionID,
+                                        rating_ajax: onTrackRatingSelected},
+                                    function(data) {
 
-                            alert("Khello " + onTrackAuctionID + " " + onTrackRatingSelected);
-                            $.post(
-                                "send_rating_for_a_seller.php",
-                                { auctionID_ajax:  onTrackAuctionID,
-                                    rating_ajax: onTrackRatingSelected},
-                                function(data) {
-
-                                }
-                            );
+                                    }
+                                );
+                            }
 
                         }
 
@@ -214,18 +216,20 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
         }
 
-
-        ?>
-
-
-
+?>
         <?php
 
         $my_bids_buyerID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
         $all_my_bids = retrieve_my_bids ($my_bids_buyerID);
         $counter=0;
         while ($my_bids = mysqli_fetch_assoc($all_my_bids)){
+        $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($my_bids['bidID']));
+        $my_latest_bidAmount = "£ " . $bid_amount_set['bidAmount'];
 
+
+
+
+        $auction_bidded_on_set = retrieve_my_auctions_for_a_given_auctionID ($my_bids['auctionID']);
 
             while ($auction_bidded_on = mysqli_fetch_assoc($auction_bidded_on_set)) {
 
@@ -245,9 +249,9 @@ $loggedIn_userID = $_SESSION["admin_id"];
                 </script>
 
                 <?php
-                $counter++;
-            }
 
+            }
+            $counter++;
         }
 
 

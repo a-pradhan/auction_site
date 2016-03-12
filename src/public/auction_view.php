@@ -140,6 +140,7 @@
                 <?php
                 //Code for verifying the bidAmount and essential validations
                 if (isset($_POST['bid'])) {
+
                     $auctionLive_status = confirm_auction_is_live ($chosen_auction_ID);
 
                     if ($auctionLive_status == 0) {
@@ -147,45 +148,52 @@
                     }
                     else {
                         if ($can_I_bid == 0) {
-                        //the bid would not be posted
+
+                            //the bid would not be posted
 
                         } else {
 
 
-                        global $connection;
-                        $new_bid_amount = mysqli_real_escape_string($connection, $_POST['bidField']);
-                        if ($new_bid_amount == null) {
-                        } else {
-                            if ($chosen_auction_info['bidID'] == null) {
-                                //The first ever bid for an auction
+                            global $connection;
 
-
-                                bid_an_amount($chosen_auction_ID, $new_bid_amount, $loggedIn_userID);
-                                $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
-                                $bidID = $bidID_for_recent_bid['bidID'];
-                                update_bid_on_auction($chosen_auction_ID, $bidID);
-
+                            $new_bid_amount = mysqli_real_escape_string($connection, $_POST['bidField']);
+                            if ($new_bid_amount == null) {
                             } else {
-                                $previous_bidID = $chosen_auction_info['bidID'];
-                                $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($previous_bidID));
-                                $previous_bid_amount = $bid_amount_set['bidAmount'];
 
-                                if ($new_bid_amount > $previous_bid_amount) {
+                                if ($chosen_auction_info['bidID'] == null) {
+                                    //The first ever bid for an auction
+
                                     bid_an_amount($chosen_auction_ID, $new_bid_amount, $loggedIn_userID);
+
+
                                     $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
+
                                     $bidID = $bidID_for_recent_bid['bidID'];
                                     update_bid_on_auction($chosen_auction_ID, $bidID);
-                                    echo "Bid successful!";
+
                                 } else {
-                                    //new bid amount is too low, must be higher than previous amount!
-                                    echo "Your bid must be higher than the latest bidder!";
+
+
+                                    $previous_bidID = $chosen_auction_info['bidID'];
+                                    $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($previous_bidID));
+                                    $previous_bid_amount = $bid_amount_set['bidAmount'];
+
+                                    if ($new_bid_amount > $previous_bid_amount) {
+
+                                        bid_an_amount($chosen_auction_ID, $new_bid_amount, $loggedIn_userID);
+
+                                        $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
+                                        $bidID = $bidID_for_recent_bid['bidID'];
+                                        update_bid_on_auction($chosen_auction_ID, $bidID);
+                                        echo "Bid successful!";
+                                    } else {
+                                        //new bid amount is too low, must be higher than previous amount!
+                                        echo "Your bid must be higher than the latest bidder!";
+                                    }
                                 }
+
                             }
-                            //                           $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $bid_amount));
-                            //                           $bidID = $bidID_for_recent_bid['bidID'];
-                            //                           $bidAmount= mysqli_fetch_assoc(find_bidAmount_for_bidID($bidID));
                         }
-                    }
                     }
                 }
                 ?>
