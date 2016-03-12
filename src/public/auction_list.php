@@ -14,7 +14,7 @@
 
 <?php require("../includes/layouts/header.php"); ?>
 <?php require("../includes/layouts/navbar.php"); ?>
-
+<?php echo $_SESSION['message']; ?>
 
 <!-- Page Content -->
 <div class="container">

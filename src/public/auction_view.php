@@ -291,6 +291,9 @@
                     <h6 class="pull-right" style="color:#880000">Time left ~
                         <div class="pull-right" id="clock"></div>
                     </h6>
+                    <!-- TODO change auction to itemID for the auction_view page to avoid confusion as it currently represents the itemID not the auctionID   -->
+                    <a class="btn btn-primary" href="watch_auction.php?auction=<?php echo urlencode($chosen_auction_ID);
+                    ?>&item=<?php echo urlencode($_GET['auction']); ?>">Add to Watch List</a>
 
                     <script>
                         //hilios.github.io/jQuery.countdown/ - reference for the timer

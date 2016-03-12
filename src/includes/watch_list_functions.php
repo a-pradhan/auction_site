@@ -29,10 +29,6 @@ function find_users_watched_items($userID)
 }
 
 
-
-
-
-
 // deletes a watched auction from a user's watch list
 function delete_auction_from_watchlist($watchID)
 {
@@ -47,51 +43,38 @@ function delete_auction_from_watchlist($watchID)
 }
 
 // checks to see if an auction is already in the users watch list
-function is_auction_in_watchlist($userID) {
+function is_auction_in_watchlist($userID, $auctionID)
+{
 
     global $connection;
 
-    $query = "SELECT auctionID FROM WatchList WHERE userID = $userID AND auctionID = {$_GET['auction']}";
+    $query = "SELECT auctionID FROM WatchList WHERE userID = {$userID} AND auctionID = {$auctionID}";
     $watched_auctions_set = mysqli_query($connection, $query);
 
-    // returns true if the user is already watching the auction, otherwise returns false
+    // returns true if the user is already watching the auction, otherwismysqli_num_rows($watched_auctions_set) > 0e returns false
     return mysqli_num_rows($watched_auctions_set) > 0 ? true : false;
 
 }
 
-
-
-
-
-
 // add an auction to the users watch list. Returns true if successful otherwise adds
 // a message to the $_SESSION['message'] variable
 
-
-function add_auction_to_watchlist($userID, $auctionID) {
+function add_auction_to_watchlist($userID, $auctionID)
+{
     global $connection;
 
-    $safe_userID = mysql_prep($userID);
-    $safe_auctionID = mysql_prep($auctionID);
-
-    if (is_auction_in_watchlist($safe_userID)) {
-        // auction is already being watched
-        $_SESSION['message'] = "You are already watching this auction";
-        redirect_to("auction_view.php?auction={$safe_auctionID}");
-    } else {
-        // auction is not being watched
-        // create new record in watch list
-        $query = "INSERT INTO WatchList ";
-        $query = "VALUES ($safe_auctionID, $safe_userID)";
-
-        $result = mysqli_query($connection, $query);
-        return $result;
-
-    }
+    $safe_userID = $userID;
+    $safe_auctionID = $auctionID;
 
 
+    $query = "INSERT INTO WatchList (";
+    $query .= "auctionID, userID ) ";
+    $query .= "VALUES ({$safe_auctionID}, {$safe_userID})";
+
+    $result = mysqli_query($connection, $query);
+
+    return $result;
 
 }
-
 
 ?>

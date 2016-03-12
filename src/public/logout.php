@@ -1,10 +1,12 @@
 <?php
+require_once ("../includes/session.php");
 require_once("../includes/general_functions.php");
 // completely destroy the session
 
 
 // set session to empty array
 $_SESSION = array();
+
 
 // if cookie with that session name exists make it expire
 if (isset($_COOKIE[session_name()])) {

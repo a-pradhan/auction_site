@@ -122,7 +122,7 @@ if (isset($_POST['submit'])) {
 
     <div class="panel panel-default panel-shadow" style="width: 300px">
         <div class="container-fluid" align="center">
-            <img src="../images/LOGO.png" class="img-responsive center-block">
+            <img src="../images/logo.png" class="img-responsive center-block">
         </div>
         <hr>
         <form class="form" action="loginPage.php" method="post">
