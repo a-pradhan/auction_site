@@ -21,10 +21,10 @@
             <ul class="nav navbar-nav">
                 <div class="floatleft"></div>
                 <li>
-                    <a href="my_auctions.php"  onclick="myAuctions()"><div id="myAuctions" class="glyphicon glyphicon-flag" aria-hidden="true" style="color: orangered; display: none;"></div>My Auctions</a>
+                    <a href="my_auctions.php"><div id="myAuctions" class="glyphicon glyphicon-flag" aria-hidden="true" style="color: orangered; display: none;"></div>My Auctions</a>
                 </li>
                 <li>
-                    <a href="my_bids.php" onclick="myBids()"><div id="myBids" class="glyphicon glyphicon-flag" aria-hidden="true" style="color: orangered; display:none;"></div>My Bids</a>
+                    <a href="my_bids.php"><div id="myBids" class="glyphicon glyphicon-flag" aria-hidden="true" style="color: orangered; display:none;"></div>My Bids</a>
                 </li>
                 <li>
                     <a href="watch_list.php">Watch-list</a>

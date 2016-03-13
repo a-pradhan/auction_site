@@ -1,4 +1,6 @@
 <?php require_once("db_connection.php") ?>
+<?php require_once("mail.php") ?>
+
 <?php
 
 
@@ -374,6 +376,19 @@ function find_all_non_live_auctions()
         return $userName;
     }
 
+    function find_userEmail_and_userName_for_bidder($roleID){
+        global $connection;
+        $query = "SELECT userEmail, userName ";
+        $query .= "FROM User as u ";
+        $query .= "LEFT JOIN Role as r ";
+        $query .= "ON u.userID=r.userID ";
+        $query .= "WHERE roleID= {$roleID}";
+
+        $userEmail = mysqli_query($connection,$query);
+        confirm_query($userEmail);
+        return $userEmail;
+    }
+
     function confirm_query($result_set) {
       if (!$result_set) {
        die("Database query failed.");
@@ -382,26 +397,40 @@ function find_all_non_live_auctions()
 
 
 
-function filter_categories($columnName)
-{
-    global $connection;
-    $query = "SELECT COLUMN_TYPE ";
-    $query .= "FROM information_schema.COLUMNS ";
-    $query .= "WHERE TABLE_SCHEMA = 'AuctionSite' ";
-    $query .= "AND TABLE_NAME = 'Item' ";
-    $query .= "AND COLUMN_NAME = '{$columnName}' ";
+    function filter_categories($columnName)
+    {
+        global $connection;
+        $query = "SELECT COLUMN_TYPE ";
+        $query .= "FROM information_schema.COLUMNS ";
+        $query .= "WHERE TABLE_SCHEMA = 'AuctionSite' ";
+        $query .= "AND TABLE_NAME = 'Item' ";
+        $query .= "AND COLUMN_NAME = '{$columnName}' ";
 
-    $category_set = mysqli_query($connection, $query);
-    confirm_query($category_set);
+        $category_set = mysqli_query($connection, $query);
+        confirm_query($category_set);
 
-    return $category_set;
-}
+        return $category_set;
+    }
 
-function redirect_to($new_location)
-{
-    header("Location: " . $new_location);
-    exit;
-}
+    function redirect_to($new_location)
+    {
+        header("Location: " . $new_location);
+        exit;
+    }
+
+    function outbid_email($bidderUserName, $bidderEmail, $auctionName, $latestBidAmount, $auctionExpiry) {
+        $message = ("Dear {$bidderUserName}\n\nYou have just been outbid on {$auctionName}, latest bid is £ {$latestBidAmount}. The auction will expire on {$auctionExpiry}.\n\nYours sincerely,\n\nTeam Auction Vault");
+        send_mail($bidderEmail,$message);
+    }
+
+    function watch_list_email($watcherUserName,$watcherEmail, $auctionName, $latestBidAmount, $auctionExpiry) {
+
+    }
+
+    function seller_email($sellerUserName, $sellerEmail, $auctionName, $latestBidAmount, $auctionExpiry) {
+
+    }
+
 
 ?>
 

@@ -171,20 +171,88 @@
                                     $bidID = $bidID_for_recent_bid['bidID'];
                                     update_bid_on_auction($chosen_auction_ID, $bidID);
 
+
+                                    //an email to the seller here
+
+
+                                    //an email to the watcher
+
+
                                 } else {
 
-
+                                    //retrieving the old bidder roleID
                                     $previous_bidID = $chosen_auction_info['bidID'];
                                     $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($previous_bidID));
                                     $previous_bid_amount = $bid_amount_set['bidAmount'];
 
                                     if ($new_bid_amount > $previous_bid_amount) {
 
+                                        $previous_buyer_roleID_set =mysqli_fetch_assoc(retrieve_buyer_roleID_from_specified_auctionID($chosen_auction_ID));
+                                        $previous_bidder_roleID = $previous_buyer_roleID_set['roleID'];
+
                                         bid_an_amount($chosen_auction_ID, $new_bid_amount, $loggedIn_userID);
 
                                         $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
                                         $bidID = $bidID_for_recent_bid['bidID'];
                                         update_bid_on_auction($chosen_auction_ID, $bidID);
+
+
+
+
+                                        //an email to the seller here
+
+
+
+
+                                        //an email to the bidder outbid
+                                        $auctionName = $chosen_live_item_info["itemName"];
+                                        $latestBidAmount = $new_bid_amount;
+                                        $userOutbid_set= mysqli_fetch_assoc(find_userEmail_and_userName_for_bidder($previous_bidder_roleID));
+                                        $bidderUserName= $userOutbid_set['userName'];
+                                        $bidderEmail = $userOutbid_set['userEmail'];
+                                        $auctionExpiry_to_be_formatted =$chosen_auction_info["auctionEnd"];
+                                        $time = strtotime($auctionExpiry_to_be_formatted);
+                                        $newformat = date('D, d F \a\t H:i',$time);
+                                        $auctionExpiry = "" . $newformat;
+
+
+                                        ?>
+
+
+                                        <script>
+
+
+                                            var bidderUserName = <?php echo json_encode($bidderUserName) ?>;
+                                            var bidderEmail = <?php echo json_encode($bidderEmail) ?>;
+                                            var auctionName = <?php echo json_encode($auctionName) ?>;
+                                            var latestBidAmount = <?php echo json_encode($latestBidAmount) ?>;
+                                            var auctionExpiry = <?php echo json_encode($auctionExpiry) ?>;
+
+
+                                                function send_outbid(){
+                                                $.post(
+                                                    "../includes/outbid_email.php",
+                                                    {   bidderUserName_ajax:  bidderUserName,
+                                                        bidderEmail_ajax: bidderEmail,
+                                                        auctionName_ajax: auctionName,
+                                                        latestBidAmount_ajax: latestBidAmount,
+                                                        auctionExpiry_ajax: auctionExpiry},
+                                                    function(data) {
+
+                                                    }
+                                                );
+                                            }
+
+
+                                        </script>
+
+                                        <?php
+                                        echo "<script>send_outbid();</script>";
+
+
+
+                                        //an email to the watcher
+
                                         echo "Bid successful!";
                                     } else {
                                         //new bid amount is too low, must be higher than previous amount!
