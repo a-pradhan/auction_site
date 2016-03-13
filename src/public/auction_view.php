@@ -100,6 +100,10 @@
 </nav>
 <!-- Page Content -->
 <?php
+    if(isset($_SESSION['watch_list_message'])) {
+        echo $_SESSION['watch_list_message'];
+        unset($_SESSION['watch_list_message']);
+    }
     // Retrieve the itemID for the auction selected
     $chosen_auction_item = $_GET["auction"];
     // Retrieve the auction row for the auction selected using the itemID
@@ -291,9 +295,6 @@
                     <h6 class="pull-right" style="color:#880000">Time left ~
                         <div class="pull-right" id="clock"></div>
                     </h6>
-                    <!-- TODO change auction to itemID for the auction_view page to avoid confusion as it currently represents the itemID not the auctionID   -->
-                    <a class="btn btn-primary" href="watch_auction.php?auction=<?php echo urlencode($chosen_auction_ID);
-                    ?>&item=<?php echo urlencode($_GET['auction']); ?>">Add to Watch List</a>
 
                     <script>
                         //hilios.github.io/jQuery.countdown/ - reference for the timer
@@ -320,11 +321,17 @@
                         });
                     </script>
 
+
                     <p><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
 
                     <p><strong>
                             Quantity:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemQuantity"]); ?>
                     </p>
+
+                    <!-- TODO change auction to itemID for the auction_view page to avoid confusion as it currently represents the itemID not the auctionID   -->
+                    <a style="float: right;" class="btn btn-primary" href="watch_auction.php?auction=<?php echo urlencode($chosen_auction_ID);
+                    ?>&item=<?php echo urlencode($_GET['auction']); ?>">Add to Watch List</a>
+
                     <p><strong>
                             Condition:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemCondition"]); ?>
                     </p>

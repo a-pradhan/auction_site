@@ -23,7 +23,7 @@ if (isset($auctionID) && isset($userID)) {
     }
 } else {
     // auction id and/or userID not set in $_GET/$_SESSION
-    $_SESSION['error'] = "Could not save auction to your Watch List. Please try again.";
+    $_SESSION['errors'] = "Could not save auction to your Watch List. Please try again.";
     redirect_to("auction_list.php");
 }
 

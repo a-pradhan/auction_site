@@ -1,5 +1,5 @@
-<?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/session.php"); ?>
+<?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/user.php"); ?>
 <?php require_once("../includes/auction_functions.php"); ?>
 <?php require_once("../includes/validate_live_auctions.php"); ?>
@@ -14,7 +14,10 @@
 
 <?php require("../includes/layouts/header.php"); ?>
 <?php require("../includes/layouts/navbar.php"); ?>
-<?php echo $_SESSION['message']; ?>
+<?php echo message(); ?>
+<?php echo errors(); ?>
+
+
 
 <!-- Page Content -->
 <div class="container">
