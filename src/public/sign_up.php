@@ -96,10 +96,11 @@ if (isset($_POST["submit"])) {
 
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
-    <link href="../css/create_auctionStyling.css" rel="stylesheet">
+
 
     <!-- Custom CSS -->
     <link href="../css/1-col-portfolio.css" rel="stylesheet">
+    <link href="../css/create_auctionStyling.css" rel="stylesheet">
 
 
 
@@ -108,7 +109,9 @@ if (isset($_POST["submit"])) {
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
     <![endif]-->
+
 
 </head>
 
@@ -125,10 +128,10 @@ if (isset($_POST["submit"])) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="#"><img class="navbar-brand" src="../../images/logo2.png" style="padding: 4px"></a>
+            <a href="#"><img class="navbar-brand" src="../images/logo2.png" style="padding: 4px"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="navbar-collapse navbar-gold-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse navbar-gold-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
                     <a href="#">About</a>
@@ -159,32 +162,43 @@ if (isset($_POST["submit"])) {
             </div>
             <form class="form" action="sign_up.php" method="post">
                 <div class="col-sm-4">
-                    <h3 class="text">First Name</h3>
+                    <h3 class="field-title">First Name</h3>
                     <input class="input-lg" type="text" name="first_name" value="<?php echo htmlentities($fName); ?> "/>
-                    <h3 class="text">Last Name</h3>
+                    <h3 class="field-title">Last Name</h3>
                     <input class="input-lg" type="text" name="last_name" value="<?php echo htmlentities($lName); ?> "/>
-                    <h3 class="text">Email</h3>
+                    <h3 class="field-title">Email</h3>
                     <input class="input-lg" type="text" name="email" value="<?php echo htmlentities($userEmail); ?> "/>
                 </div>
                 <div class="col-sm-4">
-                    <h3 class="text">Username</h3>
+                    <h3 class="field-title">Username</h3>
                     <input class="input-lg" type="text" name="username"
                            value="<?php echo htmlentities($userName); ?> "/>
-                    <h3 class="text">Password</h3>
+                    <h3 class="field-title">Password</h3>
                     <input class="input-lg" type="password" name="password" value=""/>
-                    <h3 class="text">Confirm Password</h3>
+                    <h3 class="field-title">Confirm Password</h3>
                     <input class="input-lg" type="password" name="password_confirmation" value=""/><br/><br/>
                 </div>
                 <div class="col-sm-12" align="center">
-                    <input class="btn-gold btn-lg" type="submit" name="submit" value="Complete Sign Up" style="font-size: 30px">
+                    <button class="btn-gold form-control" type="submit" name="submit" value="Complete Sign Up">Complete Sign Up</button>
                 </div>
             </form><!-- all forms include a submit button -->
         </div>
     </div>
-</div>
+
+
 
 <div class="text-danger" align="center">
     <?php echo form_errors(errors()); ?></div>
+    <footer>
+        <hr>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; Team 40 Money Motivation</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+</div>
 </body>
 
 </html>

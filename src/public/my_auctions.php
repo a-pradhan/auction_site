@@ -56,8 +56,8 @@ $loggedIn_userID = $_SESSION["userID"];
 <div class="container">
 
     <div class="col-sm-12">
+        <h1 class="page-title">My Auctions</h1>
         <div class="row panel panel-default panel-shadow">
-            <h2>My Auctions</h2>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -133,7 +133,7 @@ $loggedIn_userID = $_SESSION["userID"];
 
                             echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
                             echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
-                            echo "<button type=\"button\" id=\"rate\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
+                            echo "<button type=\"button\" id=\"rate\"  class=\"btn btn-black\" data-toggle=\"modal\" data-target=\"#myModal\"";
 
                             $seller_has_rated_this_auction_set = mysqli_fetch_assoc(has_seller_rated_this_auction($my_auction['auctionID']));
                             if ($seller_has_rated_this_auction_set['sellerRated'] == 1) {

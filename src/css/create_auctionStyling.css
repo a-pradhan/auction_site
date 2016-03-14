@@ -11,11 +11,23 @@
     background-color: #ffcc00;
     font-family: "Gill Sans";
     color: #1b1b1b;
+    font-size: 18px;
+    padding: 4px;
+}
+.btn-gold:hover{
+    background-color: #1b1b1b;
+    color: #ffcc00;
 }
 .btn-black{
     background-color: #1b1b1b;
     font-family: "Gill Sans";
     color: #ffcc00;
+    font-size: 18px;
+    padding: 4px;
+}
+.btn-black:hover{
+    background-color: #ffcc00;
+    color: #1b1b1b;
 }
 
 .navbar-gold{
@@ -128,4 +140,109 @@ fieldset[disabled] .navbar-gold .btn-link:hover,
 .navbar-gold .btn-link[disabled]:focus,
 fieldset[disabled] .navbar-gold .btn-link:focus {
     color: #444;
+}
+.field-title{
+    font-family: "Gill Sans";
+}
+.page-title{
+    font-family: Futura;
+}
+.pagination-gold {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+.pagination-gold > li {
+    display: inline;
+}
+.pagination-gold > li > a,
+.pagination-gold > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #1b1b1b;
+    text-decoration: none;
+    background-color: #ffcc00;
+    border: 1px solid #ddd;
+}
+.pagination-gold > li:first-child > a,
+.pagination-gold > li:first-child > span {
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.pagination-gold > li:last-child > a,
+.pagination-gold > li:last-child > span {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.pagination-gold > li > a:hover,
+.pagination-gold > li > span:hover,
+.pagination-gold > li > a:focus,
+.pagination-gold > li > span:focus {
+    z-index: 2;
+    color: #1b1b1b;
+    background-color: #ffcc00;
+    border-color: #ddd;
+}
+.pagination-gold > .active > a,
+.pagination-gold > .active > span,
+.pagination-gold > .active > a:hover,
+.pagination-gold > .active > span:hover,
+.pagination-gold > .active > a:focus,
+.pagination-gold > .active > span:focus {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #1b1b1b;
+    border-color: #ffcc00;
+}
+.pagination-gold > .disabled > span,
+.pagination-gold > .disabled > span:hover,
+.pagination-gold > .disabled > span:focus,
+.pagination-gold > .disabled > a,
+.pagination-gold > .disabled > a:hover,
+.pagination-gold > .disabled > a:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+}
+.pagination-gold-lg > li > a,
+.pagination-gold-lg > li > span {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+}
+.pagination-gold-lg > li:first-child > a,
+.pagination-gold-lg > li:first-child > span {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+.pagination-gold-lg > li:last-child > a,
+.pagination-gold-lg > li:last-child > span {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.pagination-gold-sm > li > a,
+.pagination-gold-sm > li > span {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+.pagination-gold-sm > li:first-child > a,
+.pagination-gold-sm > li:first-child > span {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.pagination-gold-sm > li:last-child > a,
+.pagination-gold-sm > li:last-child > span {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.rd{
+    color: #c6252a;
 }

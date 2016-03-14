@@ -16,15 +16,18 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/html">
 <head>
+    <title>Create Auction</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css"/>
-    <link href="../css/create_auctionStyling.css" rel="stylesheet"/>
+
     <link href="../css/bootstrap.min.css.map" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css"/>
+
 
     <!-- Custom CSS -->
     <link href="../css/1-col-portfolio.css" rel="stylesheet">
-
-
+    <link href="../css/create_auctionStyling.css" rel="stylesheet"/>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery.datetimepicker.full.js"></script>
 
 </head>
 <body style="background-color: #dbdbdb">
@@ -195,33 +198,29 @@ function test_input($data)
 <div class="container">
 
     <div class="col-sm-12">
+        <h1 class="page-title">Create Auction
+            <small>Money motivation</small>
+        </h1>
         <!-- Page Heading -->
-        <div class="row"> <!--WHOLE PAGE -->
-            <div class="col-md-12">
-                <h2 class="page-header">Create Auction
-                    <small>Money motivation</small>
-                </h2>
-            </div>
-        </div>
         <!-- Search and filtering -->
         <form class="form" method="post" name="createAuctionForm" action="create_Auction.php"
               enctype="multipart/form-data">
 
             <div class="row panel panel-default panel-shadow">
                 <div class="col-sm-12">
-                    <h2>Item info</h2>
+                    <h2 class="page-title">Item info</h2>
                     <hr>
                 </div>
                 <div class="col-sm-6">
-                    <h4>Item Name</h4>
+                    <h4 class="field-title">Item Name</h4>
                     <input class="input-sm" name="itemNameField" value="<?php echo($_POST['itemNameField']) ?>"
                            style="width: 300px">
-                    <span class="error"><?php echo $itemNameErr ?></span>
-                    <h4>Quantity</h4>
+                    <span class="error rd"><?php echo $itemNameErr ?></span>
+                    <h4 class="field-title" >Quantity</h4>
                     <input class="input-sm" name="itemQuantityField"
                            value="<?php echo($_POST['itemQuantityField']) ?>">
-                    <span class="error"><?php echo $itemQuantityErr ?></span>
-                    <h4>Item Category</h4>
+                    <span class="error rd"><?php echo $itemQuantityErr ?></span>
+                    <h4 class="field-title">Item Category</h4>
 
                     <select name="itemCategoryField" value="<?php echo($_POST['itemCategoryField']) ?>">
                         <option value=""></option>
@@ -232,21 +231,21 @@ function test_input($data)
                         <option value="Jewellry">Jewellry</option>
                         <option value="Miscellaneous">Miscellaneous</option>
                     </select>
-                    <span class="error"><?php echo $itemCategoryErr ?></span>
-                    <h4>Item Condition</h4>
+                    <span class="error rd"><?php echo $itemCategoryErr ?></span>
+                    <h4 class="field-title">Item Condition</h4>
                     <select name="itemConditionField" value="<?php echo($_POST['itemConditionField']) ?>">
                         <option value=""></option>
                         <option value="Used">Used</option>
                         <option value="Used - Like New">Used - Like New</option>
                         <option value="New">New</option>
                     </select>
-                    <span class="error"><?php echo $itemConditionErr ?></span>
+                    <span class="error rd"><?php echo $itemConditionErr ?></span>
                 </div>
                 <div class="col-sm-6">
-                    <h4>Item Description</h4>
-                        <textarea class="itemDescription"
+                    <h4 class="field-title">Item Description</h4>
+                        <textarea class="form-control" style="height: 120px"
                                   name="itemDescriptionField"><?php echo($_POST['itemDescriptionField']) ?></textarea>
-                    <span class="error"><?php echo $itemDescriptionErr ?></span>
+                    <span class="error rd"><?php echo $itemDescriptionErr ?></span>
                 </div>
 
             </div>
@@ -254,7 +253,7 @@ function test_input($data)
             <hr>
             <div class="row panel panel-default panel-shadow" style="padding: 20px">
                 <div class="col-sm-12">
-                    <h2>Auction info</h2>
+                    <h2 class="page-title">Auction info</h2>
                     <hr>
                 </div>
                 <div class="col-sm-6">
@@ -262,21 +261,21 @@ function test_input($data)
 <!--                    <input class="input-sm" name="auctionNameField" width="300px"-->
 <!--                           value="--><?php //echo($_POST['auctionNameField']) ?><!--">-->
 <!--                    <span class="error">--><?php //echo $auctionNameErr ?><!--</span>-->
-                    <h4>Reserve Price</h4>
+                    <h4 class="field-title">Reserve Price</h4>
                     <input class="input-sm" name="startingPriceField"
                            value="<?php echo($_POST['startingPriceField']) ?>">
-                    <span class="error"><?php echo $startingPriceErr ?></span>
-                    <h4>Auction Start Date</h4>
+                    <span class="error rd"><?php echo $startingPriceErr ?></span>
+                    <h4 class="field-title">Auction Start Date</h4>
                     <input type="text" class="datetimepicker" name="AuctionStartDateField"
                            value="<?php echo($_POST['AuctionStartDateField']) ?>">
-                        <span class="warning"
+                        <span class="error rd"
                               value="<?php echo $auctionStartDateErr ?>"><?php echo $auctionStartDateErr ?></span>
 
 
-                    <h4>Auction End Date</h4>
+                    <h4 class="field-title">Auction End Date</h4>
                     <input type="datetime" class="datetimepicker" name="AuctionEndDateField"
                            value="<?php echo($_POST['AuctionEndDateField']) ?>">
-                    <span class="error"><?php echo $auctionEndDateErr ?></span>
+                    <span class="error rd"><?php echo $auctionEndDateErr ?></span>
 
                     <br/>
                 </div>
@@ -314,8 +313,7 @@ function test_input($data)
 </div>
 
 </body>
-<script src="../js/jquery.js"></script>
-<script src="../js/jquery.datetimepicker.full.js"></script>
+
 <script type="text/javascript">
     $('.datetimepicker').datetimepicker({format: "Y-m-d h:m:s"});
 

@@ -49,7 +49,7 @@ $watched_auction_set = mysqli_query($connection, $query);
 <!-- header -->
 <?php include("../includes/layouts/header.php") ?>
 <!--navbar-->
-<body style="background-color: #dbdbdb">
+<body style="background-color:#dbdbdb;">
 <?php include("../includes/layouts/navbar.php") ?>
 
 <!-- Display list of watched auctions  -->
@@ -58,8 +58,10 @@ $watched_auction_set = mysqli_query($connection, $query);
 
         <!-- Page Heading -->
         <div class="row"> <!--WHOLE PAGE -->
+            <h1 class="page-title">My Watch List</h1>
+            <hr>
             <div class="col-md-12">
-                <h2 class="page-header">Watch List</h2>
+
                 <?php echo mysqli_error($connection); ?>
 
 
@@ -145,5 +147,13 @@ $watched_auction_set = mysqli_query($connection, $query);
 
 
     <!-- Footer -->
-    <?php include("../includes/layouts/footer.php") ?>
+        <hr>
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Team 40 Money Motivation</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
 </body>

@@ -126,9 +126,9 @@ if (isset($_POST['submit'])) {
         </div>
         <hr>
         <form class="form" action="loginPage.php" method="post">
-            <h3 class="text-inverse" align="left">Username</h3>
+            <h3 class="field-title" align="left">Username</h3>
             <input class="input-lg" type="text" name="username" placeholder="Username"><br>
-            <h3 class="text-inverse" align="left">Password</h3>
+            <h3 class="field-title" align="left">Password</h3>
             <input class="input-lg" type="password" name="password" placeholder="Password"><br><br>
             <button class="btn-gold form-control" type="submit" name="submit" value="Log in">Log In</button>
             <div style="padding-top: 5px">

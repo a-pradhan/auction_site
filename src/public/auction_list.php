@@ -23,9 +23,9 @@ $loggedIn_userID = $_SESSION["userID"];
     <!-- Page Heading -->
     <div class="row">
         <div class="col-md-12">
-            <h2 class="page-header">Live auctions
+            <h1 class="page-title">Live Auctions
                 <small>Money motivation</small>
-            </h2>
+            </h1>
         </div>
     </div>
     <!-- Search and filtering -->
@@ -147,10 +147,10 @@ $loggedIn_userID = $_SESSION["userID"];
         echo "<div class=\"row panel panel-default panel-shadow\">";
         echo "Live! <br>";
         echo "<div class=\"row\">";
-        echo "<div class=\"col-md-3\">";
-        echo "<a href=\"#\">";
+        echo "<div class=\"col-md-6\">";
+        //echo "<a href=\"#\">";
         echo "<img class=\"img-responsive\" src=\"../itemImages/" . $live_item_info["itemPhoto"] . "\" alt=\"\">";
-        echo "</a>";
+        //echo "</a>";
         echo "</div>";
         echo "<div class=\"col-md-6\">";
         echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
@@ -158,7 +158,7 @@ $loggedIn_userID = $_SESSION["userID"];
         echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
         echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
         echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
-        echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+        echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-black\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
 
         echo "</div>";
         echo "</div>";
@@ -175,7 +175,7 @@ $loggedIn_userID = $_SESSION["userID"];
     <!-- Pagination -->
     <div class="row text-center">
         <div class="col-lg-12">
-            <ul class="pagination">
+            <ul class="pagination-gold">
                 <li>
                     <a href="#">&laquo;</a>
                 </li>

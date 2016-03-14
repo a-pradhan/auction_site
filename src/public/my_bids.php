@@ -24,7 +24,7 @@ $loggedIn_userID = $_SESSION["userID"];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Auction Vault</title>
+    <title>My Bids</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -56,10 +56,10 @@ $loggedIn_userID = $_SESSION["userID"];
 <div class="container">
 
     <div class="col-sm-12">
-
+        <h1 class="page-title">My Bids</h1>
         <div class="row panel panel-default panel-shadow">
             <div class="col-sm-12">
-                <h2>My Bids</h2>
+
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
