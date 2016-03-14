@@ -49,7 +49,7 @@ if (isset($_POST["submit"])) {
     $query .= ")";
     $result = mysqli_query($connection, $query);
 
-    $user_id = (int) mysqli_insert_id($connection);
+    $user_id = (int)mysqli_insert_id($connection);
 
     // create user's Buyer account
     $query1 = "INSERT INTO Role (";
@@ -92,10 +92,11 @@ if (isset($_POST["submit"])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login Page</title>
+    <title>Sign Up Page</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/create_auctionStyling.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="../css/1-col-portfolio.css" rel="stylesheet">
@@ -122,7 +123,7 @@ if (isset($_POST["submit"])) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="#"><img class="navbar-brand" src="../../images/logo2.png"></a>
+            <a href="#"><img class="navbar-brand" src="../../images/logo2.png" style="padding: 4px"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -137,33 +138,46 @@ if (isset($_POST["submit"])) {
                     <a href="#">Contact</a>
                 </li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="loginPage.php">Log in</a>
+                </li>
+            </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
-<div class="container-fluid" align="center">
+<div class="container">
+    <div class="col-sm-12">
 
-    <div class="panel panel-default panel-shadow" style="width: 300px">
-        <div class="container-fluid" align="center">
-            <img src="../images/logo2.png" class="img-responsive center-block">
+        <div class="row panel panel-default panel-shadow">
+            <div class="col-sm-4" style="padding-top: 45px">
+                <img src="../images/logo2.png" class="img-responsive center-block">
+            </div>
+            <form class="form" action="sign_up.php" method="post">
+                <div class="col-sm-4">
+                    <h3 class="text">First Name</h3>
+                    <input class="input-lg" type="text" name="first_name" value="<?php echo htmlentities($fName); ?> "/>
+                    <h3 class="text">Last Name</h3>
+                    <input class="input-lg" type="text" name="last_name" value="<?php echo htmlentities($lName); ?> "/>
+                    <h3 class="text">Email</h3>
+                    <input class="input-lg" type="text" name="email" value="<?php echo htmlentities($userEmail); ?> "/>
+                </div>
+                <div class="col-sm-4">
+                    <h3 class="text">Username</h3>
+                    <input class="input-lg" type="text" name="username"
+                           value="<?php echo htmlentities($userName); ?> "/>
+                    <h3 class="text">Password</h3>
+                    <input class="input-lg" type="password" name="password" value=""/>
+                    <h3 class="text">Confirm Password</h3>
+                    <input class="input-lg" type="password" name="password_confirmation" value=""/><br/><br/>
+                </div>
+                <div class="col-sm-12" align="center">
+                    <input class="btn-gold btn-lg" type="submit" name="submit" value="Complete Sign Up">
+                </div>
+            </form><!-- all forms include a submit button -->
         </div>
-        <hr>
-        <form class="form" action="sign_up.php" method="post">
-            <h3 class="text">First Name</h3>
-            <input class="input-lg" type="text" name="first_name" value="<?php echo htmlentities($fName); ?> "/>
-            <h3 class="text">Last Name</h3>
-            <input class="input-lg" type="text" name="last_name" value="<?php echo htmlentities($lName); ?> "/>
-            <h3 class="text">Email</h3>
-            <input class="input-lg" type="text" name="email" value="<?php echo htmlentities($userEmail); ?> "/>
-            <h3 class="text">Username</h3>
-            <input class="input-lg" type="text" name="username" value="<?php echo htmlentities($userName); ?> "/>
-            <h3 class="text">Password</h3>
-            <input class="input-lg" type="password" name="password" value=""/>
-            <h3 class="text">Confirm Password</h3>
-            <input class="input-lg" type="password" name="password_confirmation" value=""/><br /><br />
-            <input class="btn-gold btn-lg" type="submit" name="submit" value="Complete Sign Up">
-        </form><!-- all forms include a submit button -->
     </div>
 </div>
 

@@ -14,6 +14,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/create_auctionStyling.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="../../css/1-col-portfolio.css" rel="stylesheet">

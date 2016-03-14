@@ -100,7 +100,7 @@
             <div class="col-md-5">
             <div class="thumbnail">
                 <?php //retrieves the name of the photo to be shown ?>
-                <img class="img-responsive" src="../images/<?php echo $chosen_live_item_info["itemPhoto"] ?>" alt="">
+                <img class="img-responsive" src="../itemImages/<?php echo $chosen_live_item_info["itemPhoto"] ?>" alt="">
             </div>
         </div>
 
@@ -285,7 +285,7 @@
                     </p>
 
                     <!-- TODO change auction to itemID for the auction_view page to avoid confusion as it currently represents the itemID not the auctionID   -->
-                    <a style="float: right;" class="btn btn-primary" href="watch_auction.php?auction=<?php echo urlencode($chosen_auction_ID);
+                    <a style="float: right;" class="btn btn-gold" href="watch_auction.php?auction=<?php echo urlencode($chosen_auction_ID);
                     ?>&item=<?php echo urlencode($_GET['auction']); ?>">Add to Watch List</a>
 
                     <p><strong>

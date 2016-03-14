@@ -6,8 +6,8 @@
 
 <?php
 // redirect to login page if a valid user is not signed in
-if(!attempt_login($_SESSION["username"], $_SESSION["password"])) {
-   redirect_to("loginPage.php");
+if (!attempt_login($_SESSION["username"], $_SESSION["password"])) {
+    redirect_to("loginPage.php");
 }
 
 ?>
@@ -49,66 +49,76 @@ $watched_auction_set = mysqli_query($connection, $query);
 <!-- header -->
 <?php include("../includes/layouts/header.php") ?>
 <!--navbar-->
+<body>
 <?php include("../includes/layouts/navbar.php") ?>
 
 <!-- Display list of watched auctions  -->
 <div class="container">
+    <div class="col-sm-12">
 
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h2 class="page-header">Watchlist</h2>
-            <?php echo mysqli_error($connection); ?>
+        <div class="row panel panel-default panel-shadow">
+            <!-- Page Heading -->
+            <div class="row"> <!--WHOLE PAGE -->
+                <div class="col-md-12">
+                    <h2 class="page-header">Watch List</h2>
+                    <?php echo mysqli_error($connection); ?>
 
 
+                </div>
+            </div>
+
+
+            <?php
+
+
+            foreach ($watched_auction_set as $watched_auction) { ?>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="auction_view?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">
+                    <img class="img-responsive" src="../itemImages/<?php echo $watched_auction["itemPhoto"]; ?>"/>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <h3><?php echo htmlentities($watched_auction["itemName"]); ?> </h3>
+                    <h4><?php echo htmlentities($watched_auction["itemCategory"]); ?></h4>
+                    <h6><span
+                            style="font-weight: bold;">Quantity:&nbsp;</span><?php echo htmlentities($watched_auction["itemQuantity"]); ?>
+                    </h6>
+                    <h6><span
+                            style="font-weight: bold;">Condition:&nbsp;</span><?php echo htmlentities($watched_auction["itemCondition"]); ?>
+                    </h6>
+                    <h6><span
+                            style="font-weight: bold;">End Date:&nbsp;</span><?php echo htmlentities($watched_auction["auctionEnd"]); ?>
+                    </h6>
+                    <p><?php echo htmlentities($watched_auction["itemDescription"]) ?></p>
+                </div>
+                <div class="col-md-3">
+                    <a class="btn btn-gold"
+                       href=auction_view.php?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">View
+                        More</a>
+                    <a class="btn btn-gold"
+                       href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Remove</a>
+                </div>
+            </div>
+            <br/><br/>
         </div>
     </div>
-
-
-
-
     <?php
-
-
-    foreach ($watched_auction_set as $watched_auction) { ?>
-
-        <div class="row">
-            <div class="col-md-3">
-                <a href="auction_view?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">
-                <img class="img-responsive" src="../images/<?php echo $watched_auction["itemPhoto"]; ?>"/>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <h3><?php echo htmlentities($watched_auction["itemName"]); ?> </h3>
-                <h4><?php echo htmlentities($watched_auction["itemCategory"]); ?></h4>
-                <h6><span style="font-weight: bold;">Quantity:&nbsp;</span><?php echo htmlentities($watched_auction["itemQuantity"]); ?></h6>
-                <h6><span style="font-weight: bold;">Condition:&nbsp;</span><?php echo htmlentities($watched_auction["itemCondition"]); ?></h6>
-                <h6><span style="font-weight: bold;">End Date:&nbsp;</span><?php echo htmlentities($watched_auction["auctionEnd"]); ?></h6>
-                <p><?php echo htmlentities($watched_auction["itemDescription"]) ?></p>
-            </div>
-            <div class="col-md-3">
-                <a  class="btn btn-primary"
-                   href=auction_view.php?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">View More</a>
-                <a  class="btn btn-primary" href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Remove</a>
-            </div>
-        </div>
-        <br /><br />
-
-        <?php
     } // end of loop through watched_auction result set
 
     ?>
 
     <div id="pagination">
-        <?php if($pagination->total_pages() > 1) {
-            if($pagination->has_previous_page()) {
+        <?php if ($pagination->total_pages() > 1) {
+            if ($pagination->has_previous_page()) {
                 echo " <a href=\"watch_list.php?page=";
                 echo $pagination->previous_page();
                 echo "\">&laquo; Previous</a> ";
             }
 
-            for($i = 1; $i <= $pagination->total_pages(); $i++) {
-                if($i == $page) {
+            for ($i = 1; $i <= $pagination->total_pages(); $i++) {
+                if ($i == $page) {
                     echo " <span class=\"selected\">{$i}</span> ";
                 } else {
                     echo " <a href=\"watch_list.php?page={$i}\">{$i}</a>";
@@ -116,7 +126,7 @@ $watched_auction_set = mysqli_query($connection, $query);
 
             }
 
-            if($pagination->has_next_page()) {
+            if ($pagination->has_next_page()) {
                 echo " <a href=\"watch_list.php?page=";
                 echo $pagination->next_page();
                 echo "\">Next &raquo;</a> ";
@@ -125,9 +135,9 @@ $watched_auction_set = mysqli_query($connection, $query);
         } ?>
 
 
-
     </div>
 
 
     <!-- Footer -->
     <?php include("../includes/layouts/footer.php") ?>
+</body>
