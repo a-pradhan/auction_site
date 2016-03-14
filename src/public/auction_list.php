@@ -1,9 +1,10 @@
-<?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/session.php"); ?>
+<?php require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/user.php"); ?>
 <?php require_once("../includes/auction_functions.php"); ?>
 <?php require_once("../includes/validate_live_auctions.php"); ?>
 <?php require_once("../includes/awardSuccessful_auctions.php"); ?>
+<?php require_once("../includes/pagination_class.php"); ?>
 
 
 <?php
@@ -13,6 +14,8 @@ $loggedIn_userID = $_SESSION["userID"];
 ?>
 
 <?php require("../includes/layouts/header.php"); ?>
+
+
 <body style="background-color: #dbdbdb">
 <?php require("../includes/layouts/navbar.php"); ?>
 
@@ -40,7 +43,7 @@ $loggedIn_userID = $_SESSION["userID"];
                                 <option value=""></option>
                                 <option value="Car">Car</option>
                                 <option value="Mobile Phone">Mobile Phones</option>
-                                <option value="Laptop">Laptops</option>
+                                <option value="Laptop">Laptop</option>
                                 <option value="Jewellry">Jewellry</option>
                                 <option value="Miscellaneous">Miscellaneous</option>
                             </select>
@@ -82,66 +85,89 @@ $loggedIn_userID = $_SESSION["userID"];
     // Retrieve all live auctions (auctionLive =1)
     $live_auctions = find_all_live_auctions();
 
+    // initialize pagination variables
+    // current page number - set to 1 by default
+    $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+
+    // number of auctions to be shown per page
+    $per_page = 5;
+
+    // obtain total number of live auctions
+    $total_count = mysqli_num_rows($live_auctions);
+
+    $pagination = new Pagination($page, $per_page, $total_count);
 
     ?>
 
     <!-- Check for search and filtering and then display auctions accordingly --->
 
     <?php
+
+    // QUERY PROCESSING
+
+    global $connection;
+    $query = "SELECT * ";
+    $query .= "FROM Auction ";
+    $query .= "JOIN Item ON Auction.itemID = Item.itemID ";
+    $query .= "WHERE Auction.auctionLive = 1 ";
+
     if (isset($_POST['refine'])) {
 
-        // Checks if two filter factors have been chosen
-        if (($_POST["category"] != "") && ($_POST["condition"] != "")) {
-            $refined_category = $_POST["category"];
-
-            $refined_condition = $_POST["condition"];
-            $live_auctions = refined_live_auctions($refined_category, $refined_condition);
+        // Checks if category filter has been chosen and appends to query
+        if (($_POST["category"] != "")) {
+            $query  .= "AND Item.itemCategory = " . "'" .mysql_prep($_POST["category"]) ."'";
         }
 
-        //Checks if only the category factor has been chosen
-        if ($_POST["category"] != "" && $_POST["condition"] == "") {
-            $refined_category = $_POST["category"];
-            $live_auctions = refined_live_auctions($refined_category, false);
-
-        }
-        //Checks if only the condition factor has been chosen
-        if ($_POST["condition"] != "" && $_POST["category"] == "") {
-            $refined_condition = $_POST["condition"];
-            $live_auctions = refined_live_auctions(false, $refined_condition);
+        // checks if condition filter has been chosen and appends to query
+        if (($_POST["condition"] != "")) {
+            $query  .= " AND Item.itemCondition = " . "'" . mysql_prep($_POST["condition"]) . "'";
         }
 
         //To be implemented, sort by the most recent or cheapest price
-        if ($_POST["sortBy"] != "") {
+        // if ($_POST["sortBy"] != "") {
 
-        }
+        // }
     }
 
     if (isset($_POST['searchField'])) {
         //Retrieve the text inserted into the search field
-        $search_string_identified = mysqli_real_escape_string($connection, $_POST["searchField"]);
+        $search_string_identified = mysql_prep($_POST["searchField"]);
+
         //Break the string up into an array
         $auction_search_array = explode(" ", $search_string_identified);
-        //Call the function to retrieve the set of results from the search
-        $search_auction_set = search_live_auctions($auction_search_array);
 
-        //Detect unsuccessful searches
-        if (mysqli_num_rows($search_auction_set) == 0) {
-            echo "Sorry, no auctions found. Try filtering!";
+        foreach($auction_search_array as $search_query) {
+            $query .= "AND Item.itemCategory LIKE " . "'%".$search_query ."%' ";
+            $query .= "OR Item.itemName LIKE " . "'%". $search_query."%' ";
+            $query .= "OR Item.itemDescription LIKE " . "'%". $search_query ."%' ";
         }
-
-        $live_auctions = $search_auction_set;
     }
 
+    $query .= " ORDER BY Auction.auctionEnd ASC ";
+    $query .= "LIMIT {$per_page} ";
+    $query .= "OFFSET {$pagination->offset()}";
+
+
+    // find records for this page, rows includes auction and relevant item data
+    $auction_set = mysqli_query($connection, $query);
+
+    //Detect unsuccessful searches or if there are no live auctions
+    if (mysqli_num_rows($auction_set) == 0) {
+        echo "Sorry, no auctions found. Try filtering!";
+    }
+
+    echo $query;
 
     // while loop to fetch each row of auction one by one
-    while ($auction = mysqli_fetch_assoc($live_auctions)) {
+    foreach ($auction_set as $auction) {
 
         // Retrieving the itemID for each row of auction
-        $live_itemID = $auction["itemID"];
+        // $live_itemID = $auction["itemID"];
 
         // Retrieving the row for the auction item from Item table
-        $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
+        // $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
         //$live_item_info = mysqli_fetch_assoc($item_info);
+
         echo "<div class=\"container\">";
         echo "<div class=\"col-sm-12\">";
         echo "<div class=\"row panel panel-default panel-shadow\">";
@@ -149,16 +175,16 @@ $loggedIn_userID = $_SESSION["userID"];
         echo "<div class=\"row\">";
         echo "<div class=\"col-md-3\">";
         echo "<a href=\"#\">";
-        echo "<img class=\"img-responsive\" src=\"../images/" . $live_item_info["itemPhoto"] . "\" alt=\"\">";
+        echo "<img class=\"img-responsive\" src=\"../images/" . $auction["itemPhoto"] . "\" alt=\"\">";
         echo "</a>";
         echo "</div>";
         echo "<div class=\"col-md-6\">";
-        echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
-        echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";
-        echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
-        echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
-        echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
-        echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+        echo "<h3>" . htmlentities($auction["itemName"]) . "</h3>";
+        echo "<h4>" . htmlentities($auction["itemCategory"]) . "</h4>";
+        echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($auction["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
+        echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($auction["itemCondition"]) . "</h6>";
+        echo "<p>" . htmlentities($auction["itemDescription"]) . "</p>";
+        echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($auction["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
 
         echo "</div>";
         echo "</div>";
@@ -170,37 +196,37 @@ $loggedIn_userID = $_SESSION["userID"];
 
 
     ?>
+    <!-- Refer to class pagination in CSS for original styling-->
+    <div id="pagination">
+        <?php if($pagination->total_pages() > 1) {
+            // display button to go back to previous page if it exists
+            if($pagination->has_previous_page()) {
+                echo " <a href=\"auction_list.php?page=";
+                echo $pagination->previous_page();
+                echo "\">&laquo; Previous</a> ";
+            }
+
+            for($i = 1; $i <= $pagination->total_pages(); $i++) {
+                if($i == $page) {
+                    echo " <span class=\"selected\">{$i}</span> ";
+                } else {
+                    echo " <a href=\"watch_list.php?page={$i}\">{$i}</a>";
+                }
+
+            }
+
+            // display button to go to next page if it exists
+            if($pagination->has_next_page()) {
+                echo " <a href=\"auction_list.php?page=";
+                echo $pagination->next_page();
+                echo "\">Next &raquo;</a> ";
+            }
+
+        } ?>
 
 
-    <!-- Pagination -->
-    <div class="row text-center">
-        <div class="col-lg-12">
-            <ul class="pagination">
-                <li>
-                    <a href="#">&laquo;</a>
-                </li>
-                <li class="active">
-                    <a href="#">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">&raquo;</a>
-                </li>
-            </ul>
-        </div>
+
     </div>
-    <!-- /.row -->
 
     <hr>
 

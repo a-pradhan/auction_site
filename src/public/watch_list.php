@@ -101,6 +101,7 @@ $watched_auction_set = mysqli_query($connection, $query);
 
     <div id="pagination">
         <?php if($pagination->total_pages() > 1) {
+            // display button to go back to previous page if it exists
             if($pagination->has_previous_page()) {
                 echo " <a href=\"watch_list.php?page=";
                 echo $pagination->previous_page();
@@ -116,6 +117,7 @@ $watched_auction_set = mysqli_query($connection, $query);
 
             }
 
+            // display button to go to next page if it exists
             if($pagination->has_next_page()) {
                 echo " <a href=\"watch_list.php?page=";
                 echo $pagination->next_page();
