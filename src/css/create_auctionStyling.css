@@ -4,6 +4,21 @@
 }
 .panel-shadow{
     padding: 20px;
-    box-shadow: 10px 10px 5px #43CB00;
+    box-shadow: 10px 10px 5px #606060;
     border-radius: 0px;
+}
+.btn-gold{
+    background-color: #ffcc00;
+}
+.navbar-inverse{
+    background-color: #ffcc00;
+    border-color: #ffcc00;
+    height: 30px
+
+}
+.navbar-inverse-collapse{
+    background-color: #ffcc00;
+}
+.body{
+    background-color: #dbdbdb;
 }

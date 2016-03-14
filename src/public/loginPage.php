@@ -85,9 +85,9 @@ if (isset($_POST['submit'])) {
 
 </head>
 
-<body>
+<body style="background-color: #dbdbdb">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="box-shadow: 0px 0px 10px #606060">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -98,7 +98,7 @@ if (isset($_POST['submit'])) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Start Bootstrap</a>
+            <a href="#"><img class="navbar-brand" src="../../images/logo2.png"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -122,20 +122,20 @@ if (isset($_POST['submit'])) {
 
     <div class="panel panel-default panel-shadow" style="width: 300px">
         <div class="container-fluid" align="center">
-            <img src="../images/logo.png" class="img-responsive center-block">
+            <img src="../images/logo2.png" class="img-responsive center-block">
         </div>
         <hr>
         <form class="form" action="loginPage.php" method="post">
-            <h3 class="text-primary" align="left">Username</h3>
+            <h3 class="text-inverse" align="left">Username</h3>
             <input class="input-lg" type="text" name="username" placeholder="Username"><br>
-            <h3 class="text-primary" align="left">Password:</h3>
+            <h3 class="text-inverse" align="left">Password</h3>
             <input class="input-lg" type="password" name="password" placeholder="Password"><br><br>
-            <input class="btn btn-warning btn-lg" type="submit" name="submit" value="Log in">
+            <input class="btn-gold btn-lg" type="submit" name="submit" value="Log in" >
+            <input class="btn-gold btn-lg" type="submit" href="sign_up.php" value="Sign Up" >
         </form><!-- all forms include a submit button -->
     </div>
 </div>
-</div>
-</br>
+
 <div class="text-danger" align="center">
     <?php echo form_errors(errors()); ?></div>
 </body>

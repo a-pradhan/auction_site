@@ -1,5 +1,5 @@
 <!-- Navigation bar-->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="box-shadow: 0px 0px 10px #606060">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -9,41 +9,35 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Auction vault</a>
+            <a href="auction_list.php"><img class="navbar-brand" src="../../images/logo2.png" style="padding: 4px"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse navbar-inverse-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <div class="floatleft"></div>
                 <li>
-                    <a href="#">My Auctions</a>
+                    <a href="my_auctions.php">My Auctions</a>
                 </li>
                 <li>
-                    <a href="#">My Bids</a>
+                    <a href="auction_list.php">Live Auctions</a>
                 </li>
                 <li>
-                    <a href="watch_list.php">Watch-list</a>
+                    <a href="my_bids.php">My Bids</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="create_Auction.php">Create Auction</a>
                 </li>
                 <li>
-                    <a href="#">Contact us</a>
+                    <a href="watch_list.php">My Watchlist</a>
                 </li>
-                <li>
-                    <a href="#">About us</a>
-                </li>
-                <?php   //This long repetitive line is to align the Logout button far right lol XD ?>
-                </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li>
 
-
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="logout.php">Log out</a>
+                    <a href="logout.php">Logout</a>
                 </li>
             </ul>
         </div>
-    </div>
-    <!-- /.navbar-collapse -->
+        <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>

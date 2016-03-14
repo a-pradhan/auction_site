@@ -29,6 +29,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/create_auctionStyling.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="../css/shop-item.css" rel="stylesheet">
@@ -47,57 +48,11 @@
     <![endif]-->
 
 </head>
-<body>
+<body style="background-color: #dbdbdb">
 
 
 <!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="auction_list.php">Auction Vault</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="my_auctions.php">My Auctions</a>
-                </li>
-                <li>
-                    <a href="my_bids.php">My Bids</a>
-                </li>
-                <li>
-                    <a href="watch_list.php">Watch-list</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact us</a>
-                </li>
-                <li>
-                    <a href="#">About us</a>
-                </li>
-                <?php   //This long repetitive line is to align the Logout button far right lol XD ?>
-                <li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a> </li><li> <a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li><li><a href="#"></a></li>
-
-
-                <li>
-                    <a href="loginPage.php">Log out</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
+<?php include("../includes/layouts/navbar.php") ?>
 <!-- Page Content -->
 <?php
     if(isset($_SESSION['watch_list_message'])) {
@@ -140,8 +95,9 @@
 
 <div class="container">
 
-    <div class="row">
-        <div class="col-md-5">
+    <div class="col-sm-12">
+        <div class="row panel panel-default panel-shadow">
+            <div class="col-md-5">
             <div class="thumbnail">
                 <?php //retrieves the name of the photo to be shown ?>
                 <img class="img-responsive" src="../images/<?php echo $chosen_live_item_info["itemPhoto"] ?>" alt="">
@@ -410,7 +366,7 @@
             echo "</div>";
             echo "</div>";
             ?>
-
+        </div>
         </div>
     </div>
     <div class="col-md-12">

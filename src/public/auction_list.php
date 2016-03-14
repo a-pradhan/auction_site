@@ -1,5 +1,5 @@
-<?php require_once("../includes/session.php"); ?>
 <?php require_once("../includes/db_connection.php") ?>
+<?php require_once("../includes/session.php"); ?>
 <?php require_once("../includes/user.php"); ?>
 <?php require_once("../includes/auction_functions.php"); ?>
 <?php require_once("../includes/validate_live_auctions.php"); ?>
@@ -7,16 +7,14 @@
 
 
 <?php
-    $username = $_SESSION["username"];
-    $password = $_SESSION["password"];
-    $loggedIn_userID = $_SESSION["userID"];
+$username = $_SESSION["username"];
+$password = $_SESSION["password"];
+$loggedIn_userID = $_SESSION["userID"];
 ?>
 
 <?php require("../includes/layouts/header.php"); ?>
+<body style="background-color: #dbdbdb">
 <?php require("../includes/layouts/navbar.php"); ?>
-<?php echo message(); ?>
-<?php echo errors(); ?>
-
 
 
 <!-- Page Content -->
@@ -32,41 +30,51 @@
     </div>
     <!-- Search and filtering -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
+            <div class="col-sm-6" style="padding-bottom: 5px">
+                <div class="col-sm-12">
+                    <form action="auction_list.php" method="POST">
+                        <div class="col-sm-4" style="padding-bottom: 5px">
+                            Category
+                            <select name="category" class="form-control">
+                                <option value=""></option>
+                                <option value="Car">Car</option>
+                                <option value="Mobile Phone">Mobile Phones</option>
+                                <option value="Laptop">Laptops</option>
+                                <option value="Jewellry">Jewellry</option>
+                                <option value="Miscellaneous">Miscellaneous</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4" style="padding-bottom: 5px">
+                            Condition
+                            <select name="condition" class="form-control">
+                                <option value=""></option>
+                                <option value="Used">Used</option>
+                                <option value="Used - Like New">Used - Like New</option>
+                                <option value="New">New</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4" style="padding-bottom: 5px">
+                            Sort by
+                            <select name="sortBy" class="form-control">
+                                <option value=""></option>
+                                <option value="Price">Price</option>
+                                <option value="Time">Time</option>
+                            </select>
+                        </div>
+                </div>
 
-            <form action="auction_list.php" method="POST">
-                Category
-                <select name="category">
-                    <option value=""></option>
-                    <option value="Car">Car</option>
-                    <option value="Mobile Phone">Mobile Phones</option>
-                    <option value="Laptop">Laptops</option>
-                    <option value="Jewellry">Jewellry</option>
-                    <option value="Miscellaneous">Miscellaneous</option>
-                </select>
-                Condition
-                <select name="condition">
-                    <option value=""></option>
-                    <option value="Used">Used</option>
-                    <option value="Used - Like New">Used - Like New</option>
-                    <option value="New">New</option>
-                </select>
-                Sort by
-                <select name="sortBy">
-                    <option value=""></option>
-                    <option value="Price">Price</option>
-                    <option value="Time">Time</option>
-                </select>
-                <input id="refine" name="refine" type="submit" value="Refine">
-            </form>
-
-
+                <input id="refine" name="refine" type="submit" value="Refine" class="btn-gold form-control">
+                </form>
+            </div>
+            <div class="col-sm-6" style="padding-bottom: 20px; padding-top: 25px">
+                <form action="auction_list.php" method="POST">
+                    <input id="search" name="searchField" type="text" class="form-control" "
+                    placeholder="Search by name, description or category of item!">
+                    <input class="btn-gold form-control" id="submit" type="submit" value="Search">
+                </form>
+            </div>
         </div>
-        <form action="auction_list.php" method="POST">
-            <input id="search" name="searchField" type="text" style="width: 500px;"
-                   placeholder="Search by name, description or category of item!">
-            <input id="submit" type="submit" value="Search">
-        </form>
     </div>
 
 
@@ -112,7 +120,7 @@
         //Retrieve the text inserted into the search field
         $search_string_identified = mysqli_real_escape_string($connection, $_POST["searchField"]);
         //Break the string up into an array
-        $auction_search_array = explode (" ", $search_string_identified);
+        $auction_search_array = explode(" ", $search_string_identified);
         //Call the function to retrieve the set of results from the search
         $search_auction_set = search_live_auctions($auction_search_array);
 
@@ -125,35 +133,40 @@
     }
 
 
-
     // while loop to fetch each row of auction one by one
-            while ($auction = mysqli_fetch_assoc($live_auctions)) {
+    while ($auction = mysqli_fetch_assoc($live_auctions)) {
 
-                // Retrieving the itemID for each row of auction
-                $live_itemID = $auction["itemID"];
+        // Retrieving the itemID for each row of auction
+        $live_itemID = $auction["itemID"];
 
-                // Retrieving the row for the auction item from Item table
-                $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
-                //$live_item_info = mysqli_fetch_assoc($item_info);
-                echo "Live! <br>";
-                echo "<div class=\"row\">";
-                echo "<div class=\"col-md-3\">";
-                echo "<a href=\"#\">";
-                echo "<img class=\"img-responsive\" src=\"../images/" . $live_item_info["itemPhoto"] . "\" alt=\"\">";
-                echo "</a>";
-                echo "</div>";
-                echo "<div class=\"col-md-6\">";
-                echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
-                echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";
-                echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
-                echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
-                echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
-                echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+        // Retrieving the row for the auction item from Item table
+        $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
+        //$live_item_info = mysqli_fetch_assoc($item_info);
+        echo "<div class=\"container\">";
+        echo "<div class=\"col-sm-12\">";
+        echo "<div class=\"row panel panel-default panel-shadow\">";
+        echo "Live! <br>";
+        echo "<div class=\"row\">";
+        echo "<div class=\"col-md-3\">";
+        echo "<a href=\"#\">";
+        echo "<img class=\"img-responsive\" src=\"../images/" . $live_item_info["itemPhoto"] . "\" alt=\"\">";
+        echo "</a>";
+        echo "</div>";
+        echo "<div class=\"col-md-6\">";
+        echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
+        echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";
+        echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
+        echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
+        echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
+        echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-primary\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
 
-                echo "</div>";
-                echo "</div>";
-                echo "<hr>";
-            }
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "<hr>";
+    }
 
 
     ?>
