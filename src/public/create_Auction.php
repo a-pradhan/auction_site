@@ -18,14 +18,14 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css"/>
-
+    <link href="../css/create_auctionStyling.css" rel="stylesheet"/>
     <link href="../css/bootstrap.min.css.map" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="../css/1-col-portfolio.css" rel="stylesheet">
 
 
-    <link href="../css/create_auctionStyling.css" rel="stylesheet"/>
+
 </head>
 <body style="background-color: #dbdbdb">
 
@@ -36,6 +36,7 @@ $itemQuantity = "";
 $itemCategory = "";
 $itemCondition = "";
 $itemDescription = "";
+$auctionName ="";
 $startingPrice = "";
 $auctionStartDate = "";
 $auctionEndDate = "";
@@ -54,7 +55,7 @@ $AllTrue = true;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["itemNameField"])) {
         $AllTrue = false;
-        $itemNameErr = "Name is required";
+        $itemNameErr = "Item Name is required";
     } else {
         // check if name only contains letters and whitespace
         if (!preg_match("/^[a-zA-Z ]*$/", $itemName)) {
@@ -89,12 +90,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $itemDescription = test_input($_POST['itemDescriptionField']);
     }
-    if (empty($_POST["auctionNameField"])) {
-        $auctionNameErr = "Auction Name cannot be empty";
-        $AllTrue = false;
-    } else {
-        $itemDescription = test_input($_POST['itemDescriptionField']);
-    }
+//    if (empty($_POST["auctionNameField"])) {
+//        $auctionNameErr = "Auction Name cannot be empty";
+//        $AllTrue = false;
+//    } else {
+//        $itemDescription = test_input($_POST['itemDescriptionField']);
+//    }
     if (empty($_POST["startingPriceField"])) {
         $startingPriceErr = "Starting Price cannot be empty";
         $AllTrue = false;
@@ -257,10 +258,10 @@ function test_input($data)
                     <hr>
                 </div>
                 <div class="col-sm-6">
-                    <h4>Acution Name</h4>
-                    <input class="input-sm" name="auctionNameField" width="300px"
-                           value="<?php echo($_POST['auctionNameField']) ?>">
-                    <span class="error"><?php echo $auctionNameErr ?></span>
+<!--                    <h4>Acution Name</h4>-->
+<!--                    <input class="input-sm" name="auctionNameField" width="300px"-->
+<!--                           value="--><?php //echo($_POST['auctionNameField']) ?><!--">-->
+<!--                    <span class="error">--><?php //echo $auctionNameErr ?><!--</span>-->
                     <h4>Reserve Price</h4>
                     <input class="input-sm" name="startingPriceField"
                            value="<?php echo($_POST['startingPriceField']) ?>">

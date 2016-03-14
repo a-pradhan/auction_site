@@ -101,6 +101,8 @@ if (isset($_POST["submit"])) {
     <!-- Custom CSS -->
     <link href="../css/1-col-portfolio.css" rel="stylesheet">
 
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -112,7 +114,7 @@ if (isset($_POST["submit"])) {
 
 <body style="background-color: #dbdbdb">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="box-shadow: 0px 0px 10px #606060">
+<nav class="navbar navbar-gold navbar-fixed-top" role="navigation" style="box-shadow: 0px 0px 10px #606060">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -126,7 +128,7 @@ if (isset($_POST["submit"])) {
             <a href="#"><img class="navbar-brand" src="../../images/logo2.png" style="padding: 4px"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="navbar-collapse navbar-gold-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
                     <a href="#">About</a>
@@ -152,8 +154,8 @@ if (isset($_POST["submit"])) {
     <div class="col-sm-12">
 
         <div class="row panel panel-default panel-shadow">
-            <div class="col-sm-4" style="padding-top: 45px">
-                <img src="../images/logo2.png" class="img-responsive center-block">
+            <div class="col-sm-4" style="padding-top: ">
+                <img src="../images/logo2.png" class="img-responsive center-block" style="padding-top: 45px">
             </div>
             <form class="form" action="sign_up.php" method="post">
                 <div class="col-sm-4">
@@ -174,7 +176,7 @@ if (isset($_POST["submit"])) {
                     <input class="input-lg" type="password" name="password_confirmation" value=""/><br/><br/>
                 </div>
                 <div class="col-sm-12" align="center">
-                    <input class="btn-gold btn-lg" type="submit" name="submit" value="Complete Sign Up">
+                    <input class="btn-gold btn-lg" type="submit" name="submit" value="Complete Sign Up" style="font-size: 30px">
                 </div>
             </form><!-- all forms include a submit button -->
         </div>

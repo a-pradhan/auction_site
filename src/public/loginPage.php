@@ -87,7 +87,7 @@ if (isset($_POST['submit'])) {
 
 <body style="background-color: #dbdbdb">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="box-shadow: 0px 0px 10px #606060">
+<nav class="navbar navbar-gold navbar-fixed-top" role="navigation" style="box-shadow: 0px 0px 10px #606060">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -101,7 +101,7 @@ if (isset($_POST['submit'])) {
             <a href="#"><img class="navbar-brand" src="../../images/logo2.png" style="padding: 4px"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse navbar-gold-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
                     <a href="#">About</a>
@@ -130,8 +130,10 @@ if (isset($_POST['submit'])) {
             <input class="input-lg" type="text" name="username" placeholder="Username"><br>
             <h3 class="text-inverse" align="left">Password</h3>
             <input class="input-lg" type="password" name="password" placeholder="Password"><br><br>
-            <input class="btn-gold btn-lg" type="submit" name="submit" value="Log in" >
-            <input class="btn-gold btn-lg" type="submit" href="sign_up.php" value="Sign Up" >
+            <button class="btn-gold form-control" type="submit" name="submit" value="Log in">Log In</button>
+            <div style="padding-top: 5px">
+            <button class="btn-black form-control" type="submit" href="sign_up.php" value="Sign Up">Sign Up</button>
+                </div>
         </form><!-- all forms include a submit button -->
     </div>
 </div>

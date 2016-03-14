@@ -1,5 +1,5 @@
 <!-- Navigation bar-->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="box-shadow: 0px 0px 10px #606060">
+<nav class="navbar navbar-gold navbar-fixed-top" role="navigation" style="box-shadow: 0px 0px 10px #606060">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -12,7 +12,7 @@
             <a href="auction_list.php"><img class="navbar-brand" src="../../images/logo2.png" style="padding: 4px"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-inverse-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse navbar-gold-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
                     <a href="my_auctions.php">My Auctions</a>
