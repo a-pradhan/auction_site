@@ -173,9 +173,55 @@
 
 
                                     //an email to the seller here
+                                    $sellerID_set = retrieve_seller_roleID_from_specified_auctionID($chosen_auction_info['auctionID']);
+                                    $seller_roleID = $sellerID_set['roleID'];
+                                    $sellerOutbid_set= mysqli_fetch_assoc(find_userEmail_and_userName_for_bidder($seller_roleID));
+                                    $sellerUserName= $sellerOutbid_set['userName'];
+                                    $sellerEmail = $sellerOutbid_set['userEmail'];
+                                    $auctionName = $chosen_live_item_info["itemName"];
+                                    $latestBidAmount = $new_bid_amount;
+                                    $auctionExpiry_to_be_formatted =$chosen_auction_info["auctionEnd"];
+                                    $time = strtotime($auctionExpiry_to_be_formatted);
+                                    $newformat = date('D, d F \a\t H:i',$time);
+                                    $auctionExpiry = "" . $newformat;
+                                    $auctionViewings=$chosen_auction_info['auctionViewings'];
+                                    $bid_set_for_given_auction = retrieve_number_of_bids_for_a_given_auction($chosen_auction_info["auctionID"]);
+                                    $number_of_bids = mysqli_fetch_assoc($bid_set_for_given_auction);
+                                    $auctionBids= $number_of_bids["COUNT(bidID)"];
 
+                                    ?>
+
+
+                                    <script>
+                                        var bidderUserName = <?php echo json_encode($sellerUserName) ?>;
+                                        var bidderEmail = <?php echo json_encode($sellerEmail) ?>;
+                                        var auctionName = <?php echo json_encode($auctionName) ?>;
+                                        var latestBidAmount = <?php echo json_encode($latestBidAmount) ?>;
+                                        var auctionExpiry = <?php echo json_encode($auctionExpiry) ?>;
+                                        var auctionViewings=<?php echo json_encode($auctionViewings) ?>;
+                                        var auctionBids = <?php echo json_encode($auctionBids) ?>;
+
+                                        function send_seller(){
+                                            $.post(
+                                                "../includes/seller_email.php",
+                                                {   sellerUserName_ajax:  sellerUserName,
+                                                    sellerEmail_ajax: sellerEmail,
+                                                    auctionName_ajax: auctionName,
+                                                    latestBidAmount_ajax: latestBidAmount,
+                                                    auctionExpiry_ajax: auctionExpiry,
+                                                    auctionViewings_ajax: auctionViewings,
+                                                    auctionBids_ajax: auctionBids},
+                                                function(data) {
+
+                                                }
+                                            );
+                                        }
+                                    </script>
+
+                                <?php
 
                                     //an email to the watcher
+
 
 
                                 } else {
@@ -198,10 +244,58 @@
 
 
 
+                                //an email to the seller here
+                                $sellerID_set = mysqli_fetch_assoc(retrieve_seller_roleID_from_specified_auctionID($chosen_auction_info['auctionID']));
 
-                                        //an email to the seller here
+                                $seller_roleID = $sellerID_set['roleID'];
+
+                                $sellerOutbid_set= mysqli_fetch_assoc(find_userEmail_and_userName_for_bidder($seller_roleID));
+
+                                $sellerUserName= $sellerOutbid_set['userName'];
+                                $sellerEmail = $sellerOutbid_set['userEmail'];
+                                $auctionName = $chosen_live_item_info["itemName"];
+                                $latestBidAmount = $new_bid_amount;
+                                $auctionExpiry_to_be_formatted =$chosen_auction_info["auctionEnd"];
+                                $time = strtotime($auctionExpiry_to_be_formatted);
+                                $newformat = date('D, d F \a\t H:i',$time);
+                                $auctionExpiry = "" . $newformat;
+                                $auctionViewings=$chosen_auction_info['auctionViewings'];
+                                $bid_set_for_given_auction = retrieve_number_of_bids_for_a_given_auction($chosen_auction_info["auctionID"]);
+                                $number_of_bids = mysqli_fetch_assoc($bid_set_for_given_auction);
+                                $auctionBids= $number_of_bids["COUNT(bidID)"];
 
 
+
+                                ?>
+                                    <script>
+                                        var sellerUserName = <?php echo json_encode($sellerUserName) ?>;
+                                        var sellerEmail = <?php echo json_encode($sellerEmail) ?>;
+                                        var auctionName = <?php echo json_encode($auctionName) ?>;
+                                        var latestBidAmount = <?php echo json_encode($latestBidAmount) ?>;
+                                        var auctionExpiry = <?php echo json_encode($auctionExpiry) ?>;
+                                        var auctionViewings=<?php echo json_encode($auctionViewings) ?>;
+                                        var auctionBids = <?php echo json_encode($auctionBids) ?>;
+
+                                        function send_seller(){
+                                            $.post(
+                                                "../includes/seller_email.php",
+                                                {   sellerUserName_ajax:  sellerUserName,
+                                                    sellerEmail_ajax: sellerEmail,
+                                                    auctionName_ajax: auctionName,
+                                                    latestBidAmount_ajax: latestBidAmount,
+                                                    auctionExpiry_ajax: auctionExpiry,
+                                                    auctionViewings_ajax: auctionViewings,
+                                                    auctionBids_ajax: auctionBids},
+                                                function(data) {
+
+                                                }
+                                            );
+                                        }
+                                    </script>
+
+                                <?php
+
+                                    echo "<script>send_seller();</script>";
 
 
                                         //an email to the bidder outbid
@@ -220,15 +314,11 @@
 
 
                                         <script>
-
-
                                             var bidderUserName = <?php echo json_encode($bidderUserName) ?>;
                                             var bidderEmail = <?php echo json_encode($bidderEmail) ?>;
                                             var auctionName = <?php echo json_encode($auctionName) ?>;
                                             var latestBidAmount = <?php echo json_encode($latestBidAmount) ?>;
                                             var auctionExpiry = <?php echo json_encode($auctionExpiry) ?>;
-
-
                                                 function send_outbid(){
                                                 $.post(
                                                     "../includes/outbid_email.php",
@@ -242,16 +332,21 @@
                                                     }
                                                 );
                                             }
-
-
                                         </script>
 
                                         <?php
+
                                         echo "<script>send_outbid();</script>";
 
 
 
+
+
+
+
                                         //an email to the watcher
+
+
 
                                         echo "Bid successful!";
                                     } else {
