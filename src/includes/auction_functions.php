@@ -435,7 +435,7 @@ function find_all_non_live_auctions()
     function watch_list_email($watcherUserName,$watcherEmail, $auctionName, $latestBidAmount, $auctionExpiry) {
 
         $message = ("Dear {$watcherUserName}\n\nAuction: {$auctionName}\n\nLatest bid amount: £ {$latestBidAmount}\n\nTotal viewings: {$auctionViewings}\n\nTotal bids: {$auctionBids}\n\nAuction expires on {$auctionExpiry}\n\nYours sincerely,\n\nTeam Auction Vault");
-        send_mail($sellerEmail,$message);
+        send_mail($watcherEmail,$message);
     }
 
     function seller_email($sellerUserName, $sellerEmail, $auctionName, $latestBidAmount, $auctionExpiry, $auctionViewings, $auctionBids) {
