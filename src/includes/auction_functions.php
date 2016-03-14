@@ -432,10 +432,33 @@ function find_all_non_live_auctions()
 
     }
 
-    function watch_list_email($watcherUserName,$watcherEmail, $auctionName, $latestBidAmount, $auctionExpiry) {
+    function find_userName_and_userEmail_from_userID($userID){
+        global $connection;
+        $query ="SELECT  `userName`, `userEmail` FROM `User` WHERE userID={$userID}";
+        $userName_userEmail_set= mysqli_query($connection,$query);
+        confirm_query($userName_userEmail_set);
+        return $userName_userEmail_set;
+    }
 
-        $message = ("Dear {$watcherUserName}\n\nAuction: {$auctionName}\n\nLatest bid amount: £ {$latestBidAmount}\n\nTotal viewings: {$auctionViewings}\n\nTotal bids: {$auctionBids}\n\nAuction expires on {$auctionExpiry}\n\nYours sincerely,\n\nTeam Auction Vault");
-        send_mail($watcherEmail,$message);
+    function watch_list_email($auctionID,$auctionName,$latestBidAmount,$auctionExpiry,$auctionBids)
+    {
+        global $connection;
+        $query ="SELECT userID FROM `WatchList` WHERE auctionID={$auctionID}";
+        $watch_list_userID_set=mysqli_query($connection,$query);
+        confirm_query($watch_list_userID_set);
+
+
+        while ($watch_userID_row = mysqli_fetch_assoc($watch_list_userID_set)){
+            $watcher_userID= $watch_userID_row['userID'];
+            $watcher_userName_userEmail_row = mysqli_fetch_assoc(find_userName_and_userEmail_from_userID($watcher_userID));
+            $watcher_userName= $watcher_userName_userEmail_row['userName'];
+            $watcher_userEmail=$watcher_userName_userEmail_row['userEmail'];
+            $message = ("Dear {$watcher_userName}\n\nAuction: {$auctionName}\n\nLatest bid amount: £ {$latestBidAmount}\n\nTotal bids: {$auctionBids}\n\nAuction expires on {$auctionExpiry}\n\nYours sincerely,\n\nTeam Auction Vault");
+            send_mail($watcher_userEmail,$message);
+        }
+
+
+
     }
 
     function seller_email($sellerUserName, $sellerEmail, $auctionName, $latestBidAmount, $auctionExpiry, $auctionViewings, $auctionBids) {

@@ -222,6 +222,34 @@
 
                                 //an email to the watcher here
 
+                                ?>
+                                    <script>
+                                        var auctionID = <?php echo json_encode($chosen_auction_info['auctionID']) ?>;
+                                        var auctionName = <?php echo json_encode($auctionName) ?>;
+                                        var latestBidAmount = <?php echo json_encode($latestBidAmount) ?>;
+                                        var auctionExpiry = <?php echo json_encode($auctionExpiry) ?>;
+                                        var auctionBids = <?php echo json_encode($auctionBids) ?>;
+
+                                        function send_watcher(){
+                                            $.post(
+                                                "../includes/watcher_email.php",
+                                                {   auctionID_ajax:  auctionID,
+                                                    auctionName_ajax: auctionName,
+                                                    latestBidAmount_ajax: latestBidAmount,
+                                                    auctionExpiry_ajax: auctionExpiry,
+                                                    auctionBids_ajax: auctionBids},
+                                                function(data) {
+
+                                                }
+                                            );
+                                        }
+
+
+                                    </script>
+
+                                <?php
+                                echo "<script>send_watcher();</script>";
+
                                 } else {
 
                                     //retrieving the old bidder roleID
@@ -340,10 +368,37 @@
 
 
                                         //an email to the watcher
+                                        ?>
+                                    <script>
+                                        var auctionID = <?php echo json_encode($chosen_auction_info['auctionID']) ?>;
+                                        var auctionName = <?php echo json_encode($auctionName) ?>;
+                                        var latestBidAmount = <?php echo json_encode($latestBidAmount) ?>;
+                                        var auctionExpiry = <?php echo json_encode($auctionExpiry) ?>;
+                                        var auctionBids = <?php echo json_encode($auctionBids) ?>;
+
+                                        function send_watcher(){
+                                            $.post(
+                                                "../includes/watcher_email.php",
+                                                {   auctionID_ajax:  auctionID,
+                                                    auctionName_ajax: auctionName,
+                                                    latestBidAmount_ajax: latestBidAmount,
+                                                    auctionExpiry_ajax: auctionExpiry,
+                                                    auctionBids_ajax: auctionBids},
+                                                function(data) {
+
+                                                }
+                                            );
+                                        }
+
+
+                                    </script>
+
+                                    <?php
+                                    echo "<script>send_watcher();</script>";
 
 
 
-                                        echo "Bid successful!";
+                                    echo "Bid successful!";
                                     } else {
                                         //new bid amount is too low, must be higher than previous amount!
                                         echo "Your bid must be higher than the latest bidder!";
