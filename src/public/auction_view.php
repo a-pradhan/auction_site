@@ -164,16 +164,17 @@
                                     //The first ever bid for an auction
 
                                     bid_an_amount($chosen_auction_ID, $new_bid_amount, $loggedIn_userID);
-
-
                                     $bidID_for_recent_bid = mysqli_fetch_assoc(retrieve_bidID_for_recent_bid($chosen_auction_ID, $new_bid_amount));
-
                                     $bidID = $bidID_for_recent_bid['bidID'];
                                     update_bid_on_auction($chosen_auction_ID, $bidID);
 
 
+
+
+
+
                                     //an email to the seller here
-                                    $sellerID_set = retrieve_seller_roleID_from_specified_auctionID($chosen_auction_info['auctionID']);
+                                    $sellerID_set = mysqli_fetch_assoc(retrieve_seller_roleID_from_specified_auctionID($chosen_auction_info['auctionID']));
                                     $seller_roleID = $sellerID_set['roleID'];
                                     $sellerOutbid_set= mysqli_fetch_assoc(find_userEmail_and_userName_for_bidder($seller_roleID));
                                     $sellerUserName= $sellerOutbid_set['userName'];
@@ -188,13 +189,10 @@
                                     $bid_set_for_given_auction = retrieve_number_of_bids_for_a_given_auction($chosen_auction_info["auctionID"]);
                                     $number_of_bids = mysqli_fetch_assoc($bid_set_for_given_auction);
                                     $auctionBids= $number_of_bids["COUNT(bidID)"];
-
                                     ?>
-
-
                                     <script>
-                                        var bidderUserName = <?php echo json_encode($sellerUserName) ?>;
-                                        var bidderEmail = <?php echo json_encode($sellerEmail) ?>;
+                                        var sellerUserName = <?php echo json_encode($sellerUserName) ?>;
+                                        var sellerEmail = <?php echo json_encode($sellerEmail) ?>;
                                         var auctionName = <?php echo json_encode($auctionName) ?>;
                                         var latestBidAmount = <?php echo json_encode($latestBidAmount) ?>;
                                         var auctionExpiry = <?php echo json_encode($auctionExpiry) ?>;
@@ -220,9 +218,9 @@
 
                                 <?php
 
-                                    //an email to the watcher
+                                echo "<script>send_seller();</script>";
 
-
+                                //an email to the watcher here
 
                                 } else {
 
@@ -246,11 +244,8 @@
 
                                 //an email to the seller here
                                 $sellerID_set = mysqli_fetch_assoc(retrieve_seller_roleID_from_specified_auctionID($chosen_auction_info['auctionID']));
-
                                 $seller_roleID = $sellerID_set['roleID'];
-
                                 $sellerOutbid_set= mysqli_fetch_assoc(find_userEmail_and_userName_for_bidder($seller_roleID));
-
                                 $sellerUserName= $sellerOutbid_set['userName'];
                                 $sellerEmail = $sellerOutbid_set['userEmail'];
                                 $auctionName = $chosen_live_item_info["itemName"];

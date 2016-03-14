@@ -423,8 +423,19 @@ function find_all_non_live_auctions()
         send_mail($bidderEmail,$message);
     }
 
+    function get_watchlist_for_specified_auction($auctionID){
+        global $connection;
+        $query = "SELECT  `userID` FROM `WatchList` WHERE auctionID ={$auctionID}";
+        $watchlist_set = mysqli_query($connection,$query);
+        confirm_query($watchlist_set);
+        return $watchlist_set;
+
+    }
+
     function watch_list_email($watcherUserName,$watcherEmail, $auctionName, $latestBidAmount, $auctionExpiry) {
 
+        $message = ("Dear {$watcherUserName}\n\nAuction: {$auctionName}\n\nLatest bid amount: £ {$latestBidAmount}\n\nTotal viewings: {$auctionViewings}\n\nTotal bids: {$auctionBids}\n\nAuction expires on {$auctionExpiry}\n\nYours sincerely,\n\nTeam Auction Vault");
+        send_mail($sellerEmail,$message);
     }
 
     function seller_email($sellerUserName, $sellerEmail, $auctionName, $latestBidAmount, $auctionExpiry, $auctionViewings, $auctionBids) {
