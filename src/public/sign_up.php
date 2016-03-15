@@ -26,57 +26,59 @@ if (isset($_POST["submit"])) {
     // check email format is valid
 
     // check that both passwords entered match
-    check_password_match($_POST['username'], $_POST['password_confirmation']);
+    check_password_match($_POST['password'], $_POST['password_confirmation']);
 
     if (!empty($errors)) {
         $_SESSION["errors"] = $errors;
         redirect_to("sign_up.php");
+    }else{
+        // set variables for SQL insert query, check for sql injection
+        $userName = mysql_prep($_POST["username"]);
+        $fName = mysql_prep($_POST["first_name"]);
+        $lName = mysql_prep($_POST["last_name"]);
+        $password = password_encrypt($_POST["password"]);
+        $userEmail = mysql_prep($_POST["email"]);
+
+        // create user account
+        $query = "INSERT INTO User (";
+        $query .= "userName, fName, lName, userPassword, userEmail";
+        $query .= ") VALUES (";
+        $query .= "'{$userName}', '{$fName}', '{$lName}', '{$password}', '{$userEmail}'";
+        $query .= ")";
+        $result = mysqli_query($connection, $query);
+
+        $user_id = (int)mysqli_insert_id($connection);
+
+        // create user's Buyer account
+        $query1 = "INSERT INTO Role (";
+        $query1 .= "userID, typeID";
+        $query1 .= ") VALUES (";
+        $query1 .= $user_id . ", 'Buyer')";
+        $buyer_creation = mysqli_query($connection, $query1);
+
+        // create user's Seller account
+        $query2 = "INSERT INTO Role (";
+        $query2 .= "userID, typeID";
+        $query2 .= ") VALUES (";
+        $query2 .= $user_id . ",'Seller')";
+        $seller_creation = mysqli_query($connection, $query2);
+
+        // all queries must be successful otherwise an error is thrown
+        if ($result && $buyer_creation && $seller_creation) {
+            // Success
+            $_SESSION["message"] = "Welcome {$fName}";
+            attempt_login($username, $password);
+            // TODO change to user's home page. Need to store user id as well
+            redirect_to("auction_list.php");
+        } else {
+            // Failure
+            $message = "Failed to create account. Please try again.";
+            //TODO redirect to sign up page and display message
+        }
     }
 
 
-    // set variables for SQL insert query, check for sql injection
-    $userName = mysql_prep($_POST["username"]);
-    $fName = mysql_prep($_POST["first_name"]);
-    $lName = mysql_prep($_POST["last_name"]);
-    $password = password_encrypt($_POST["password"]);
-    $userEmail = mysql_prep($_POST["email"]);
 
-    // create user account
-    $query = "INSERT INTO User (";
-    $query .= "userName, fName, lName, userPassword, userEmail";
-    $query .= ") VALUES (";
-    $query .= "'{$userName}', '{$fName}', '{$lName}', '{$password}', '{$userEmail}'";
-    $query .= ")";
-    $result = mysqli_query($connection, $query);
-
-    $user_id = (int)mysqli_insert_id($connection);
-
-    // create user's Buyer account
-    $query1 = "INSERT INTO Role (";
-    $query1 .= "userID, typeID";
-    $query1 .= ") VALUES (";
-    $query1 .= $user_id . ", 'Buyer')";
-    $buyer_creation = mysqli_query($connection, $query1);
-
-    // create user's Seller account
-    $query2 = "INSERT INTO Role (";
-    $query2 .= "userID, typeID";
-    $query2 .= ") VALUES (";
-    $query2 .= $user_id . ",'Seller')";
-    $seller_creation = mysqli_query($connection, $query2);
-
-    // all queries must be successful otherwise an error is thrown
-    if ($result && $buyer_creation && $seller_creation) {
-        // Success
-        $_SESSION["message"] = "Welcome {$fName}";
-        attempt_login($username, $password);
-        // TODO change to user's home page. Need to store user id as well
-        redirect_to("auction_list.php");
-    } else {
-        // Failure
-        $message = "Failed to create account. Please try again.";
-        //TODO redirect to sign up page and display message
-    }
 
 
 } ?>

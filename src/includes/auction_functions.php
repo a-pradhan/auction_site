@@ -1,5 +1,6 @@
-<?php require_once("db_connection.php");
-require_once("general_functions.php");?>
+<?php require_once("db_connection.php") ?>
+<?php require_once("mail.php") ?>
+<?php require_once("general_functions.php");?>
 <?php
 
 
@@ -250,15 +251,21 @@ function find_all_non_live_auctions()
         return $query_sent;
     }
 
+    function retrieve_buyer_roleID_from_specified_auctionID($auctionID){
+        global $connection;
+        $query = "SELECT roleID FROM Auction AS a LEFT JOIN Bid AS b ON a.bidID = b.bidID WHERE a.auctionID ={$auctionID}";
+        $query_sent =mysqli_query($connection,$query);
+        confirm_query($query_sent);
+        return $query_sent;
+    }
+
     function bid_an_amount($chosen_auction_ID,$bidAmount,$loggedIn_userID)
     {
         $buyer_roleID = retrieve_buyerID_from_loggedIn_userID($loggedIn_userID);
-
         global $connection;
-        $query="INSERT INTO `Bid` (auctionID, bidTimestamp, bidAmount,roleID) VALUES ( {$chosen_auction_ID} ,1999, '{$bidAmount}', {$buyer_roleID})";
-
+        $query="INSERT INTO `Bid` (auctionID, bidAmount,roleID) VALUES ({$chosen_auction_ID} , {$bidAmount}, {$buyer_roleID})";
         $bid_sent =mysqli_query($connection, $query);
-        confirm_query($bid_sent);
+        //confirm_query($bid_sent);
 
     }
 
@@ -369,24 +376,83 @@ function find_all_non_live_auctions()
         return $userName;
     }
 
+    function find_userEmail_and_userName_for_bidder($roleID){
+        global $connection;
+        $query = "SELECT userEmail, userName ";
+        $query .= "FROM User as u ";
+        $query .= "LEFT JOIN Role as r ";
+        $query .= "ON u.userID=r.userID ";
+        $query .= "WHERE roleID= {$roleID}";
+
+        $userEmail = mysqli_query($connection,$query);
+        confirm_query($userEmail);
+        return $userEmail;
+    }
+
+
+    function filter_categories($columnName)
+    {
+        global $connection;
+        $query = "SELECT COLUMN_TYPE ";
+        $query .= "FROM information_schema.COLUMNS ";
+        $query .= "WHERE TABLE_SCHEMA = 'AuctionSite' ";
+        $query .= "AND TABLE_NAME = 'Item' ";
+        $query .= "AND COLUMN_NAME = '{$columnName}' ";
+
+        $category_set = mysqli_query($connection, $query);
+        confirm_query($category_set);
+
+        return $category_set;
+    }
+
+
+    function outbid_email($bidderUserName, $bidderEmail, $auctionName, $latestBidAmount, $auctionExpiry) {
+        $message = ("Dear {$bidderUserName}\n\nYou have just been outbid on {$auctionName}, latest bid is £ {$latestBidAmount}. The auction will expire on {$auctionExpiry}.\n\nYours sincerely,\n\nTeam Auction Vault");
+        send_mail($bidderEmail,$message);
+    }
+
+    function get_watchlist_for_specified_auction($auctionID){
+        global $connection;
+        $query = "SELECT  `userID` FROM `WatchList` WHERE auctionID ={$auctionID}";
+        $watchlist_set = mysqli_query($connection,$query);
+        confirm_query($watchlist_set);
+        return $watchlist_set;
+
+    }
+
+    function find_userName_and_userEmail_from_userID($userID){
+        global $connection;
+        $query ="SELECT  `userName`, `userEmail` FROM `User` WHERE userID={$userID}";
+        $userName_userEmail_set= mysqli_query($connection,$query);
+        confirm_query($userName_userEmail_set);
+        return $userName_userEmail_set;
+    }
+
+    function watch_list_email($auctionID,$auctionName,$latestBidAmount,$auctionExpiry,$auctionBids)
+    {
+        global $connection;
+        $query ="SELECT userID FROM `WatchList` WHERE auctionID={$auctionID}";
+        $watch_list_userID_set=mysqli_query($connection,$query);
+        confirm_query($watch_list_userID_set);
+
+
+        while ($watch_userID_row = mysqli_fetch_assoc($watch_list_userID_set)){
+            $watcher_userID= $watch_userID_row['userID'];
+            $watcher_userName_userEmail_row = mysqli_fetch_assoc(find_userName_and_userEmail_from_userID($watcher_userID));
+            $watcher_userName= $watcher_userName_userEmail_row['userName'];
+            $watcher_userEmail=$watcher_userName_userEmail_row['userEmail'];
+            $message = ("Dear {$watcher_userName}\n\nAuction: {$auctionName}\n\nLatest bid amount: £ {$latestBidAmount}\n\nTotal bids: {$auctionBids}\n\nAuction expires on {$auctionExpiry}\n\nYours sincerely,\n\nTeam Auction Vault");
+            send_mail($watcher_userEmail,$message);
+        }
 
 
 
+    }
 
-function filter_categories($columnName)
-{
-    global $connection;
-    $query = "SELECT COLUMN_TYPE ";
-    $query .= "FROM information_schema.COLUMNS ";
-    $query .= "WHERE TABLE_SCHEMA = 'AuctionSite' ";
-    $query .= "AND TABLE_NAME = 'Item' ";
-    $query .= "AND COLUMN_NAME = '{$columnName}' ";
-
-    $category_set = mysqli_query($connection, $query);
-    confirm_query($category_set);
-
-    return $category_set;
-}
+    function seller_email($sellerUserName, $sellerEmail, $auctionName, $latestBidAmount, $auctionExpiry, $auctionViewings, $auctionBids) {
+        $message = ("Dear {$sellerUserName}\n\nAuction: {$auctionName}\n\nLatest bid amount: £ {$latestBidAmount}\n\nTotal viewings: {$auctionViewings}\n\nTotal bids: {$auctionBids}\n\nAuction expires on {$auctionExpiry}\n\nYours sincerely,\n\nTeam Auction Vault");
+        send_mail($sellerEmail,$message);
+    }
 
 
 ?>

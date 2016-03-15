@@ -95,8 +95,15 @@ $watched_auction_set = mysqli_query($connection, $query);
                             <h5><span
                                     style="font-weight: bold;">Condition:&nbsp;</span><?php echo htmlentities($watched_auction["itemCondition"]); ?>
                             </h5>
+                            <?php
+
+                            $time = strtotime($watched_auction["auctionEnd"]);
+                            $newFormat = date('D, d F \a\t H:i A',$time);
+                            $auctionExpiry = "" . $newFormat;
+                            ?>
+
                             <h5><span
-                                    style="font-weight: bold;">End Date:&nbsp;</span><?php echo htmlentities($watched_auction["auctionEnd"]); ?>
+                                    style="font-weight: bold;">End Date:&nbsp;</span><?php echo htmlentities($auctionExpiry); ?>
                             </h5>
                             <h5><span
                                     style="font-weight: bold;">Description:&nbsp;</span></h5>
@@ -121,9 +128,11 @@ $watched_auction_set = mysqli_query($connection, $query);
     } // end of loop through watched_auction result set
 
     ?>
+
     <div id="pagination-gold">
-        <?php if ($pagination->total_pages() > 1) {
-            if ($pagination->has_previous_page()) {
+        <?php if($pagination->total_pages() > 1) {
+            // display button to go back to previous page if it exists
+            if($pagination->has_previous_page()) {
                 echo " <a href=\"watch_list.php?page=";
                 echo $pagination->previous_page();
                 echo "\">&laquo; Previous</a> ";
@@ -138,7 +147,9 @@ $watched_auction_set = mysqli_query($connection, $query);
 
             }
 
-            if ($pagination->has_next_page()) {
+
+            // display button to go to next page if it exists
+            if($pagination->has_next_page()) {
                 echo " <a href=\"watch_list.php?page=";
                 echo $pagination->next_page();
                 echo "\">Next &raquo;</a> ";

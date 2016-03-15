@@ -7,11 +7,10 @@
 
 
 <?php
-    $username = $_SESSION["username"];
-    $password = $_SESSION["password"];
-    $loggedIn_userID = $_SESSION["userID"];
+$username = $_SESSION["username"];
+$password = $_SESSION["password"];
+$loggedIn_userID = $_SESSION["userID"];
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,12 +23,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Auction Details</title>
+    <title>Shop Item - Start Bootstrap Template</title>
 
 
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/create_auctionStyling.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="../css/shop-item.css" rel="stylesheet">
@@ -48,63 +46,50 @@
     <![endif]-->
 
 </head>
-<body style="background-color: #dbdbdb">
-
+<body>
 
 <!-- Navigation -->
-<?php include("../includes/layouts/navbar.php") ?>
+<?php require_once("../includes/navbar.php"); ?>
 
 <!-- Page Content -->
 <?php
-    if(isset($_SESSION['watch_list_message'])) { ?>
-        <div class="col-sm-12" align="center">
-       <h6 class ="rd" style="font-size: 18px;"> <?php echo $_SESSION['watch_list_message']; ?></h6>
-            </div>
-<?php
-        unset($_SESSION['watch_list_message']);
+// Retrieve the itemID for the auction selected
+$chosen_auction_item = $_GET["auction"];
+// Retrieve the auction row for the auction selected using the itemID
+$chosen_auction_info = mysqli_fetch_assoc(find_auction_for_chosen_item($chosen_auction_item));
+$chosen_auction_ID = $chosen_auction_info['auctionID'];
+
+//This will increment the viewing
+$viewing_set = mysqli_fetch_assoc(retrieve_viewing_for_chosen_auction($chosen_auction_ID));
+$updated_viewing = intval($viewing_set["auctionViewings"]);
+$updated_viewing++;
+update_viewing_for_chosen_auction ($chosen_auction_ID,$updated_viewing);
+
+// Fetch the item info from Item table using the itemID
+$chosen_item_info = find_item_for_live_auction($chosen_auction_item);
+$chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
+
+
+//The following is to prevent an owner of an auction to bid on their own auction
+$my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
+$all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
+$can_I_bid =1;
+while ($my_auctions_for_checking = mysqli_fetch_assoc($all_my_auctions)) {
+    if ($my_auctions_for_checking["auctionID"] == $chosen_auction_ID ) {
+        $can_I_bid = 0;
     }
-    // Retrieve the itemID for the auction selected
-    $chosen_auction_item = $_GET["auction"];
-    // Retrieve the auction row for the auction selected using the itemID
-
-    $chosen_auction_info = mysqli_fetch_assoc(find_auction_for_chosen_item($chosen_auction_item));
-    $chosen_auction_ID = $chosen_auction_info['auctionID'];
-
-    //This will increment the viewing
-    $viewing_set = mysqli_fetch_assoc(retrieve_viewing_for_chosen_auction($chosen_auction_ID));
-    $updated_viewing = intval($viewing_set["auctionViewings"]);
-    $updated_viewing++;
-    update_viewing_for_chosen_auction ($chosen_auction_ID,$updated_viewing);
-
-    // Fetch the item info from Item table using the itemID
-    $chosen_item_info = find_item_for_live_auction($chosen_auction_item);
-    $chosen_live_item_info = mysqli_fetch_assoc($chosen_item_info);
-
-
-    //The following is to prevent an owner of an auction to bid on their own auction
-    $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
-
-    $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
-    $can_I_bid =1;
-    while ($my_auctions_for_checking = mysqli_fetch_assoc($all_my_auctions)) {
-        if ($my_auctions_for_checking["auctionID"] == $chosen_auction_ID ) {
-            $can_I_bid = 0;
-        }
-    }
-  // debugging
-
+}
 
 ?>
 
 
 <div class="container">
 
-    <div class="col-sm-12">
-        <div class="row panel panel-default panel-shadow">
-            <div class="col-md-5">
-            <div class="thumbnail" style="border: none">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="thumbnail">
                 <?php //retrieves the name of the photo to be shown ?>
-                <img class="img-responsive" src="../itemImages/<?php echo $chosen_live_item_info["itemPhoto"] ?>" onerror="this.src='../images/logo2.png'">
+                <img class="img-responsive" src="../images/<?php echo $chosen_live_item_info["itemPhoto"] ?>" alt="">
             </div>
         </div>
 
@@ -117,7 +102,7 @@
                     <input type="submit" id ="oneBid" name="bid" value="Bid" onclick="myFunction()">
                 </form>
 
-               <?php // JS code for retrieving the bidAmount from the bidField ?>
+                <?php // JS code for retrieving the bidAmount from the bidField ?>
                 <script>
 
                     $(document).ready(function() {
@@ -138,7 +123,7 @@
 
                             var bidAmount = $("#bidField").val();
                             if (bidAmount != '') {
-                                confirm("Please confirm - bid amount: £" + bidAmount);
+                                confirm("Please confirm - bid amount: Â£" + bidAmount);
                             } else {
                                 alert("Field must not be empty, please enter a bid.");
 
@@ -467,10 +452,10 @@
         <div class="col-md-7">
 
 
-            <div class="thumbnail" style="border: groove">
+            <div class="thumbnail">
                 <div class="caption-full">
                     <h4 class="pull-right" style="color:#880000">Reserve price at
-                        £ <?php echo htmlentities($chosen_auction_info["auctionReservePrice"]); ?></h4>
+                        Â£ <?php echo htmlentities($chosen_auction_info["auctionReservePrice"]); ?></h4>
 
                     <h4><?php echo htmlentities($chosen_live_item_info["itemName"]); ?></h4>
                     <h6 class="pull-right" style="color:#880000">Time left ~
@@ -502,17 +487,11 @@
                         });
                     </script>
 
-
-                    <p><strong>Category: </strong><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
+                    <p><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
 
                     <p><strong>
                             Quantity:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemQuantity"]); ?>
                     </p>
-
-                    <!-- TODO change auction to itemID for the auction_view page to avoid confusion as it currently represents the itemID not the auctionID   -->
-                    <a style="float: right;" class="btn btn-gold" href="watch_auction.php?auction=<?php echo urlencode($chosen_auction_ID);
-                    ?>&item=<?php echo urlencode($_GET['auction']); ?>">Add to Watch List</a>
-
                     <p><strong>
                             Condition:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemCondition"]); ?>
                     </p>
@@ -524,9 +503,9 @@
         </div>
         <div class="col-md-7">
             <?php
-            echo "<div class=\"thumbnail\" style='border: groove'>";
-            echo "<p class=\"field-title\" style='font-size: 24px;text-align: center'>Latest bidders!</p>";
-            echo "<div class=\"list-group\ scrollable-list\">";
+            echo "<div class=\"thumbnail\">";
+            echo "<p class=\"lead\">Latest bidders!</p>";
+            echo "<div class=\"list-group\">";
 
             $bid_set = find_bids_for_live_auction($chosen_auction_ID);
             if (mysqli_num_rows($bid_set) == 0) {
@@ -545,28 +524,28 @@
 
 
                     if ($count == 0) {
-                        echo "<ol class=\"list-group-item btn-gold\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']);
-                    for($x=0;$x<$whole_number_rating_score;$x++){
-                        if ($x ==0) {
-                            echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star\";></span>";
-                        } else {
-                        echo "<span class=\"glyphicon glyphicon-star\"></span>";
+                        echo "<ol class=\"list-group-item active\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("Â£") . htmlentities($bids['bidAmount']);
+                        for($x=0;$x<$whole_number_rating_score;$x++){
+                            if ($x ==0) {
+                                echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star\";></span>";
+                            } else {
+                                echo "<span class=\"glyphicon glyphicon-star\"></span>";
+                            }
                         }
-                    }
-                    for($z=0;$z<$empty_stars;$z++){
-                        if ($empty_stars == 5 && $z == 0) {
-                            echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star-empty\";></span>";
+                        for($z=0;$z<$empty_stars;$z++){
+                            if ($empty_stars == 5 && $z == 0) {
+                                echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star-empty\";></span>";
 
-                        } else {
-                            echo "<span class=\"glyphicon glyphicon-star-empty\"></span>";
+                            } else {
+                                echo "<span class=\"glyphicon glyphicon-star-empty\"></span>";
 
+                            }
                         }
-                    }
                         echo "</ol>";
                         $count++;
                     } else {
 
-                        echo "<ol class=\"list-group-item\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']);
+                        echo "<ol class=\"list-group-item\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("Â£") . htmlentities($bids['bidAmount']);
                         for($x=0;$x<$whole_number_rating_score;$x++){
                             if ($x ==0) {
                                 echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star\";></span>";
@@ -591,12 +570,12 @@
             echo "</div>";
             echo "</div>";
             ?>
-        </div>
+
         </div>
     </div>
     <div class="col-md-12">
         <div class="text-right">
-            <a class="btn btn-gold">Leave a Review</a>
+            <a class="btn btn-success">Leave a Review</a>
         </div>
 
         <hr>
@@ -653,8 +632,6 @@
 
 
 </div>
-
-<?php global $connection; echo mysqli_error($connection); ?>
 <!-- /.container -->
 
 <div class="container">

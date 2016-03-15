@@ -75,7 +75,14 @@ function form_errors($errors = array())
 // check passwords entered when signup match
 function check_password_match($password, $confirmation_password)
 {
-    return $password === $confirmation_password ? true : $errors['password'] = "Passwords do not match";
+    if($password == $confirmation_password){
+        return true;
+    }else{
+        $errors['password'] = "Passwords do not match";
+        return $errors;
+    }
+
+    //return $password === $confirmation_password ? true :
 }
 
 function validate_email($email) {

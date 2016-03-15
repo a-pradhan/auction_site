@@ -8,7 +8,7 @@ require_once("PHPMailer/PHPMailerAutoload.php");
  * Github Repo homepage: https://github.com/PHPMailer/PHPMailer
  */
 
-function send_mail()
+function send_mail($email,$message)
 {
     //Create a new PHPMailer instance
     $mail = new PHPMailer();
@@ -36,22 +36,29 @@ function send_mail()
     $mail->Username = "noreply.auctionvault@gmail.com";
     //Password to use for SMTP authentication
     $mail->Password = "moneymotivation";
+
     //Set who the message is to be sent from
     $mail->setFrom('noreply.auctionvault@gmail.com', 'Auction Vault');
     //Set an alternative reply-to address
     $mail->addReplyTo('replyto@example.com', 'First Last');
 
+
+    //$email ="noreply.auctionvault@gmail.com";
+
     //Set who the message is to be sent to
-    $mail->addAddress('noreply.auctionvault@gmail.com', 'Auction Vault');
+    $mail->addAddress($email);
     //Set the subject line
     $mail->Subject = 'PHPMailer GMail SMTP test';
 
     //Read an HTML message body from an external file, convert referenced images to embedded,
     //convert HTML into a basic plain-text alternative body
-    //$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
+    //(file_get_contents('contents.html'), dirname(__FILE__));
+    $auctionTitle ="Rick Ross Chain";
+    $latestBid = "£ 500";
 
     // plain text body if not using a html template for the body
-    $mail->Body = "This is a plain-text body";
+    //$message = ("Dear bidder\n\nYou have just been outbid on {$auctionTitle}, latest bid is  {$latestBid}\n\nYours sincerely,\n\nTeam Auction Vault");
+    $mail->Body = ($message);
 
     //Replace the plain text body with one created manually
     //$mail->AltBody = 'This is a plain-text message body';
