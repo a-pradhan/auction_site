@@ -101,7 +101,7 @@
     <div class="col-sm-12">
         <div class="row panel panel-default panel-shadow">
             <div class="col-md-5">
-            <div class="thumbnail">
+            <div class="thumbnail" style="border: none">
                 <?php //retrieves the name of the photo to be shown ?>
                 <img class="img-responsive" src="../itemImages/<?php echo $chosen_live_item_info["itemPhoto"] ?>" onerror="this.src='../images/logo2.png'">
             </div>
@@ -245,7 +245,7 @@
         <div class="col-md-7">
 
 
-            <div class="thumbnail">
+            <div class="thumbnail" style="border: groove">
                 <div class="caption-full">
                     <h4 class="pull-right" style="color:#880000">Reserve price at
                         £ <?php echo htmlentities($chosen_auction_info["auctionReservePrice"]); ?></h4>
@@ -302,8 +302,8 @@
         </div>
         <div class="col-md-7">
             <?php
-            echo "<div class=\"thumbnail\">";
-            echo "<p class=\"field-title\" style='font-size: 24px; padding-left: 15px; padding-top: 10px '>Latest bidders!</p>";
+            echo "<div class=\"thumbnail\" style='border: groove'>";
+            echo "<p class=\"field-title\" style='font-size: 24px;text-align: center'>Latest bidders!</p>";
             echo "<div class=\"list-group\ scrollable-list\">";
 
             $bid_set = find_bids_for_live_auction($chosen_auction_ID);

@@ -87,18 +87,19 @@ $watched_auction_set = mysqli_query($connection, $query);
                         </div>
                         <div class="col-md-6">
                             <h3><?php echo htmlentities($watched_auction["itemName"]); ?> </h3>
-                            <h4><?php echo htmlentities($watched_auction["itemCategory"]); ?></h4>
-                            <h6><span
+                            <h5><span
+                                    style="font-weight: bold;">Category: &nbsp;</span><?php echo htmlentities($watched_auction["itemCategory"]); ?></h5>
+                            <h5><span
                                     style="font-weight: bold;">Quantity:&nbsp;</span><?php echo htmlentities($watched_auction["itemQuantity"]); ?>
-                            </h6>
-                            <h6><span
+                            </h5>
+                            <h5><span
                                     style="font-weight: bold;">Condition:&nbsp;</span><?php echo htmlentities($watched_auction["itemCondition"]); ?>
-                            </h6>
-                            <h6><span
+                            </h5>
+                            <h5><span
                                     style="font-weight: bold;">End Date:&nbsp;</span><?php echo htmlentities($watched_auction["auctionEnd"]); ?>
-                            </h6>
-                            <h6><span
-                                    style="font-weight: bold;">Description:&nbsp;</span></h6>
+                            </h5>
+                            <h5><span
+                                    style="font-weight: bold;">Description:&nbsp;</span></h5>
                             <p><?php echo htmlentities($watched_auction["itemDescription"]) ?></p>
                         </div>
                         <div class="col-md-3 center-block">
@@ -150,7 +151,6 @@ $watched_auction_set = mysqli_query($connection, $query);
 
 
     <!-- Footer -->
-        <hr>
         <footer>
             <div class="row">
                 <div class="col-lg-12">

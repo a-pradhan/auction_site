@@ -13,66 +13,63 @@ $loggedIn_userID = $_SESSION["userID"];
 ?>
 
 <?php require("../includes/layouts/header.php"); ?>
-<body style="background-color: #dbdbdb">
+<body style="background-color: #dbdbdb" xmlns="http://www.w3.org/1999/html">
 <?php require("../includes/layouts/navbar.php"); ?>
 
 
 <!-- Page Content -->
-<div class="container">
-
+<div class="container-fluid">
+<div class="col-sm-12">
     <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="page-title">Live Auctions
-                <small>Money motivation</small>
-            </h1>
+
+            <h1 class="page-title">Live Auctions</h1>
         </div>
     </div>
     <!-- Search and filtering -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-sm-6" style="padding-bottom: 5px">
-                <div class="col-sm-12">
-                    <form action="auction_list.php" method="POST">
-                        <div class="col-sm-4" style="padding-bottom: 5px">
-                            <div class="field-title" style="font-size: 16px">Category</div>
-
-                            <select name="category" class="form-control">
-                                <option value=""></option>
-                                <option value="Car">Car</option>
-                                <option value="Mobile Phone">Mobile Phones</option>
-                                <option value="Laptop">Laptops</option>
-                                <option value="Jewellry">Jewellry</option>
-                                <option value="Miscellaneous">Miscellaneous</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-4" style="padding-bottom: 5px">
-                            <div class="field-title" style="font-size: 16px">Condition</div>                            <select name="condition" class="form-control">
-                                <option value=""></option>
-                                <option value="Used">Used</option>
-                                <option value="Used - Like New">Used - Like New</option>
-                                <option value="New">New</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-4" style="padding-bottom: 5px">
-                            <div class="field-title" style="font-size: 16px">Sort By</div>                            <select name="sortBy" class="form-control">
-                                <option value=""></option>
-                                <option value="Price">Price</option>
-                                <option value="Time">Time</option>
-                            </select>
-                        </div>
-                </div>
-
-                <input id="refine" name="refine" type="submit" value="Refine" class="btn-gold form-control">
-                </form>
-            </div>
-            <div class="col-sm-6" style="padding-bottom: 20px; padding-top: 25px">
+    <div class="col-md-12">
+        <div class="col-sm-6" style="padding-bottom: 5px">
+            <div class="col-sm-12">
                 <form action="auction_list.php" method="POST">
-                    <input id="search" name="searchField" type="text" class="form-control" "
-                    placeholder="Search by name, description or category of item!">
-                    <input class="btn-gold form-control" id="submit" type="submit" value="Search">
-                </form>
+                    <div class="col-sm-4" style="padding-bottom: 5px">
+                        <div class="field-title" style="font-size: 16px">Category</div>
+
+                        <select name="category" class="form-control">
+                            <option value=""></option>
+                            <option value="Car">Car</option>
+                            <option value="Mobile Phone">Mobile Phones</option>
+                            <option value="Laptop">Laptops</option>
+                            <option value="Jewellry">Jewellry</option>
+                            <option value="Miscellaneous">Miscellaneous</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4" style="padding-bottom: 5px">
+                        <div class="field-title" style="font-size: 16px">Condition</div>
+                        <select name="condition" class="form-control">
+                            <option value=""></option>
+                            <option value="Used">Used</option>
+                            <option value="Used - Like New">Used - Like New</option>
+                            <option value="New">New</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4" style="padding-bottom: 5px">
+                        <div class="field-title" style="font-size: 16px">Sort By</div>
+                        <select name="sortBy" class="form-control">
+                            <option value=""></option>
+                            <option value="Price">Price</option>
+                            <option value="Time">Time</option>
+                        </select>
+                    </div>
             </div>
+
+            <input id="refine" name="refine" type="submit" value="Refine" class="btn-gold form-control">
+            </form>
+        </div>
+        <div class="col-sm-6" style="padding-bottom: 20px; padding-top: 25px">
+            <form action="auction_list.php" method="POST">
+                <input id="search" name="searchField" type="text" class="form-control" "
+                placeholder="Search by name, description or category of item!">
+                <input class="btn-gold form-control" id="submit" type="submit" value="Search">
+            </form>
         </div>
     </div>
 
@@ -151,19 +148,22 @@ $loggedIn_userID = $_SESSION["userID"];
         //echo "<img class=\"img-responsive\" src=\"../itemImages/" . $live_item_info["itemPhoto"] . " onerror=\"this.src=\'../images/logo2.png\' \">" ; ?>
         <img class="img-responsive"
              src="../itemImages/<?php echo $live_item_info["itemPhoto"]; ?>" onerror="this.src='../images/logo2.png'"/>
-    <?php
+        <?php
         //echo "</a>";
         echo "</div>";
         echo "<div class=\"col-md-6\">";
-        echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
-        echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";
-        echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) ."</span></h6>";
-        echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
-        echo "<h6><span style=\"font-weight:bold\">" . "Description: </span>"."</h6>"."<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
+        echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>" . "<h4><span style=\"color:#880000 ; \">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h5>";
+
+        echo "<h5> <span style=\"font-weight:bold\">" . "Category: </span>" . htmlentities($live_item_info["itemCategory"]) . "</h5>";
+        echo "<h5><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "</span></h5>";
+        echo "<h5><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h5>";
+        echo "<h5><span style=\"font-weight:bold\">" . "Description: </span>" . "</h5>" . "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
         echo "</div>";
         echo "<div class=\"col-md-3\">";
+        echo "<div class=\"row\">";
         echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-black\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
-        echo  "<h5 class=\'bottom-align-text\' style=\"color:#880000 ;text-align:center;float: right; position: absolute;\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) ."</h5>";
+        echo "</div>";
+
         echo "</div>";
         echo "</div>";
         echo "</div>";
@@ -177,8 +177,6 @@ $loggedIn_userID = $_SESSION["userID"];
 
     ?>
 
-
-    <!-- Pagination -->
     <div class="row text-center">
         <div class="col-lg-12">
             <ul class="pagination-gold">
@@ -218,10 +216,10 @@ $loggedIn_userID = $_SESSION["userID"];
             </div>
         </div>
         <!-- /.row -->
-    </footer>
-
+    </footer><!-- /.container -->
 </div>
-<!-- /.container -->
+</div>
+<!-- Pagination -->
 
 <!-- jQuery -->
 <script src="../js/jquery.js"></script>
