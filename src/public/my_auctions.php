@@ -133,7 +133,7 @@ $loggedIn_userID = $_SESSION["userID"];
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
                     echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
-                    echo "<button type=\"button\" id=\"rate\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
+                    echo "<button type=\"button\" id=\"{$my_auction['auctionID']}\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"buttonID(this.id)\"";
 
                     $seller_has_rated_this_auction_set = mysqli_fetch_assoc(has_seller_rated_this_auction($my_auction['auctionID']));
                     if ($seller_has_rated_this_auction_set['sellerRated'] == 1) {
@@ -145,13 +145,41 @@ $loggedIn_userID = $_SESSION["userID"];
                     echo ">Rate buyer</button></div></td>";
 
                     ?>
-                    <script>
 
-                        function clicked() {
+                        <script>
 
-                            document.getElementById("rate").disabled = true;
-                        }
-                    </script>
+                            function buttonID(theID){
+                                onTrackAuctionID  = theID;
+                            }
+
+                            function ratingSelected(selected) {
+                                onTrackRatingSelected = selected;
+                            }
+
+                            function carryAuctionID() {
+                                if (onTrackRatingSelected == "0"){
+
+                                } else {
+                                    $.post(
+                                        "../includes/send_a_rating_for_a_buyer.php",
+                                        { auctionID_ajax:  onTrackAuctionID,
+                                            rating_ajax: onTrackRatingSelected},
+                                        function(data) {
+
+                                        }
+                                    );
+
+                                }
+
+                            }
+
+                            function myFunction() {
+                                window.location = document.URL;
+                            }
+
+
+
+                        </script>
 
 
                     <div class="modal fade" id="myModal" role="dialog">
@@ -165,7 +193,7 @@ $loggedIn_userID = $_SESSION["userID"];
                                     <form action="" method="POST">
                                         <h4 class="modal-title">Please select a rating
 
-                                            <select name="ratingList">
+                                            <select name="ratingList" onchange="ratingSelected(value);" >
                                                 <option value="0"></option>
                                                 <option value="1">1 - Do not recommend</option>
                                                 <option value="2">2 - Poor</option>
@@ -176,7 +204,7 @@ $loggedIn_userID = $_SESSION["userID"];
                                 </div>
 
                                 <div class="modal-footer">
-                                    <input id="submit" name="submit" type="submit" value="Submit">
+                                    <?php echo "<input id=\"submit\" name=\"submit\" type=\"submit\" value=\"Submit\" onclick=\"carryAuctionID();\">"; ?>
                                 </div>
                                 </form>
 
@@ -185,27 +213,6 @@ $loggedIn_userID = $_SESSION["userID"];
                         </div>
                     </div>
                     <?php
-
-                    if (isset($_POST['submit'])) {
-                        if ($_POST["ratingList"] == 0) {
-                            echo "<p style =\"color:red;\">You must select a rating.</p>";
-                        } else {
-                            //set the button to disabled
-                            sellerRated_set_to_true_for_auction($my_auction['auctionID']);
-                            echo "<script>clicked();</script>";
-
-
-                            $auctionID = $my_auction['auctionID'];
-                            $roleID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
-                            $ratingValue = $_POST["ratingList"];
-                            send_a_rating($auctionID, $roleID, $ratingValue);
-
-
-                        }
-
-
-                    }
-
 
 
                     } else {
@@ -220,38 +227,51 @@ $loggedIn_userID = $_SESSION["userID"];
 
                     }
 
+                    if(isset($_POST['submit'])){
+                        if ($_POST["ratingList"] == 0) {
+                            echo "<p style =\"color:red;\">You must select a rating.</p>";
+                            echo "<script>carryAuctionID();</script>";
+
+                        } else {
+
+                            echo "<script>myFunction()</script>";
+
+
+
+
+
+                        }
+                    }
 
                     ?>
 
                     <?php
                     $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
-                    //            echo htmlentities($my_auctions_sellerID);
-                    $all_my_auctions = retrieve_my_auctions($my_auctions_sellerID);
-                    $counter = 0;
+                    $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
+                    $counter=0;
                     //A second loop to assign left to each pre-defined <div> in precvious while-loop
                     while ($my_auction = mysqli_fetch_assoc($all_my_auctions)) {
 
+                        $auctionEnd = $my_auction["auctionEnd"];
 
-                    $auctionEnd = $my_auction["auctionEnd"];
 
+                        ?>
+                        <script>
+                            var <?php echo "t{$counter}"; ?> = <?php echo json_encode($my_auction["auctionEnd"]); ?>;
 
-                    ?>
-                    <script>
-                        var <?php echo "t{$counter}"; ?> = <?php echo json_encode($my_auction["auctionEnd"]); ?>;
+                            var <?php echo "d{$counter}"; ?> =<?php echo json_encode($counter); ?>;
+                            Date.createFromMysql(<?php echo "t{$counter}"; ?>);
 
-                        var <?php echo "d{$counter}"; ?> =
-                        Date.createFromMysql(<?php echo "t{$counter}"; ?>);
+                            <?php $div_counter = "clock{$counter}"; ?>
 
-                        <?php $div_counter = "clock{$counter}"; ?>
+                            $(<?php echo "'#" . "{$counter}" . "'"; ?>).countdown(<?php echo "d{$counter}"; ?>, function (event) {
+                                var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+                                $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+                            });
+                        </script>
 
-                        $(<?php echo "'#" . "{$counter}" . "'"; ?>).countdown(<?php echo "d{$counter}"; ?>, function (event) {
-                            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
-                            $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
-                        });
-                    </script>
-
-                    <?php
-                    $counter++;
+                        <?php
+                        $counter++;
                     }
                     ?>
 
