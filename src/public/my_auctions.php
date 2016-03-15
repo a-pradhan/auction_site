@@ -138,12 +138,12 @@ $loggedIn_userID = $_SESSION["userID"];
                     $seller_has_rated_this_auction_set = mysqli_fetch_assoc(has_seller_rated_this_auction($my_auction['auctionID']));
                     if ($seller_has_rated_this_auction_set['sellerRated'] == 1) {
                         echo "disabled=\"disabled\"";
+                        echo ">Rated</button></div></td>";
+
+                    } else {
+                        echo ">Rate buyer</button></div></td>";
+
                     }
-
-
-
-
-                    echo ">Rate buyer</button></div></td>";
 
                     ?>
 
