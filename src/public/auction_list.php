@@ -149,7 +149,10 @@ $loggedIn_userID = $_SESSION["userID"];
         echo "<div class=\"row\">";
         echo "<div class=\"col-md-3\">";
         //echo "<a href=\"#\">";
-        echo "<img class=\"img-responsive\" src=\"../itemImages/" . $live_item_info["itemPhoto"] . "\" alt=\"\">" ;
+        //echo "<img class=\"img-responsive\" src=\"../itemImages/" . $live_item_info["itemPhoto"] . " onerror=\"this.src=\'../images/logo2.png\' \">" ; ?>
+        <img class="img-responsive"
+             src="../itemImages/<?php echo $live_item_info["itemPhoto"]; ?>" onerror="this.src='../images/logo2.png'"/>
+    <?php
         //echo "</a>";
         echo "</div>";
         echo "<div class=\"col-md-6\">";
