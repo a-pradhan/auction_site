@@ -12,7 +12,7 @@ $lName = "";
 $userEmail = "";
 
 
-if (isset($_POST["submit"])) {
+if (isset($_POST["submit_sign_up"])) {
 // VALIDATION
 
     // check if login fields are empty
@@ -23,12 +23,15 @@ if (isset($_POST["submit"])) {
     $fields_with_max_lengths = ["first_name" => 255, "last_name" => 255, "username" => 255, "password" => 255];
     validate_max_lengths($fields_with_max_lengths);
 
-    // check email format is valid
+    //TODO check email format is valid
+
+    //TODO check username and email do not already exist in the db
 
     // check that both passwords entered match
     check_password_match($_POST['password'], $_POST['password_confirmation']);
 
     if (!empty($errors)) {
+
         $_SESSION["errors"] = $errors;
         redirect_to("sign_up.php");
     }else{
@@ -68,12 +71,11 @@ if (isset($_POST["submit"])) {
             // Success
             $_SESSION["message"] = "Welcome {$fName}";
             attempt_login($username, $password);
-            // TODO change to user's home page. Need to store user id as well
             redirect_to("auction_list.php");
         } else {
             // Failure
             $message = "Failed to create account. Please try again.";
-            //TODO redirect to sign up page and display message
+            redirect_to("sign_up.php");
         }
     }
 
@@ -181,7 +183,7 @@ if (isset($_POST["submit"])) {
                     <input class="input-lg" type="password" name="password_confirmation" value=""/><br/><br/>
                 </div>
                 <div class="col-sm-12" align="center">
-                    <button class="btn-gold form-control" type="submit" name="submit" value="Complete Sign Up">Complete Sign Up</button>
+                    <button class="btn-gold form-control" type="submit" name="submit_sign_up">Complete Sign Up</button>
                 </div>
             </form><!-- all forms include a submit button -->
         </div>

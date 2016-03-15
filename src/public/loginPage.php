@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
 
 
     // Attempt login
-    if ($valid_user = attempt_login($username, $password)) {
+    if (attempt_login($username, $password)) {
         // Success
         // Mark user as logged in
         $user = find_user_by_username($username);
@@ -44,10 +44,9 @@ if (isset($_POST['submit'])) {
 
         redirect_to("auction_list.php");
     } else {
-        // Failure
+        // Failure - add message to error session variable
         $_SESSION["errors"][] = "Username and password is incorrect.";
         redirect_to("loginPage.php");
-
 
     }
 
@@ -132,7 +131,7 @@ if (isset($_POST['submit'])) {
             <input class="input-lg" type="password" name="password" placeholder="Password"><br><br>
             <button class="btn-gold form-control" type="submit" name="submit" value="Log in">Log In</button>
             <div style="padding-top: 5px">
-            <button class="btn-black form-control" type="submit" href="sign_up.php" value="Sign Up">Sign Up</button>
+            <a class="btn-black form-control" href="sign_up.php">Sign Up</a>
                 </div>
         </form><!-- all forms include a submit button -->
     </div>
