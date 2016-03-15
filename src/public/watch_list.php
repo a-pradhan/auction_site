@@ -82,7 +82,7 @@ $watched_auction_set = mysqli_query($connection, $query);
                             <a href="auction_view?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>
                             ">
                             <img class="img-responsive"
-                                 src="../itemImages/<?php echo $watched_auction["itemPhoto"]; ?>"/>
+                                 src="../itemImages/<?php echo $watched_auction["itemPhoto"]; ?>" onerror="this.src='../images/logo2.png'"/>
                             </a>
                         </div>
                         <div class="col-md-6">
@@ -97,9 +97,11 @@ $watched_auction_set = mysqli_query($connection, $query);
                             <h6><span
                                     style="font-weight: bold;">End Date:&nbsp;</span><?php echo htmlentities($watched_auction["auctionEnd"]); ?>
                             </h6>
+                            <h6><span
+                                    style="font-weight: bold;">Description:&nbsp;</span></h6>
                             <p><?php echo htmlentities($watched_auction["itemDescription"]) ?></p>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 center-block">
                             <a class="btn btn-gold"
                                href=auction_view.php?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">View
                                 More</a>
@@ -107,17 +109,18 @@ $watched_auction_set = mysqli_query($connection, $query);
                                href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Remove</a>
                         </div>
                     </div>
-                    <br/><br/>
+
                 </div>
             </div>
         </div>
+            <hr>
 
-    <?php
+
+            <?php
     } // end of loop through watched_auction result set
 
     ?>
-
-    <div id="pagination">
+    <div id="pagination-gold">
         <?php if ($pagination->total_pages() > 1) {
             if ($pagination->has_previous_page()) {
                 echo " <a href=\"watch_list.php?page=";

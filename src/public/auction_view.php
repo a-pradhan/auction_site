@@ -55,8 +55,11 @@
 <?php include("../includes/layouts/navbar.php") ?>
 <!-- Page Content -->
 <?php
-    if(isset($_SESSION['watch_list_message'])) {
-        echo $_SESSION['watch_list_message'];
+    if(isset($_SESSION['watch_list_message'])) { ?>
+        <div class="col-sm-12" align="center">
+       <h6 class ="rd" style="font-size: 18px;"> <?php echo $_SESSION['watch_list_message']; ?></h6>
+            </div>
+<?php
         unset($_SESSION['watch_list_message']);
     }
     // Retrieve the itemID for the auction selected
@@ -371,7 +374,7 @@
     </div>
     <div class="col-md-12">
         <div class="text-right">
-            <a class="btn btn-success">Leave a Review</a>
+            <a class="btn btn-gold">Leave a Review</a>
         </div>
 
         <hr>

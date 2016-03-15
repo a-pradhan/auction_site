@@ -167,9 +167,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "Success";
                 header("Location: my_auctions.php");
-            } else {
-                print_r($errors);
-
+            } else { ?>
+<h6 class="rd" align="center" style="font-size: 18px">
+               <?php echo "Please try again adding an image of JPEG or PNG format";?>
+</h6>
+                <?php
             }
 
         }

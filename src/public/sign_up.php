@@ -128,7 +128,7 @@ if (isset($_POST["submit"])) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="#"><img class="navbar-brand" src="../images/logo2.png" style="padding: 4px"></a>
+            <a href="auction_list.php"><img class="navbar-brand" src="../images/logo2.png" style="padding: 4px"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-gold-collapse" id="bs-example-navbar-collapse-1">
@@ -189,8 +189,9 @@ if (isset($_POST["submit"])) {
 
 <div class="text-danger" align="center">
     <?php echo form_errors(errors()); ?></div>
+    <hr>
     <footer>
-        <hr>
+
         <div class="row">
             <div class="col-lg-12">
                 <p>Copyright &copy; Team 40 Money Motivation</p>
@@ -199,6 +200,11 @@ if (isset($_POST["submit"])) {
         <!-- /.row -->
     </footer>
 </div>
+<script src="../js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

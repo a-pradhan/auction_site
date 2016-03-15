@@ -147,9 +147,9 @@ $loggedIn_userID = $_SESSION["userID"];
         echo "<div class=\"row panel panel-default panel-shadow\">";
         echo "Live! <br>";
         echo "<div class=\"row\">";
-        echo "<div class=\"col-md-6\">";
+        echo "<div class=\"col-md-3\">";
         //echo "<a href=\"#\">";
-        echo "<img class=\"img-responsive\" src=\"../itemImages/" . $live_item_info["itemPhoto"] . "\" alt=\"\">";
+        echo "<img class=\"img-responsive\" src=\"../itemImages/" . $live_item_info["itemPhoto"] . "\" alt=\"\">" ;
         //echo "</a>";
         echo "</div>";
         echo "<div class=\"col-md-6\">";
@@ -157,15 +157,19 @@ $loggedIn_userID = $_SESSION["userID"];
         echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";
         echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
         echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
-        echo "<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
+        echo "<h6><span style=\"font-weight:bold\">" . "Description: </span>"."</h6>"."<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
+        echo "</div>";
+        echo "<div class=\"col-md-3\">";
         echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-black\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
-
         echo "</div>";
-        echo "</div>";
-        echo "</div>";
+        echo "<hr>";
         echo "</div>";
         echo "</div>";
         echo "<hr>";
+        echo "</div>";
+        echo "</div>";
+
+
     }
 
 
