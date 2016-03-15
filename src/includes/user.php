@@ -52,7 +52,7 @@ function attempt_login($username, $password)
         }
 
     } else {
-        // admin not found
+        // user not found
         return false;
     }
 }

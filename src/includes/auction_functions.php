@@ -1,6 +1,6 @@
 <?php require_once("db_connection.php") ?>
 <?php require_once("mail.php") ?>
-
+<?php require_once("general_functions.php");?>
 <?php
 
 
@@ -389,13 +389,6 @@ function find_all_non_live_auctions()
         return $userEmail;
     }
 
-    function confirm_query($result_set) {
-      if (!$result_set) {
-       die("Database query failed.");
-       }
-    }
-
-
 
     function filter_categories($columnName)
     {
@@ -412,11 +405,6 @@ function find_all_non_live_auctions()
         return $category_set;
     }
 
-    function redirect_to($new_location)
-    {
-        header("Location: " . $new_location);
-        exit;
-    }
 
     function outbid_email($bidderUserName, $bidderEmail, $auctionName, $latestBidAmount, $auctionExpiry) {
         $message = ("Dear {$bidderUserName}\n\nYou have just been outbid on {$auctionName}, latest bid is £ {$latestBidAmount}. The auction will expire on {$auctionExpiry}.\n\nYours sincerely,\n\nTeam Auction Vault");

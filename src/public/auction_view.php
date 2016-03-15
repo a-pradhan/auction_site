@@ -9,8 +9,9 @@
 <?php
     $username = $_SESSION["username"];
     $password = $_SESSION["password"];
-    $loggedIn_userID = $_SESSION["admin_id"];
+    $loggedIn_userID = $_SESSION["userID"];
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +29,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/create_auctionStyling.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="../css/shop-item.css" rel="stylesheet">
@@ -46,16 +48,22 @@
     <![endif]-->
 
 </head>
-<body>
+<body style="background-color: #dbdbdb">
+
 
 <!-- Navigation -->
-<?php require_once("../includes/navbar.php"); ?>
+<?php include("../includes/layouts/navbar.php") ?>
 
 <!-- Page Content -->
 <?php
+    if(isset($_SESSION['watch_list_message'])) {
+        echo $_SESSION['watch_list_message'];
+        unset($_SESSION['watch_list_message']);
+    }
     // Retrieve the itemID for the auction selected
     $chosen_auction_item = $_GET["auction"];
     // Retrieve the auction row for the auction selected using the itemID
+
     $chosen_auction_info = mysqli_fetch_assoc(find_auction_for_chosen_item($chosen_auction_item));
     $chosen_auction_ID = $chosen_auction_info['auctionID'];
 
@@ -72,6 +80,7 @@
 
     //The following is to prevent an owner of an auction to bid on their own auction
     $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
+
     $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
     $can_I_bid =1;
     while ($my_auctions_for_checking = mysqli_fetch_assoc($all_my_auctions)) {
@@ -79,14 +88,17 @@
             $can_I_bid = 0;
         }
     }
+  // debugging
+
 
 ?>
 
 
 <div class="container">
 
-    <div class="row">
-        <div class="col-md-5">
+    <div class="col-sm-12">
+        <div class="row panel panel-default panel-shadow">
+            <div class="col-md-5">
             <div class="thumbnail">
                 <?php //retrieves the name of the photo to be shown ?>
                 <img class="img-responsive" src="../images/<?php echo $chosen_live_item_info["itemPhoto"] ?>" alt="">
@@ -487,11 +499,17 @@
                         });
                     </script>
 
+
                     <p><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
 
                     <p><strong>
                             Quantity:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemQuantity"]); ?>
                     </p>
+
+                    <!-- TODO change auction to itemID for the auction_view page to avoid confusion as it currently represents the itemID not the auctionID   -->
+                    <a style="float: right;" class="btn btn-primary" href="watch_auction.php?auction=<?php echo urlencode($chosen_auction_ID);
+                    ?>&item=<?php echo urlencode($_GET['auction']); ?>">Add to Watch List</a>
+
                     <p><strong>
                             Condition:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemCondition"]); ?>
                     </p>
@@ -570,7 +588,7 @@
             echo "</div>";
             echo "</div>";
             ?>
-
+        </div>
         </div>
     </div>
     <div class="col-md-12">
@@ -632,6 +650,8 @@
 
 
 </div>
+
+<?php global $connection; echo mysqli_error($connection); ?>
 <!-- /.container -->
 
 <div class="container">

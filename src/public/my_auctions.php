@@ -9,12 +9,12 @@
 <?php
 $username = $_SESSION["username"];
 $password = $_SESSION["password"];
-$loggedIn_userID = $_SESSION["admin_id"];
+$loggedIn_userID = $_SESSION["userID"];
 ?>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
 <head>
 
@@ -31,6 +31,8 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
     <!-- Custom CSS -->
     <link href="../css/1-col-portfolio.css" rel="stylesheet">
+    <link href="../css/create_auctionStyling.css" rel="stylesheet">
+
 
     <!-- jQuery -->
     <script src="../js/jquery.js"></script>
@@ -46,92 +48,92 @@ $loggedIn_userID = $_SESSION["admin_id"];
 
 </head>
 
-<body>
+<body style="background-color: #dbdbdb">
 
 <!-- Navigation -->
-<?php require_once("../includes/navbar.php"); ?>
-
-<body>
+<?php include("../includes/layouts/navbar.php") ?>
 <!-- Page Content -->
-    <div class="container" id="stage">
-        <h2>My Auctions</h2>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Auction</th>
-                <th>Time left</th>
-                <th>Reserve price</th>
-                <th>Highest bid</th>
-                <th>Total bids</th>
-                <th>Total viewing</th>
-                <th>Sold</th>
-                <th>Rate buyer</th>
-            </tr>
-            </thead>
-            <tbody>
-            <script>
-                //hilios.github.io/jQuery.countdown/ - reference for the timer
-                Date.createFromMysql = function (mysql_string) {
-                    var t, result = null;
+<div class="container">
 
-                    if (typeof mysql_string === 'string') {
-                        t = mysql_string.split(/[- :]/);
+    <div class="col-sm-12">
+        <div class="row panel panel-default panel-shadow">
+            <h2>My Auctions</h2>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Auction</th>
+                        <th>Time left</th>
+                        <th>Reserve price</th>
+                        <th>Highest bid</th>
+                        <th>Total bids</th>
+                        <th>Total viewing</th>
+                        <th>Sold</th>
+                        <th>Rate buyer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <script>
+                        //hilios.github.io/jQuery.countdown/ - reference for the timer
+                        Date.createFromMysql = function (mysql_string) {
+                            var t, result = null;
+                            if (typeof mysql_string === 'string') {
+                                t = mysql_string.split(/[- :]/);
 
-                        //when t[3], t[4] and t[5] are missing they defaults to zero
-                        result = new Date(t[0], t[1] - 1, t[2], t[3] || 0, t[4] || 0, t[5] || 0);
+                                //when t[3], t[4] and t[5] are missing they defaults to zero
+                                result = new Date(t[0], t[1] - 1, t[2], t[3] || 0, t[4] || 0, t[5] || 0);
+                            }
+
+                            return result;
+                        }
+                    </script>
+                    <?php
+                    $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
+
+                    $all_my_auctions = retrieve_my_auctions($my_auctions_sellerID);
+                    $counter = 0;
+
+                    while ($my_auction = mysqli_fetch_assoc($all_my_auctions)) {
+
+
+                    $my_auction_latest_bidID = $my_auction['bidID'];
+
+
+                    $my_auction_latest_bidAmount = "N/A";
+                    if ($my_auction_latest_bidID == null) {
+
+
+                    } else {
+                        $my_auction_latest_bidID = $my_auction['bidID'];
+                        $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($my_auction_latest_bidID));
+                        $my_auction_latest_bidAmount = "£ " . $bid_amount_set['bidAmount'];
                     }
 
-                    return result;
-                }
-            </script>
-            <?php
-            $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
 
-            $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
-            $counter=0;
+                    $bid_set_for_given_auction = retrieve_number_of_bids_for_a_given_auction($my_auction["auctionID"]);
+                    $number_of_bids = mysqli_fetch_assoc($bid_set_for_given_auction);
 
-            while ($my_auction = mysqli_fetch_assoc($all_my_auctions)){
-
-
-                $my_auction_latest_bidID = $my_auction['bidID'];
-
-
-                $my_auction_latest_bidAmount = "N/A";
-                if ($my_auction_latest_bidID == null) {
-
-
-                } else {
-                    $my_auction_latest_bidID = $my_auction['bidID'];
-                    $bid_amount_set = mysqli_fetch_assoc(find_bidAmount_for_bidID($my_auction_latest_bidID));
-                    $my_auction_latest_bidAmount = "£ " . $bid_amount_set['bidAmount'];
-                }
-
-                $bid_set_for_given_auction = retrieve_number_of_bids_for_a_given_auction($my_auction["auctionID"]);
-                $number_of_bids = mysqli_fetch_assoc($bid_set_for_given_auction);
-
-                if (true) {
-                    $sold_icon_success= null;
-                } else {
-                    $sold_icon_unsuccessful=null;
-                }
-                $boolcheck = false;
-                $auction_successful = $my_auction["auctionSuccessful"];
-                echo "<tr>";
+                    if (true) {
+                        $sold_icon_success = null;
+                    } else {
+                        $sold_icon_unsuccessful = null;
+                    }
+                    $boolcheck = false;
+                    $auction_successful = $my_auction["auctionSuccessful"];
+                    echo "<tr>";
                     echo "<td>" . $my_auction['itemName'] . "</td>";
-                    echo "<td><div id=\"" . "{$counter}"  ."\"></div></td>";
+                    echo "<td><div id=\"" . "{$counter}" . "\"></div></td>";
                     echo "<td>£ " . $my_auction['auctionReservePrice'] . "</td>";
-                    echo "<td>" . $my_auction_latest_bidAmount  . "</td>";
-                    echo "<td>" . $number_of_bids["COUNT(bidID)"]. "</td>";
-                    echo "<td>" . $my_auction['auctionViewings']. "</td>";
+                    echo "<td>" . $my_auction_latest_bidAmount . "</td>";
+                    echo "<td>" . $number_of_bids["COUNT(bidID)"] . "</td>";
+                    echo "<td>" . $my_auction['auctionViewings'] . "</td>";
 
-
-
-                //this if statement is for the 'Sold' column and 'Rate' column respectively
-                if ($auction_successful == 1 ) {
+                    //this if statement is for the 'Sold' column and 'Rate' column respectively
+                    if ($auction_successful == 1) {
 
                     echo "<td><span style=\"color:green\" class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span></td>";
                     echo "<td><div class=\"btn-group\" role=\"group\" aria-label=\"...\">";
-                    echo "<button type=\"button\" id=\"{$my_auction['auctionID']}\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\" onclick=\"buttonID(this.id)\"";
+                    echo "<button type=\"button\" id=\"rate\"  class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\"";
 
                     $seller_has_rated_this_auction_set = mysqli_fetch_assoc(has_seller_rated_this_auction($my_auction['auctionID']));
                     if ($seller_has_rated_this_auction_set['sellerRated'] == 1) {
@@ -139,44 +141,16 @@ $loggedIn_userID = $_SESSION["admin_id"];
                     }
 
 
+
                     echo ">Rate buyer</button></div></td>";
 
                     ?>
-
-
                     <script>
 
-                            function buttonID(theID){
-                                onTrackAuctionID  = theID;
-                            }
+                        function clicked() {
 
-                            function ratingSelected(selected) {
-                                    onTrackRatingSelected = selected;
-                            }
-
-                            function carryAuctionID() {
-                                if (onTrackRatingSelected == "0"){
-                                    alert("You cannot submit an empty rating.");
-                                } else {
-                                    $.post(
-                                        "send_a_rating_for_a_buyer.php",
-                                        { auctionID_ajax:  onTrackAuctionID,
-                                            rating_ajax: onTrackRatingSelected},
-                                        function(data) {
-
-                                        }
-                                    );
-
-                                }
-
-                            }
-
-                        function myFunction() {
-                            window.location = document.URL;
+                            document.getElementById("rate").disabled = true;
                         }
-
-
-
                     </script>
 
 
@@ -186,23 +160,23 @@ $loggedIn_userID = $_SESSION["admin_id"];
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <button type="button" class="close"
+                                            data-dismiss="modal">&times;</button>
                                     <form action="" method="POST">
                                         <h4 class="modal-title">Please select a rating
 
-                                            <select id ="ratingList" name="ratingList" onchange="ratingSelected(value);">
+                                            <select name="ratingList">
                                                 <option value="0"></option>
                                                 <option value="1">1 - Do not recommend</option>
                                                 <option value="2">2 - Poor</option>
                                                 <option value="3">3 - Average</option>
-                                                <option value="4">4 -  Recommend</option>
-                                                <option value="5">5 -  Good</option>
+                                                <option value="4">4 - Recommend</option>
+                                                <option value="5">5 - Good</option>
                                             </select></h4>
                                 </div>
 
                                 <div class="modal-footer">
-
-                                <?php echo    "<input id=\"submit\" name=\"submit\" type=\"submit\" value=\"Submit\" onclick=\"carryAuctionID();\">"; ?>
+                                    <input id="submit" name="submit" type="submit" value="Submit">
                                 </div>
                                 </form>
 
@@ -212,91 +186,98 @@ $loggedIn_userID = $_SESSION["admin_id"];
                     </div>
                     <?php
 
-
-                } else {
-                    echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
-                    echo "<td>" ."Not applicable"  . "</td>";
-
-                }
-
-                echo "<tr>";
-
-
-                $counter++;
+                    if (isset($_POST['submit'])) {
+                        if ($_POST["ratingList"] == 0) {
+                            echo "<p style =\"color:red;\">You must select a rating.</p>";
+                        } else {
+                            //set the button to disabled
+                            sellerRated_set_to_true_for_auction($my_auction['auctionID']);
+                            echo "<script>clicked();</script>";
 
 
+                            $auctionID = $my_auction['auctionID'];
+                            $roleID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
+                            $ratingValue = $_POST["ratingList"];
+                            send_a_rating($auctionID, $roleID, $ratingValue);
 
-            }
 
-            if(isset($_POST['submit'])){
-                if ($_POST["ratingList"] == 0) {
-                    echo "<p style =\"color:red;\">You must select a rating.</p>";
-                    echo "<script>carryAuctionID();</script>";
+                        }
 
-                } else {
 
-                    echo "<script>myFunction()</script>";
+                    }
 
 
 
+                    } else {
+                        echo "<td><span style=\"color:red\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+                        echo "<td>" . "Not applicable" . "</td>";
+
+                    }
+
+                    echo "<tr>";
+
+                    $counter++;
+
+                    }
 
 
-                }
-            }
+                    ?>
+
+                    <?php
+                    $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
+                    //            echo htmlentities($my_auctions_sellerID);
+                    $all_my_auctions = retrieve_my_auctions($my_auctions_sellerID);
+                    $counter = 0;
+                    //A second loop to assign left to each pre-defined <div> in precvious while-loop
+                    while ($my_auction = mysqli_fetch_assoc($all_my_auctions)) {
 
 
+                    $auctionEnd = $my_auction["auctionEnd"];
 
 
+                    ?>
+                    <script>
+                        var <?php echo "t{$counter}"; ?> = <?php echo json_encode($my_auction["auctionEnd"]); ?>;
 
-            ?>
+                        var <?php echo "d{$counter}"; ?> =
+                        Date.createFromMysql(<?php echo "t{$counter}"; ?>);
 
-            <?php
-            $my_auctions_sellerID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
-            $all_my_auctions = retrieve_my_auctions ($my_auctions_sellerID);
-            $counter=0;
-            //A second loop to assign left to each pre-defined <div> in precvious while-loop
-            while ($my_auction = mysqli_fetch_assoc($all_my_auctions)) {
+                        <?php $div_counter = "clock{$counter}"; ?>
 
-                $auctionEnd = $my_auction["auctionEnd"];
+                        $(<?php echo "'#" . "{$counter}" . "'"; ?>).countdown(<?php echo "d{$counter}"; ?>, function (event) {
+                            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+                            $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+                        });
+                    </script>
 
-
-                ?>
-                <script>
-                    var <?php echo "t{$counter}"; ?> = <?php echo json_encode($my_auction["auctionEnd"]); ?>;
-
-                    var <?php echo "d{$counter}"; ?> =
-                    Date.createFromMysql(<?php echo "t{$counter}"; ?>);
-
-                    <?php $div_counter = "clock{$counter}"; ?>
-
-                    $(<?php echo "'#" . "{$counter}" . "'"; ?>).countdown(<?php echo "d{$counter}"; ?>, function (event) {
-                        var totalHours = event.offset.totalDays * 24 + event.offset.hours;
-                        $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
-                    });
-                </script>
-
-                <?php
-                $counter++;
-            }
-            ?>
+                    <?php
+                    $counter++;
+                    }
+                    ?>
 
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <hr>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Team 40 Money Motivation</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
     </div>
 
 
     <!-- Footer -->
-    <footer>
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; Your Website 2014</p>
-            </div>
-        </div>
-        <!-- /.row -->
-    </footer>
 
 </div>
+
 <!-- /.container -->
 
 <!-- jQuery -->
