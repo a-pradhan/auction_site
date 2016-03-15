@@ -103,7 +103,7 @@
             <div class="col-md-5">
             <div class="thumbnail">
                 <?php //retrieves the name of the photo to be shown ?>
-                <img class="img-responsive" src="../itemImages/<?php echo $chosen_live_item_info["itemPhoto"] ?>" alt="">
+                <img class="img-responsive" src="../itemImages/<?php echo $chosen_live_item_info["itemPhoto"] ?>" onerror="this.src='../images/logo2.png'">
             </div>
         </div>
 
@@ -281,7 +281,7 @@
                     </script>
 
 
-                    <p><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
+                    <p><strong>Category: </strong><?php echo htmlentities($chosen_live_item_info["itemCategory"]); ?></p>
 
                     <p><strong>
                             Quantity:</strong><?php echo " " . htmlentities($chosen_live_item_info["itemQuantity"]); ?>
@@ -303,8 +303,8 @@
         <div class="col-md-7">
             <?php
             echo "<div class=\"thumbnail\">";
-            echo "<p class=\"lead\">Latest bidders!</p>";
-            echo "<div class=\"list-group\">";
+            echo "<p class=\"field-title\" style='font-size: 24px; padding-left: 15px; padding-top: 10px '>Latest bidders!</p>";
+            echo "<div class=\"list-group\ scrollable-list\">";
 
             $bid_set = find_bids_for_live_auction($chosen_auction_ID);
             if (mysqli_num_rows($bid_set) == 0) {
@@ -323,7 +323,7 @@
 
 
                     if ($count == 0) {
-                        echo "<ol class=\"list-group-item active\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']);
+                        echo "<ol class=\"list-group-item btn-gold\">" . htmlentities($bidderName['userName']) . htmlentities(" ~ ") . htmlentities(" ") . htmlentities("£") . htmlentities($bids['bidAmount']);
                     for($x=0;$x<$whole_number_rating_score;$x++){
                         if ($x ==0) {
                             echo "<span style=\"margin-left: 2em;\" class=\"glyphicon glyphicon-star\";></span>";

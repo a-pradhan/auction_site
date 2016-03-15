@@ -35,7 +35,8 @@ $loggedIn_userID = $_SESSION["userID"];
                 <div class="col-sm-12">
                     <form action="auction_list.php" method="POST">
                         <div class="col-sm-4" style="padding-bottom: 5px">
-                            Category
+                            <div class="field-title" style="font-size: 16px">Category</div>
+
                             <select name="category" class="form-control">
                                 <option value=""></option>
                                 <option value="Car">Car</option>
@@ -46,8 +47,7 @@ $loggedIn_userID = $_SESSION["userID"];
                             </select>
                         </div>
                         <div class="col-sm-4" style="padding-bottom: 5px">
-                            Condition
-                            <select name="condition" class="form-control">
+                            <div class="field-title" style="font-size: 16px">Condition</div>                            <select name="condition" class="form-control">
                                 <option value=""></option>
                                 <option value="Used">Used</option>
                                 <option value="Used - Like New">Used - Like New</option>
@@ -55,8 +55,7 @@ $loggedIn_userID = $_SESSION["userID"];
                             </select>
                         </div>
                         <div class="col-sm-4" style="padding-bottom: 5px">
-                            Sort by
-                            <select name="sortBy" class="form-control">
+                            <div class="field-title" style="font-size: 16px">Sort By</div>                            <select name="sortBy" class="form-control">
                                 <option value=""></option>
                                 <option value="Price">Price</option>
                                 <option value="Time">Time</option>
@@ -158,14 +157,14 @@ $loggedIn_userID = $_SESSION["userID"];
         echo "<div class=\"col-md-6\">";
         echo "<h3>" . htmlentities($live_item_info["itemName"]) . "</h3>";
         echo "<h4>" . htmlentities($live_item_info["itemCategory"]) . "</h4>";
-        echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) . "" . "<span style=\"color:#880000 ;text-align:center;float: right\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) . "</span></h6>";
+        echo "<h6><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($live_item_info["itemQuantity"]) ."</span></h6>";
         echo "<h6><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($live_item_info["itemCondition"]) . "</h6>";
         echo "<h6><span style=\"font-weight:bold\">" . "Description: </span>"."</h6>"."<p>" . htmlentities($live_item_info["itemDescription"]) . "</p>";
         echo "</div>";
         echo "<div class=\"col-md-3\">";
         echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-black\" href=\"auction_view.php?auction=" . urlencode($live_item_info["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+        echo  "<h5 class=\'bottom-align-text\' style=\"color:#880000 ;text-align:center;float: right; position: absolute;\">Reserve price at £" . htmlentities($auction["auctionReservePrice"]) ."</h5>";
         echo "</div>";
-        echo "<hr>";
         echo "</div>";
         echo "</div>";
         echo "<hr>";
