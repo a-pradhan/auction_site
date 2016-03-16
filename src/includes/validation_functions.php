@@ -59,15 +59,15 @@ function form_errors($errors = array())
 {
     $output = "";
     if (!empty($errors)) {
-        $output .= "<div class=\"error\">";
-        $output .= "Please fix the following errors:";
-        $output .= "<ul>";
+        $output .= "<div class=\"error rd\">";
+        $output .= "<p style='font-size: 18px; margin-bottom: 20px; text-decoration: underline'>"."Please fix the following errors:" . "</p>";
+//        $output .= "<ul>";
         foreach ($errors as $key => $error) {
-            $output .= "<li>";
+            $output .= "<p class='rd' style='font-size: 18px'>";
             $output .= htmlentities($error);
-            $output .= "</li>";
+            $output .= "</p>";
         }
-        $output .= "</ul>";
+//        $output .= "</>";
         $output .= "</div>";
     }
     return $output;

@@ -201,8 +201,8 @@ function test_input($data)
 
     <div class="col-sm-12">
         <h1 class="page-title">Create Auction
-            <small>Money motivation</small>
         </h1>
+        <hr>
         <!-- Page Heading -->
         <!-- Search and filtering -->
         <form class="form" method="post" name="createAuctionForm" action="create_Auction.php"

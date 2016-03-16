@@ -14,60 +14,59 @@ $loggedIn_userID = $_SESSION["userID"];
 ?>
 
 <?php require("../includes/layouts/header.php"); ?>
-<body style="background-color: #dbdbdb" xmlns="http://www.w3.org/1999/html">
+<body style="background-color: #dbdbdb" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
 <?php require("../includes/layouts/navbar.php"); ?>
 
 
 <!-- Page Content -->
-<div class="container-fluid">
-<div class="col-sm-12">
-    <!-- Page Heading -->
+<div class="container">
+    <div class="col-sm-12">
+        <!-- Page Heading -->
 
-            <h1 class="page-title">Live Auctions</h1>
-        </div>
-    </div>
-    <!-- Search and filtering -->
-    <div class="col-md-12">
-        <div class="col-sm-6" style="padding-bottom: 5px">
-            <div class="col-sm-12">
+        <!-- Search and filtering -->
+        <h1 class="page-title">Live Auctions</h1>
+        <hr>
 
-                <form action="auction_list.php" method="POST">
-                    <div class="col-sm-4" style="padding-bottom: 5px">
-                        <div class="field-title" style="font-size: 16px">Category</div>
+        <div class="col-sm-6" style="padding-bottom: 5px;">
 
-                        <select name="category" class="form-control">
-                            <option value=""></option>
-                            <option value="Car">Car</option>
-                            <option value="Mobile Phone">Mobile Phones</option>
-                            <option value="Laptop">Laptops</option>
-                            <option value="Jewellry">Jewellry</option>
-                            <option value="Miscellaneous">Miscellaneous</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-4" style="padding-bottom: 5px">
-                        <div class="field-title" style="font-size: 16px">Condition</div>
-                        <select name="condition" class="form-control">
-                            <option value=""></option>
-                            <option value="Used">Used</option>
-                            <option value="Used - Like New">Used - Like New</option>
-                            <option value="New">New</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-4" style="padding-bottom: 5px">
-                        <div class="field-title" style="font-size: 16px">Sort By</div>
-                        <select name="sortBy" class="form-control">
-                            <option value=""></option>
-                            <option value="Price">Price</option>
-                            <option value="Time">Time</option>
-                        </select>
-                    </div>
-            </div>
+            <form action="auction_list.php" method="POST">
+                <div class="col-sm-4" style="padding-bottom: 5px">
+                    <div class="field-title" style="font-size: 16px">Category</div>
 
-            <input id="refine" name="refine" type="submit" value="Refine" class="btn-gold form-control">
+                    <select name="category" class="form-control">
+                        <option value=""></option>
+                        <option value="Car">Car</option>
+                        <option value="Mobile Phone">Mobile Phones</option>
+                        <option value="Laptop">Laptops</option>
+                        <option value="Jewellry">Jewellry</option>
+                        <option value="Miscellaneous">Miscellaneous</option>
+                    </select>
+                </div>
+                <div class="col-sm-4" style="padding-bottom: 5px">
+                    <div class="field-title" style="font-size: 16px">Condition</div>
+                    <select name="condition" class="form-control">
+                        <option value=""></option>
+                        <option value="Used">Used</option>
+                        <option value="Used - Like New">Used - Like New</option>
+                        <option value="New">New</option>
+                    </select>
+                </div>
+                <div class="col-sm-4" style="padding-bottom: 5px">
+                    <div class="field-title" style="font-size: 16px">Sort By</div>
+                    <select name="sortBy" class="form-control">
+                        <option value=""></option>
+                        <option value="Price">Price</option>
+                        <option value="Time">Time</option>
+                    </select>
+                </div>
+
+
+                <input id="refine" name="refine" type="submit" value="Refine" class="btn-gold form-control">
             </form>
         </div>
-        <div class="col-sm-6" style="padding-bottom: 20px; padding-top: 25px">
+
+        <div class="col-sm-6" style="padding-bottom: 20px; padding-top: 25px;">
             <form action="auction_list.php" method="POST">
                 <input id="search" name="searchField" type="text" class="form-control" "
                 placeholder="Search by name, description or category of item!">
@@ -75,8 +74,7 @@ $loggedIn_userID = $_SESSION["userID"];
             </form>
         </div>
     </div>
-
-
+<div class="col-sm-12">
     <?php
     // Retrieve all live auctions (auctionLive =1)
     $live_auctions = find_all_live_auctions();
@@ -111,12 +109,12 @@ $loggedIn_userID = $_SESSION["userID"];
 
         // Checks if category filter has been chosen and appends to query
         if (($_POST["category"] != "")) {
-            $query  .= "AND Item.itemCategory = " . "'" .mysql_prep($_POST["category"]) ."'";
+            $query .= "AND Item.itemCategory = " . "'" . mysql_prep($_POST["category"]) . "'";
         }
 
         // checks if condition filter has been chosen and appends to query
         if (($_POST["condition"] != "")) {
-            $query  .= " AND Item.itemCondition = " . "'" . mysql_prep($_POST["condition"]) . "'";
+            $query .= " AND Item.itemCondition = " . "'" . mysql_prep($_POST["condition"]) . "'";
         }
 
         //To be implemented, sort by the most recent or cheapest price
@@ -132,10 +130,10 @@ $loggedIn_userID = $_SESSION["userID"];
         //Break the string up into an array
         $auction_search_array = explode(" ", $search_string_identified);
 
-        foreach($auction_search_array as $search_query) {
-            $query .= "AND Item.itemCategory LIKE " . "'%".$search_query ."%' ";
-            $query .= "OR Item.itemName LIKE " . "'%". $search_query."%' ";
-            $query .= "OR Item.itemDescription LIKE " . "'%". $search_query ."%' ";
+        foreach ($auction_search_array as $search_query) {
+            $query .= "AND Item.itemCategory LIKE " . "'%" . $search_query . "%' ";
+            $query .= "OR Item.itemName LIKE " . "'%" . $search_query . "%' ";
+            $query .= "OR Item.itemDescription LIKE " . "'%" . $search_query . "%' ";
         }
     }
 
@@ -153,6 +151,7 @@ $loggedIn_userID = $_SESSION["userID"];
     }
 
     // while loop to fetch each row of auction one by one
+
     foreach ($auction_set as $auction) {
 
         // Retrieving the itemID for each row of auction
@@ -162,8 +161,7 @@ $loggedIn_userID = $_SESSION["userID"];
         // $live_item_info = mysqli_fetch_assoc(find_item_for_live_auction($live_itemID));
         //$live_item_info = mysqli_fetch_assoc($item_info);
 
-        echo "<div class=\"container\">";
-        echo "<div class=\"col-sm-12\">";
+
         echo "<div class=\"row panel panel-default panel-shadow\">";
         echo "Live! <br>";
         echo "<div class=\"row\">";
@@ -192,9 +190,8 @@ $loggedIn_userID = $_SESSION["userID"];
         echo "</div>";
         echo "</div>";
         echo "</div>";
+
         echo "<hr>";
-        echo "</div>";
-        echo "</div>";
 
 
     }
@@ -202,32 +199,34 @@ $loggedIn_userID = $_SESSION["userID"];
 
     ?>
     <!-- Refer to class pagination in CSS for original styling-->
-    <div id="pagination">
-        <?php if($pagination->total_pages() > 1) {
-            // display button to go back to previous page if it exists
-            if($pagination->has_previous_page()) {
-                echo " <a href=\"auction_list.php?page=";
-                echo $pagination->previous_page();
-                echo "\">&laquo; Previous</a> ";
-            }
-
-            for($i = 1; $i <= $pagination->total_pages(); $i++) {
-                if($i == $page) {
-                    echo " <span class=\"selected\">{$i}</span> ";
-                } else {
-                    echo " <a href=\"watch_list.php?page={$i}\">{$i}</a>";
+    <div class="row">
+        <div id="pagination" class=" col-lg-6 col-sm-offset-6">
+            <?php if ($pagination->total_pages() > 1) {
+                // display button to go back to previous page if it exists
+                if ($pagination->has_previous_page()) {
+                    echo " <a href=\"auction_list.php?page=";
+                    echo $pagination->previous_page();
+                    echo "\">&laquo; Previous</a> ";
                 }
 
-            }
+                for ($i = 1; $i <= $pagination->total_pages(); $i++) {
+                    if ($i == $page) {
+                        echo " <span class=\"selected\">{$i}</span> ";
+                    } else {
+                        echo " <a href=\"watch_list.php?page={$i}\">{$i}</a>";
+                    }
 
-            // display button to go to next page if it exists
-            if($pagination->has_next_page()) {
-                echo " <a href=\"auction_list.php?page=";
-                echo $pagination->next_page();
-                echo "\">Next &raquo;</a> ";
-            }
+                }
 
-        } ?>
+                // display button to go to next page if it exists
+                if ($pagination->has_next_page()) {
+                    echo " <a href=\"auction_list.php?page=";
+                    echo $pagination->next_page();
+                    echo "\">Next &raquo;</a> ";
+                }
+
+            } ?>
+        </div>
     </div>
 
     <hr>
@@ -241,6 +240,8 @@ $loggedIn_userID = $_SESSION["userID"];
         </div>
         <!-- /.row -->
     </footer><!-- /.container -->
+</div>
+</div>
 
 <!-- Pagination -->
 

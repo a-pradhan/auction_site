@@ -57,6 +57,7 @@ $loggedIn_userID = $_SESSION["userID"];
 
     <div class="col-sm-12">
         <h1 class="page-title">My Auctions</h1>
+        <hr>
         <div class="row panel panel-default panel-shadow">
             <div class="table-responsive">
                 <table class="table table-hover">

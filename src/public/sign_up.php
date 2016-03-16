@@ -196,23 +196,25 @@ if (isset($_POST["submit_sign_up"])) {
                 </div>
             </form><!-- all forms include a submit button -->
         </div>
+        <hr>
+        <div class="text-danger" align="center">
+            <?php echo form_errors(errors()); ?></div>
+
+        <footer>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Team 40 Money Motivation</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+    </div>
     </div>
 
 
 
-<div class="text-danger" align="center">
-    <?php echo form_errors(errors()); ?></div>
-    <hr>
-    <footer>
 
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; Team 40 Money Motivation</p>
-            </div>
-        </div>
-        <!-- /.row -->
-    </footer>
-</div>
 <script src="../js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->

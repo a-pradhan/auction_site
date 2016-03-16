@@ -58,6 +58,7 @@ $loggedIn_userID = $_SESSION["userID"];
 
     <div class="col-sm-12">
         <h1 class="page-title">My Bids</h1>
+        <hr>
         <div class="row panel panel-default panel-shadow">
             <div class="col-sm-12">
 

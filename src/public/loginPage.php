@@ -117,28 +117,42 @@ if (isset($_POST['submit'])) {
     </div>
     <!-- /.container -->
 </nav>
-<div class="container-fluid" align="center">
-
-    <div class="panel panel-default panel-shadow" style="width: 300px">
-        <div class="container-fluid" align="center">
-            <img src="../images/logo2.png" class="img-responsive center-block">
-        </div>
-        <hr>
-        <form class="form" action="loginPage.php" method="post">
-            <h3 class="field-title" align="left">Username</h3>
-            <input class="input-lg" type="text" name="username" placeholder="Username"><br>
-            <h3 class="field-title" align="left">Password</h3>
-            <input class="input-lg" type="password" name="password" placeholder="Password"><br><br>
-            <button class="btn-gold form-control" type="submit" name="submit" value="Log in">Log In</button>
-            <div style="padding-top: 5px">
-            <a class="btn-black form-control" href="sign_up.php">Sign Up</a>
+<div class="container-fluid">
+    <div class="col-sm-12">
+        <div align="center">
+            <div class="panel panel-default panel-shadow" style="width: 300px">
+                <div class="container-fluid" align="center">
+                    <img src="../images/logo2.png" class="img-responsive center-block">
                 </div>
-        </form><!-- all forms include a submit button -->
+                <hr>
+                <form class="form" action="loginPage.php" method="post">
+                    <h3 class="field-title" align="left">Username</h3>
+                    <input class="input-lg" type="text" name="username" placeholder="Username"><br>
+                    <h3 class="field-title" align="left">Password</h3>
+                    <input class="input-lg" type="password" name="password" placeholder="Password"><br><br>
+                    <button class="btn-gold form-control" type="submit" name="submit" value="Log in">Log In</button>
+                    <div style="padding-top: 5px">
+                        <a class="btn-black form-control" href="sign_up.php">Sign Up</a>
+                    </div>
+                </form><!-- all forms include a submit button -->
+            </div>
+        </div>
+        <div class="text-danger" align="center">
+            <?php echo form_errors(errors()); ?></div>
+        <hr>
+
     </div>
+    <footer>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; Team 40 Money Motivation</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
 </div>
 
-<div class="text-danger" align="center">
-    <?php echo form_errors(errors()); ?></div>
 <script src="../js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->

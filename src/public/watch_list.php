@@ -57,7 +57,6 @@ $watched_auction_set = mysqli_query($connection, $query);
     <div class="col-sm-12">
 
         <!-- Page Heading -->
-        <div class="row"> <!--WHOLE PAGE -->
             <h1 class="page-title">My Watch List</h1>
             <hr>
             <div class="col-md-12">
@@ -66,7 +65,7 @@ $watched_auction_set = mysqli_query($connection, $query);
 
 
             </div>
-        </div>
+
 
 
         <?php
@@ -159,7 +158,7 @@ $watched_auction_set = mysqli_query($connection, $query);
 
 
     </div>
-
+        <hr>
 
     <!-- Footer -->
         <footer>
