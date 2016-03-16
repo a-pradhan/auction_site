@@ -23,9 +23,18 @@ if (isset($_POST["submit_sign_up"])) {
     $fields_with_max_lengths = ["first_name" => 255, "last_name" => 255, "username" => 255, "password" => 255];
     validate_max_lengths($fields_with_max_lengths);
 
-    //TODO check email format is valid
 
-    //TODO check username and email do not already exist in the db
+    // check email format is valid
+    validate_email($_POST["email"]);
+
+    // check username is already in use
+    username_exists($_POST["username"]);
+
+    // check if email is already in use
+    email_exists($_POST["email"]);
+
+
+
 
     // check that both passwords entered match
     check_password_match($_POST['password'], $_POST['password_confirmation']);

@@ -1,5 +1,6 @@
 <?php
-
+require_once("db_connection.php");
+require_once("general_functions.php");
 // stores validation error messages
 $errors = array();
 
@@ -87,7 +88,53 @@ function check_password_match($password, $confirmation_password)
 }
 
 function validate_email($email) {
-    // check if email contains an @ and is a valid domain
+    // check if email is well-formed
+    global $errors;
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['invalid_email'] = "Invalid email format";
+        return false;
+    } else {
+        return true;
+    }
+}
+
+// checks if username is already in use
+function username_exists($username) {
+    global $connection;
+    global $errors;
+
+    $safe_username = mysql_prep($username);
+    $query = "SELECT * FROM Users WHERE userName = '{$username}'";
+
+    $result = mysqli_query($connection, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $errors["existing_username"] = "Username already exists";
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+// checks if entered email is already in use
+function email_exists($email) {
+
+    global $connection;
+    global $errors;
+
+    $safe_email = mysql_prep($email);
+
+    $query = "SELECT * FROM Users WHERE userEmail = '{$email}'";
+    $result = mysqli_query($connection, $query);
+
+    if(mysqli_num_rows($result) > 0 ) {
+        $errors["existing_email"] = "This email address is already in use";
+        return true;
+    } else {
+        return false;
+    }
 }
 
 ?>

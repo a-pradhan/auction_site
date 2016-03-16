@@ -111,7 +111,7 @@ $watched_auction_set = mysqli_query($connection, $query);
                         </div>
                         <div class="col-md-3 center-block">
                             <a class="btn btn-gold"
-                               href=auction_view.php?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">View
+                               href=auction_view.php?auction="<?php echo urlencode($watched_auction["itemID"]); ?>">View
                                 More</a>
                             <a class="btn btn-gold"
                                href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Remove</a>
