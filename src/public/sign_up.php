@@ -204,7 +204,7 @@ if (isset($_POST["submit_sign_up"])) {
             <!-- /.row -->
         </footer>
     </div>
-    </div>
+</div>
 
 <script src="../js/jquery.js"></script>
 

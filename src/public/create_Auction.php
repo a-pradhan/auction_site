@@ -245,7 +245,7 @@ function test_input($data)
                 </div>
                 <div class="col-sm-6">
                     <h4 class="field-title">Item Description</h4>
-                        <textarea class="form-control" style="height: 120px"
+                        <textarea maxlength="1000" class="form-control" style="height: 120px"
                                   name="itemDescriptionField"><?php echo($_POST['itemDescriptionField']) ?></textarea>
                     <span class="error rd"><?php echo $itemDescriptionErr ?></span>
                 </div>
