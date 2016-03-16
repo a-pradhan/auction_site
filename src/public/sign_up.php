@@ -34,8 +34,6 @@ if (isset($_POST["submit_sign_up"])) {
     email_exists($_POST["email"]);
 
 
-
-
     // check that both passwords entered match
     check_password_match($_POST['password'], $_POST['password_confirmation']);
 
@@ -43,7 +41,7 @@ if (isset($_POST["submit_sign_up"])) {
 
         $_SESSION["errors"] = $errors;
         redirect_to("sign_up.php");
-    }else{
+    } else {
         // set variables for SQL insert query, check for sql injection
         $userName = mysql_prep($_POST["username"]);
         $fName = mysql_prep($_POST["first_name"]);
@@ -82,14 +80,11 @@ if (isset($_POST["submit_sign_up"])) {
             attempt_login($username, $password);
             redirect_to("auction_list.php");
         } else {
-            // Failure
-            $message = "Failed to create account. Please try again.";
-            redirect_to("sign_up.php");
+            // One of the DB queries has failed
+            $_SESSION["errors"][] = "Failed to create account. Please try again.";
         }
+        redirect_to("sign_up.php");
     }
-
-
-
 
 
 } ?>
@@ -114,7 +109,6 @@ if (isset($_POST["submit_sign_up"])) {
     <!-- Custom CSS -->
     <link href="../css/1-col-portfolio.css" rel="stylesheet">
     <link href="../css/create_auctionStyling.css" rel="stylesheet">
-
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -196,12 +190,12 @@ if (isset($_POST["submit_sign_up"])) {
                 </div>
             </form><!-- all forms include a submit button -->
         </div>
-        <hr>
+
         <div class="text-danger" align="center">
             <?php echo form_errors(errors()); ?></div>
 
         <footer>
-
+            <hr>
             <div class="row">
                 <div class="col-lg-12">
                     <p>Copyright &copy; Team 40 Money Motivation</p>
@@ -211,9 +205,6 @@ if (isset($_POST["submit_sign_up"])) {
         </footer>
     </div>
     </div>
-
-
-
 
 <script src="../js/jquery.js"></script>
 

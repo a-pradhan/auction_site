@@ -81,6 +81,7 @@ function check_password_match($password, $confirmation_password)
     if($password === $confirmation_password){
         return true;
     }else {
+
         $errors['password'] = "Passwords do not match";
         return false;
     }
@@ -105,12 +106,12 @@ function username_exists($username) {
     global $errors;
 
     $safe_username = mysql_prep($username);
-    $query = "SELECT * FROM Users WHERE userName = '{$username}'";
+    $query = "SELECT * FROM User WHERE userName = '{$safe_username}'";
 
     $result = mysqli_query($connection, $query);
 
     if (mysqli_num_rows($result) > 0) {
-        $errors["existing_username"] = "Username already exists";
+        $errors["existing_username"] = "Username is already in use";
         return true;
     } else {
         return false;
@@ -126,11 +127,11 @@ function email_exists($email) {
 
     $safe_email = mysql_prep($email);
 
-    $query = "SELECT * FROM Users WHERE userEmail = '{$email}'";
+    $query = "SELECT * FROM User WHERE userEmail = '{$safe_email}'";
     $result = mysqli_query($connection, $query);
 
     if(mysqli_num_rows($result) > 0 ) {
-        $errors["existing_email"] = "This email address is already in use";
+        $errors["existing_email"] = "Email address is already in use";
         return true;
     } else {
         return false;
