@@ -6,6 +6,9 @@
 
 <?php
 // redirect to login page if a valid user is not signed in
+$username = $_SESSION["username"];
+$password = $_SESSION["password"];
+$loggedIn_userID = $_SESSION["userID"];
 if (!attempt_login($_SESSION["username"], $_SESSION["password"])) {
     redirect_to("loginPage.php");
 }
@@ -57,7 +60,6 @@ $watched_auction_set = mysqli_query($connection, $query);
     <div class="col-sm-12">
 
         <!-- Page Heading -->
-        <div class="row"> <!--WHOLE PAGE -->
             <h1 class="page-title">My Watch List</h1>
             <hr>
             <div class="col-md-12">
@@ -66,7 +68,7 @@ $watched_auction_set = mysqli_query($connection, $query);
 
 
             </div>
-        </div>
+
 
 
         <?php
@@ -111,7 +113,7 @@ $watched_auction_set = mysqli_query($connection, $query);
                         </div>
                         <div class="col-md-3 center-block">
                             <a class="btn btn-gold"
-                               href=auction_view.php?auctionID="<?php echo urlencode($watched_auction["auctionID"]); ?>">View
+                               href=auction_view.php?auction="<?php echo urlencode($watched_auction["itemID"]); ?>">View
                                 More</a>
                             <a class="btn btn-gold"
                                href="delete_watchlist_auction.php?watchID=<?php echo htmlentities($watched_auction["watchID"]); ?>">Remove</a>
@@ -159,7 +161,7 @@ $watched_auction_set = mysqli_query($connection, $query);
 
 
     </div>
-
+        <hr>
 
     <!-- Footer -->
         <footer>

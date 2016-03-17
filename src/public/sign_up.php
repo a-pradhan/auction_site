@@ -12,7 +12,7 @@ $lName = "";
 $userEmail = "";
 
 
-if (isset($_POST["submit"])) {
+if (isset($_POST["submit_sign_up"])) {
 // VALIDATION
 
     // check if login fields are empty
@@ -23,15 +23,25 @@ if (isset($_POST["submit"])) {
     $fields_with_max_lengths = ["first_name" => 255, "last_name" => 255, "username" => 255, "password" => 255];
     validate_max_lengths($fields_with_max_lengths);
 
+
     // check email format is valid
+    validate_email($_POST["email"]);
+
+    // check username is already in use
+    username_exists($_POST["username"]);
+
+    // check if email is already in use
+    email_exists($_POST["email"]);
+
 
     // check that both passwords entered match
     check_password_match($_POST['password'], $_POST['password_confirmation']);
 
     if (!empty($errors)) {
+
         $_SESSION["errors"] = $errors;
         redirect_to("sign_up.php");
-    }else{
+    } else {
         // set variables for SQL insert query, check for sql injection
         $userName = mysql_prep($_POST["username"]);
         $fName = mysql_prep($_POST["first_name"]);
@@ -68,17 +78,13 @@ if (isset($_POST["submit"])) {
             // Success
             $_SESSION["message"] = "Welcome {$fName}";
             attempt_login($username, $password);
-            // TODO change to user's home page. Need to store user id as well
             redirect_to("auction_list.php");
         } else {
-            // Failure
-            $message = "Failed to create account. Please try again.";
-            //TODO redirect to sign up page and display message
+            // One of the DB queries has failed
+            $_SESSION["errors"][] = "Failed to create account. Please try again.";
         }
+        redirect_to("sign_up.php");
     }
-
-
-
 
 
 } ?>
@@ -103,7 +109,6 @@ if (isset($_POST["submit"])) {
     <!-- Custom CSS -->
     <link href="../css/1-col-portfolio.css" rel="stylesheet">
     <link href="../css/create_auctionStyling.css" rel="stylesheet">
-
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -136,14 +141,12 @@ if (isset($_POST["submit"])) {
         <div class="collapse navbar-collapse navbar-gold-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#">About</a>
+                    <a href="About.html">About</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="Services.html">Services</a>
                 </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -181,27 +184,26 @@ if (isset($_POST["submit"])) {
                     <input class="input-lg" type="password" name="password_confirmation" value=""/><br/><br/>
                 </div>
                 <div class="col-sm-12" align="center">
-                    <button class="btn-gold form-control" type="submit" name="submit" value="Complete Sign Up">Complete Sign Up</button>
+                    <button class="btn-gold form-control" type="submit" name="submit_sign_up">Complete Sign Up</button>
                 </div>
             </form><!-- all forms include a submit button -->
         </div>
-    </div>
 
+        <div class="text-danger" align="center">
+            <?php echo form_errors(errors()); ?></div>
 
-
-<div class="text-danger" align="center">
-    <?php echo form_errors(errors()); ?></div>
-    <hr>
-    <footer>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; Team 40 Money Motivation</p>
+        <footer>
+            <hr>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Team 40 Money Motivation</p>
+                </div>
             </div>
-        </div>
-        <!-- /.row -->
-    </footer>
+            <!-- /.row -->
+        </footer>
+    </div>
 </div>
+
 <script src="../js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
