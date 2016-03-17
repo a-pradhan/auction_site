@@ -10,6 +10,9 @@
     $username = $_SESSION["username"];
     $password = $_SESSION["password"];
     $loggedIn_userID = $_SESSION["userID"];
+if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
+    redirect_to("loginPage.php");
+}
 ?>
 
 
@@ -129,11 +132,11 @@
                                 $('input[type="submit"]').prop('disabled', false);
                             }
                         });
-                    })
+                    });
 
                     var canIBid = <?php echo json_encode($can_I_bid); ?>;
-
                     function myFunction() {
+
                         if (canIBid == "0") {
                             alert("You may not bid on your own auction.");
                         } else {

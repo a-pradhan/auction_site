@@ -11,6 +11,10 @@
 $username = $_SESSION["username"];
 $password = $_SESSION["password"];
 $loggedIn_userID = $_SESSION["userID"];
+
+if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
+    redirect_to("loginPage.php");
+}
 ?>
 
 <?php require("../includes/layouts/header.php"); ?>
@@ -213,7 +217,7 @@ $loggedIn_userID = $_SESSION["userID"];
                     if ($i == $page) {
                         echo " <span class=\"selected\">{$i}</span> ";
                     } else {
-                        echo " <a href=\"watch_list.php?page={$i}\">{$i}</a>";
+                        echo " <a href=\"auction_list.php?page={$i}\">{$i}</a>";
                     }
 
                 }

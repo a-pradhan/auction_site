@@ -10,6 +10,10 @@
 $username = $_SESSION["username"];
 $password = $_SESSION["password"];
 $loggedIn_userID = $_SESSION["userID"];
+
+if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
+    redirect_to("loginPage.php");
+}
 ?>
 
 <!DOCTYPE html>
