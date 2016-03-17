@@ -21,7 +21,9 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
 <body style="background-color: #dbdbdb" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
 <?php require("../includes/layouts/navbar.php"); ?>
-
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery.countdown.js"></script>
+<script src="../js/jquery.countdown.min.js"></script>
 
 <!-- Page Content -->
 <div class="container">
@@ -60,8 +62,8 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
                     <div class="field-title" style="font-size: 16px">Sort By</div>
                     <select name="sortBy" class="form-control">
                         <option value=""></option>
-                        <option value="Price">Price</option>
-                        <option value="Time">Time</option>
+                        <option value="auctionReservePrice">Reserve price</option>
+                        <option value="auctionEnd">Time remaining</option>
                     </select>
                 </div>
 
@@ -114,6 +116,7 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
         // Checks if category filter has been chosen and appends to query
         if (($_POST["category"] != "")) {
             $query .= "AND Item.itemCategory = " . "'" . mysql_prep($_POST["category"]) . "'";
+
         }
 
         // checks if condition filter has been chosen and appends to query
@@ -121,10 +124,13 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
             $query .= " AND Item.itemCondition = " . "'" . mysql_prep($_POST["condition"]) . "'";
         }
 
-        //To be implemented, sort by the most recent or cheapest price
-        // if ($_POST["sortBy"] != "") {
 
-        // }
+        //To be implemented, sort by the most recent or cheapest price
+        if ($_POST["sortBy"] != "") {
+            $sortPreference = $_POST['sortBy'];
+            $query .= "ORDER BY {$sortPreference} ASC ";
+
+        }
     }
 
     if (isset($_POST['searchField'])) {
@@ -141,7 +147,7 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
         }
     }
 
-    $query .= " ORDER BY Auction.auctionEnd ASC ";
+    //$query .= " ORDER BY Auction.auctionEnd ASC ";
     $query .= "LIMIT {$per_page} ";
     $query .= "OFFSET {$pagination->offset()}";
 
@@ -155,7 +161,7 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
     }
 
     // while loop to fetch each row of auction one by one
-
+    $counter=0;
     foreach ($auction_set as $auction) {
 
         // Retrieving the itemID for each row of auction
@@ -183,23 +189,68 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
 
         echo "<h5> <span style=\"font-weight:bold\">" . "Category: </span>" . htmlentities($auction["itemCategory"]) . "</h5>";
         echo "<h5><span style=\"font-weight:bold\">" . "Quantity: </span>" . htmlentities($auction["itemQuantity"]) . "</span></h5>";
+        echo "<h6 class=\"pull-right\" style=\"color:#880000\">Time left ~ " . "\t";
+        echo                "<div class=\"pull-right\" id=\"" . "{$counter}" . "\"></div>";
+        echo            "</h6>";
         echo "<h5><span style=\"font-weight:bold\">" . "Condition: </span>" . htmlentities($auction["itemCondition"]) . "</h5>";
         echo "<h5><span style=\"font-weight:bold\">" . "Description: </span>" . "</h5>" . "<p>" . htmlentities($auction["itemDescription"]) . "</p>";
+
         echo "</div>";
         echo "<div class=\"col-md-3\">";
         echo "<div class=\"row\">";
+
         echo "<a style= \"float:right;\" id=\"countButton\" class=\"btn btn-black\" href=\"auction_view.php?auction=" . urlencode($auction["itemID"]) . "\" >View More<span class=\"glyphicon glyphicon-chevron-right\"></span></a>";
+
         echo "</div>";
 
         echo "</div>";
         echo "</div>";
         echo "</div>";
-
         echo "<hr>";
+
+        $counter++;
 
 
     }
 
+    $counter=0;
+    foreach ($auction_set as $auction) {
+
+
+        ?>
+        <script>
+            //hilios.github.io/jQuery.countdown/ - reference for the timer
+            Date.createFromMysql = function (mysql_string) {
+                var t, result = null;
+
+                if (typeof mysql_string === 'string') {
+                    t = mysql_string.split(/[- :]/);
+
+                    //when t[3], t[4] and t[5] are missing they defaults to zero
+                    result = new Date(t[0], t[1] - 1, t[2], t[3] || 0, t[4] || 0, t[5] || 0);
+                }
+
+                return result;
+            }
+
+        var <?php echo "t{$counter}"; ?> = <?php echo json_encode($auction["auctionEnd"]); ?>;
+
+        var <?php echo "d{$counter}"; ?> =
+        Date.createFromMysql(<?php echo "t{$counter}"; ?>);
+
+        <?php $div_counter = "clock{$counter}"; ?>
+
+
+        $(<?php echo "'#" . "{$counter}" . "'"; ?>).countdown(<?php echo "d{$counter}"; ?>, function (event) {
+            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+            $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+        });
+    </script>
+
+    <?php
+
+    $counter++;
+    }
 
     ?>
     <!-- Refer to class pagination in CSS for original styling-->
