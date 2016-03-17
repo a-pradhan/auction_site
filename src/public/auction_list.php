@@ -135,9 +135,9 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
         $auction_search_array = explode(" ", $search_string_identified);
 
         foreach ($auction_search_array as $search_query) {
-            $query .= "AND Item.itemCategory LIKE " . "'%" . $search_query . "%' ";
+            $query .= "AND ( Item.itemCategory LIKE " . "'%" . $search_query . "%' ";
             $query .= "OR Item.itemName LIKE " . "'%" . $search_query . "%' ";
-            $query .= "OR Item.itemDescription LIKE " . "'%" . $search_query . "%' ";
+            $query .= "OR Item.itemDescription LIKE " . "'%" . $search_query . "%' )";
         }
     }
 
