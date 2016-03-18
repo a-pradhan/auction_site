@@ -1,4 +1,6 @@
-<?php require_once("../includes/db_connection.php") ?>
+<?php
+ob_start();
+require_once("../includes/db_connection.php") ?>
 <?php require_once("../includes/session.php"); ?>
 <?php require_once("../includes/user.php"); ?>
 <?php require_once("../includes/auction_functions.php"); ?>
@@ -158,13 +160,25 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
 
 
                 <?php
+
                 //Code for verifying the bidAmount and essential validations
                 if (isset($_POST['bid'])) {
+
+                    $auctionID=$chosen_auction_ID;
+                    $dateOne = new DateTime();
+                    $dateTwoString = $chosen_auction_info["auctionEnd"];
+                    $dateTwo = new DateTime("" . $date2String);
+
+                    if ($dateOne > $dateTwo) {
+                        validate_live_auction($auctionID);
+                    }
+
 
                     $auctionLive_status = confirm_auction_is_live ($chosen_auction_ID);
 
                     if ($auctionLive_status == 0) {
-                        redirect_to("auction_list.php");
+                        echo "Oops! Auction has expired!";
+                        header("Location: auction_list.php");
                     }
                     else {
                         if ($can_I_bid == 0) {
@@ -605,7 +619,9 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
 
 
 
-<?php global $connection; echo mysqli_error($connection); ?>
+<?php global $connection; echo mysqli_error($connection);
+ob_end_flush();
+?>
 <!-- /.container -->
 
 <div class="container">
