@@ -284,6 +284,8 @@ if (!isset($loggedIn_userID) && !attempt_login($username, $password)) {
         </div>
     </div>
 
+    <?php // close db connection
+    mysqli_close($connection); ?>
     <hr>
 
     <!-- Footer -->

@@ -13,7 +13,7 @@ $userEmail = "";
 
 
 if (isset($_POST["submit_sign_up"])) {
-// VALIDATION
+    // VALIDATION CHECKS
 
     // check if login fields are empty
     $required_fields = ["first_name", "last_name", "username", "email", "password", "password_confirmation"];
@@ -38,7 +38,7 @@ if (isset($_POST["submit_sign_up"])) {
     check_password_match($_POST['password'], $_POST['password_confirmation']);
 
     if (!empty($errors)) {
-
+        // no validation errors
         $_SESSION["errors"] = $errors;
         redirect_to("sign_up.php");
     } else {
