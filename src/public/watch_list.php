@@ -6,6 +6,9 @@
 
 <?php
 // redirect to login page if a valid user is not signed in
+$username = $_SESSION["username"];
+$password = $_SESSION["password"];
+$loggedIn_userID = $_SESSION["userID"];
 if (!attempt_login($_SESSION["username"], $_SESSION["password"])) {
     redirect_to("loginPage.php");
 }

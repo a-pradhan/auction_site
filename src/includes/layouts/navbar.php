@@ -33,6 +33,9 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
+                    <a> Logged in as  <?php echo $username?> </a>
+                </li>
+                <li>
                     <a href="logout.php">Logout</a>
                 </li>
             </ul>

@@ -41,7 +41,7 @@ $itemCondition = "";
 $itemDescription = "";
 $auctionName ="";
 $startingPrice = "";
-$auctionStartDate = "";
+//$auctionStartDate = "";
 $auctionEndDate = "";
 $itemNameErr = "";
 $itemQuantityErr = "";
@@ -50,7 +50,7 @@ $itemConditionErr = "";
 $itemDescriptionErr = "";
 $auctionNameErr = "";
 $startingPriceErr = "";
-$auctionStartDateErr = "";
+//$auctionStartDateErr = "";
 $auctionEndDateErr = "";
 
 $AllTrue = true;
@@ -105,12 +105,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $startingPrice = test_input($_POST['startingPriceField']);
     }
-    if (empty($_POST["AuctionStartDateField"])) {
-        $auctionStartDateErr = "Auction Start Date cannot be empty";
-        $AllTrue = false;
-    } else {
-        $auctionStartDate = test_input($_POST['AuctionStartDateField']);
-    }
+//    if (empty($_POST["AuctionStartDateField"])) {
+//        $auctionStartDateErr = "Auction Start Date cannot be empty";
+//        $AllTrue = false;
+//    } else {
+//        $auctionStartDate = test_input($_POST['AuctionStartDateField']);
+//    }
     if (empty($_POST["AuctionEndDateField"])) {
         $auctionEndDateErr = "Auction End Date cannot be empty";
         $AllTrue = false;
@@ -135,9 +135,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         //Auction Info
         $query2 = "INSERT INTO Auction (";
-        $query2 .= "auctionReservePrice, auctionStart, auctionEnd, itemId";
+        $query2 .= "auctionReservePrice, auctionEnd, itemId";
         $query2 .= ") VALUES (";
-        $query2 .= "{$startingPrice}, '{$auctionStartDate}', '{$auctionEndDate}',{$itemId} ";
+        $query2 .= "{$startingPrice}, '{$auctionEndDate}',{$itemId} ";
         $query2 .= ")";
         $result2 = mysqli_query($connection, $query2);
 
@@ -153,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $extensions = array("jpeg", "jpg", "png");
 
             if (in_array($file_ext, $extensions) === false) {
-                $errors[] = "extension not allowed, please choose a JPEG or PNG file.";
+                $errors[] = "extension not allowed, please choose a JPEG, JPG or PNG file.";
             }
 
 //    if($file_size > 209715200){
@@ -169,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: my_auctions.php");
             } else { ?>
 <h6 class="rd" align="center" style="font-size: 18px">
-               <?php echo "Please try again adding an image of JPEG or PNG format";?>
+               <?php echo "Please try again adding an image of JPEG, JPG or PNG format";?>
 </h6>
                 <?php
             }
@@ -267,12 +267,12 @@ function test_input($data)
                     <input class="input-sm" name="startingPriceField"
                            value="<?php echo($_POST['startingPriceField']) ?>">
                     <span class="error rd"><?php echo $startingPriceErr ?></span>
-                    <h4 class="field-title">Auction Start Date</h4>
-                    <input type="text" class="datetimepicker" name="AuctionStartDateField"
-                           value="<?php echo($_POST['AuctionStartDateField']) ?>">
-                        <span class="error rd"
-                              value="<?php echo $auctionStartDateErr ?>"><?php echo $auctionStartDateErr ?></span>
-
+<!--                    <h4 class="field-title">Auction Start Date</h4>-->
+<!--                    <input type="text" class="datetimepicker" name="AuctionStartDateField"-->
+<!--                           value="--><?php //echo($_POST['AuctionStartDateField']) ?><!--">-->
+<!--                        <span class="error rd"-->
+<!--                              value="--><?php //echo $auctionStartDateErr ?><!--">--><?php //echo $auctionStartDateErr ?><!--</span>-->
+<!---->
 
                     <h4 class="field-title">Auction End Date</h4>
                     <input type="datetime" class="datetimepicker" name="AuctionEndDateField"
