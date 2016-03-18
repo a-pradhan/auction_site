@@ -600,6 +600,9 @@
 
 </div>
 
+<?php // close db connection
+mysqli_close($connection); ?>
+
 
 
 <?php global $connection; echo mysqli_error($connection); ?>

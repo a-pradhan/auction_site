@@ -229,6 +229,8 @@ $loggedIn_userID = $_SESSION["userID"];
         </div>
     </div>
 
+    <?php // close db connection
+    mysqli_close($connection); ?>
     <hr>
 
     <!-- Footer -->
