@@ -49,6 +49,10 @@ if (isset($_POST["submit_sign_up"])) {
         $password = password_encrypt($_POST["password"]);
         $userEmail = mysql_prep($_POST["email"]);
 
+        // set autocommit off insertion into the user and roles table should be all or nothing
+        // to avoid redundant data i.e users with no buyer or seller account if insertion into the roles table fails
+        mysqli_autocommit($connection, FALSE);
+
         // create user account
         $query = "INSERT INTO User (";
         $query .= "userName, fName, lName, userPassword, userEmail";
@@ -76,13 +80,18 @@ if (isset($_POST["submit_sign_up"])) {
         // all queries must be successful otherwise an error is thrown
         if ($result && $buyer_creation && $seller_creation) {
             // Success
+            mysqli_commit($connection);
             $_SESSION["message"] = "Welcome {$fName}";
             attempt_login($username, $password);
             redirect_to("auction_list.php");
         } else {
-            // One of the DB queries has failed
+            // One of the DB queries has failed - rollback changes to state of previous db commit
+            mysqli_rollback($connection);
             $_SESSION["errors"][] = "Failed to create account. Please try again.";
         }
+
+        // turn on autocommit again
+        mysqli_autocommit($connection, TRUE);
         redirect_to("sign_up.php");
     }
 
