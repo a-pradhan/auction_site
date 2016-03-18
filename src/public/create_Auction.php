@@ -119,7 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($AllTrue === true) {
-
+        // disable autocommit to db
+        mysqli_autocommit($connection, FALSE);
 
         $roleID = retrieve_sellerID_from_loggedIn_userID($loggedIn_userID);
         //Item Info
@@ -157,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
 //    if($file_size > 209715200){
-//        $errors[]='File size must be excately 2 MB';
+//        $errors[]='File size must be exactly 2 MB';
 //    }
             $newImageName = $itemId . "." . $file_ext;
             if (empty($errors) == true) {
@@ -165,9 +166,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $query4 = "UPDATE Item SET itemPhoto='{$newImageName}' WHERE itemID = {$itemId} ";
                 $result4 = mysqli_query($connection, $query4);
 
-                echo "Success";
-                header("Location: my_auctions.php");
-            } else { ?>
+
+                // commit changes if its successful
+                if (result && $result2 && $result4) {
+                    mysqli_commit($connection);
+                    redirect_to("my_auctions.php");
+                }
+
+            } else { mysqli_rollback($connection);
+                mysqli_autocommit($connection, TRUE); ?>
+
 <h6 class="rd" align="center" style="font-size: 18px">
                <?php echo "Please try again adding an image of JPEG, JPG or PNG format";?>
 </h6>
