@@ -1,0 +1,5 @@
+# ignore .vagrant directory
+.vagrant/
+
+# ignore php storm / intellij configuration folder
+.idea/
